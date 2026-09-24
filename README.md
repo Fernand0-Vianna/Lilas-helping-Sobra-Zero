@@ -5,7 +5,7 @@
 <h1 align="center">Sobra Zero</h1>
 <p align="center">
   Da sobra à mesa de quem precisa · <strong>Squad Lilás</strong><br>
-  Projeto de faculdade — construção da UI
+  Projeto de faculdade — Cruzeiro do Sul
 </p>
 
 ---
