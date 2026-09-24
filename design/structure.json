@@ -1,0 +1,126 @@
+{
+  "project": "Lilas Helping — Sobra Zero",
+  "source": "Penpot MCP · páginas 02 · Desktop 1440 e 03 · Mobile 390",
+  "brand": {
+    "colors": {
+      "primary": "#7C5CE0",
+      "primaryDark": "#5B3FC4",
+      "surface": "#FFFFFF",
+      "bg": "#F5F4FA",
+      "ink": "#111827",
+      "muted": "#6B7280",
+      "border": "#E5E7EB",
+      "success": "#16A34A",
+      "warning": "#D97706",
+      "danger": "#DC2626",
+      "tint": "#EFEBFD"
+    },
+    "fonts": { "logo": "Phudu", "ui": "IBM Plex Sans" }
+  },
+  "breakpoints": {
+    "desktop": { "width": 1440, "gutter": 1640 },
+    "mobile": { "width": 390, "gutter": 500 }
+  },
+  "flows": [
+    "Fluxo desktop · Sobra Zero (início: 04 · Publicar oferta)",
+    "Fluxo mobile · Sobra Zero (início: M1 · Publicar oferta)"
+  ],
+  "nav": {
+    "desktop": "Navbar 5 links em todas as telas: Ofertas→05, Publicar→04, Acompanhar→06, Cadastros→09, Relatório→12",
+    "mobile": "Hamburger (burger) em todas as telas → overlay Menu · Drawer; itens: Ofertas→M2, Publicar→M1, Acompanhar→M3, Cadastros→M4, Relatório→M7"
+  },
+  "screens": {
+    "desktop": [
+      { "file": "04-publicar-oferta", "name": "04 · Publicar oferta", "w": 1440, "h": 775,
+        "role": "Tela de publicação de oferta de doação (formulário)", "cta": "Publicar oferta → 05" },
+      { "file": "05-ofertas-disponiveis", "name": "05 · Ofertas disponíveis", "w": 1440, "h": 622,
+        "role": "Feed de ofertas disponíveis com cards", "cta": "Card [PROTO] Marmitas → 06" },
+      { "file": "06-acompanhar-aceita", "name": "06 · Acompanhar — Aceita", "w": 1440, "h": 798,
+        "role": "Acompanhamento — status Aceita (RN-01 a RN-04)", "cta": "Registrar coleta → 07" },
+      { "file": "07-acompanhar-coletada", "name": "07 · Acompanhar — Coletada", "w": 1440, "h": 771,
+        "role": "Acompanhamento — status Coletada", "cta": "Registrar entrega → 08" },
+      { "file": "08-acompanhar-confirmada", "name": "08 · Acompanhar — Confirmada", "w": 1440, "h": 819,
+        "role": "Acompanhamento — status Confirmada (fim do ciclo)", "cta": "Voltar às ofertas → 05" },
+      { "file": "09-cadastro-doadores", "name": "09 · Cadastro de doadores", "w": 1440, "h": 870,
+        "role": "Cadastro de doadores físicos (tabs Doador/Instituição/Voluntário)", "cta": "Salvar cadastro → 04" },
+      { "file": "10-cadastro-instituicoes", "name": "10 · Cadastro de instituições", "w": 1440, "h": 953,
+        "role": "Cadastro de instituições — CNPJ, responsável, RN-03", "cta": "Salvar cadastro → 04" },
+      { "file": "11-cadastro-voluntarios", "name": "11 · Cadastro de voluntários", "w": 1440, "h": 863,
+        "role": "Cadastro de voluntários — transporte térmico RN-04", "cta": "Salvar cadastro → 04" },
+      { "file": "12-relatorio-doacoes", "name": "12 · Relatório de doações", "w": 1440, "h": 861,
+        "role": "Relatório com KPIs, barras por doador/instituição e descartes (RN-06/RN-07)", "cta": null }
+    ],
+    "mobile": [
+      { "file": "m1-publicar-oferta", "name": "M1 · Publicar oferta", "w": 390, "h": 1030,
+        "role": "Publicar oferta (mobile)", "cta": "Publicar oferta → M2" },
+      { "file": "m2-ofertas-disponiveis", "name": "M2 · Ofertas disponíveis", "w": 390, "h": 1052,
+        "role": "Feed de ofertas (mobile)", "cta": "Card [PROTO] → M3" },
+      { "file": "m3-acompanhar-aceita", "name": "M3 · Acompanhar — Aceita", "w": 390, "h": 839,
+        "role": "Acompanhamento Aceita (mobile)", "cta": "Registrar coleta → M2" },
+      { "file": "m4-cadastro-doador", "name": "M4 · Cadastro — Doador", "w": 390, "h": 949,
+        "role": "Cadastro doador (mobile)", "cta": "Salvar cadastro → M1" },
+      { "file": "m5-cadastro-instituicao", "name": "M5 · Cadastro — Instituição", "w": 390, "h": 1110,
+        "role": "Cadastro instituição (mobile)", "cta": "Salvar cadastro → M1" },
+      { "file": "m6-cadastro-voluntario", "name": "M6 · Cadastro — Voluntário", "w": 390, "h": 958,
+        "role": "Cadastro voluntário (mobile)", "cta": "Salvar cadastro → M1" },
+      { "file": "m7-relatorio-doacoes", "name": "M7 · Relatório de doações", "w": 390, "h": 861,
+        "role": "Relatório com KPIs 2×2 e barras (mobile)", "cta": null },
+      { "file": "menu-drawer", "name": "Menu · Drawer", "w": 280, "h": 432,
+        "role": "Overlay de menu lateral mobile (5 itens + fechar)", "cta": "Itens → M2/M1/M3/M4/M7" }
+    ]
+  },
+  "interactions": {
+    "desktop": {
+      "navbar (todas as 9 telas)": [
+        "Ofertas → 05 · Ofertas disponíveis",
+        "Publicar → 04 · Publicar oferta",
+        "Acompanhar → 06 · Acompanhar — Aceita",
+        "Cadastros → 09 · Cadastro de doadores",
+        "Relatório → 12 · Relatório de doações"
+      ],
+      "04": ["CTA Publicar oferta → 05"],
+      "05": ["Card Marmitas [PROTO] → 06"],
+      "06": ["CTA Registrar coleta → 07"],
+      "07": ["CTA Registrar entrega → 08"],
+      "08": ["CTA Voltar às ofertas → 05"],
+      "09/10/11": [
+        "tab Doador → 09",
+        "tab Instituição → 10",
+        "tab Voluntário → 11",
+        "Salvar cadastro → 04"
+      ],
+      "12": ["(somente navbar)"]
+    },
+    "mobile": {
+      "burger (7 telas)": "open-overlay Menu · Drawer (lado direito, fundo escurecido, fecha ao clicar fora)",
+      "M1": ["CTA Publicar oferta → M2"],
+      "M2": ["Card Marmitas [PROTO] → M3"],
+      "M3": ["CTA Registrar coleta → M2"],
+      "M4/M5/M6": [
+        "tab Doador → M4",
+        "tab Instituição → M5",
+        "tab Voluntário → M6",
+        "Salvar cadastro → M1"
+      ],
+      "M7": ["(somente burger)"],
+      "Drawer": [
+        "close → fecha overlay",
+        "menu Ofertas → M2",
+        "menu Publicar → M1",
+        "menu Acompanhar → M3",
+        "menu Cadastros → M4",
+        "menu Relatório → M7"
+      ]
+    }
+  },
+  "specs": {
+    "rn01": "Toda oferta tem validade; expirada sai do feed",
+    "rn02": "Oferta fora do prazo expira e vira descarte registrado",
+    "rn03": "Instituição precisa de CNPJ + responsável; sem refrigeração não aceita frio",
+    "rn04": "Voluntário indica caixa térmica para alimentos que exigem frio",
+    "rn05": "Cadastro sanitário vencido só pode ofertar não perecível",
+    "rn06": "Feed prioriza a instituição que recebeu menos kg em 30 dias",
+    "rn07": "Entrega só conclui com confirmação da instituição",
+    "rn08": "Congelado não é preparado: prazo de 48 horas"
+  }
+}

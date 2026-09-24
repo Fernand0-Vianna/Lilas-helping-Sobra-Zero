@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sobra Zero — plataforma que conecta doadores de alimento a instituições e voluntários. Projeto Squad Lilás.">
+  <title>Sobra Zero — da sobra à mesa de quem precisa | Squad Lilás</title>
+  <link rel="stylesheet" href="css/stily.css">
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header" id="header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <img src="imags/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span>
+          <strong>Sobra Zero</strong>
+          <small>Squad Lilás</small>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a href="#ciclo">Como funciona</a>
+        <a href="#para-quem">Para quem é</a>
+        <a href="#telas">Telas</a>
+        <a href="#regras">Regras</a>
+        <a href="pages/termos.html">Termos</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="login" href="pages/login.html">Entrar</a>
+        <a class="btn btn-primary" href="pages/cadastro.html">Criar conta</a>
+      </div>
+
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Projeto de faculdade · Squad Lilás</span>
+          <h1>A sobra de hoje é a <span class="accent">refeição</span> de alguém amanhã.</h1>
+          <p class="lead">
+            Todo dia comida boa vai para o lixo — enquanto muita gente passa fome.
+            O <strong>Sobra Zero</strong> conecta restaurantes, cantinas e mercados com excedente
+            a instituições sociais e voluntários de transporte, com rastro, prazo e
+            responsabilidade do prato à mesa.
+          </p>
+
+          <div class="hero-ctas">
+            <a class="btn btn-primary btn-lg" href="pages/cadastro.html">Criar conta grátis</a>
+            <a class="btn btn-ghost-light btn-lg" href="#telas">Ver o protótipo</a>
+          </div>
+
+          <div class="hero-meta">
+            <span>7 telas essenciais</span>
+            <span>Desktop 1440 + Mobile 390</span>
+            <span>8 regras de negócio</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="shot">
+            <img src="design/desktop/05-ofertas-disponiveis.png"
+                 alt="Tela Ofertas disponíveis do protótipo Sobra Zero" loading="lazy">
+          </div>
+          <span class="badge">Protótipo navegável</span>
+          <span class="badge-2">141 kg resgatados</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ticker do ciclo de vida -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Publicada</span><span>Aceita</span><span>Transporte atribuído</span>
+        <span>Coletada</span><span>Entregue</span><span>Confirmada</span>
+        <span>Publicada</span><span>Aceita</span><span>Transporte atribuído</span>
+        <span>Coletada</span><span>Entregue</span><span>Confirmada</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS ================= -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat reveal"><b>6</b><span>etapas de rastro</span></div>
+        <div class="stat reveal"><b>8</b><span>regras de negócio</span></div>
+        <div class="stat reveal"><b>16</b><span>telas nos 2 breakpoints</span></div>
+        <div class="stat reveal"><b>4h</b><span>limite do prato à coleta</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CICLO ================= -->
+  <section class="section" id="ciclo">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="kicker">Como funciona</span>
+        <h2>Do prato excedente à mesa, em seis estados.</h2>
+        <p>Cada oferta nasce com validade, passa por aceite e transporte e só termina
+           quando a instituição confirma o recebimento.</p>
+      </div>
+
+      <div class="cycle-grid">
+        <article class="step reveal" data-n="01">
+          <div class="dot"></div>
+          <h3>Publicada</h3>
+          <p>O doador informa alimento, quantidade, prazo e local de coleta.</p>
+        </article>
+        <article class="step reveal" data-n="02">
+          <div class="dot"></div>
+          <h3>Aceita</h3>
+          <p>A instituição aceita a oferta dentro do prazo de validade.</p>
+        </article>
+        <article class="step reveal" data-n="03">
+          <div class="dot"></div>
+          <h3>Transporte</h3>
+          <p>Um voluntário com caixa térmica é atribuído à coleta.</p>
+        </article>
+        <article class="step reveal" data-n="04">
+          <div class="dot"></div>
+          <h3>Coletada</h3>
+          <p>O alimento sai do doador dentro da janela de 4 horas.</p>
+        </article>
+        <article class="step reveal" data-n="05">
+          <div class="dot"></div>
+          <h3>Entregue</h3>
+          <p>O voluntário leva até a instituição e registra a entrega.</p>
+        </article>
+        <article class="step is-end reveal" data-n="06">
+          <div class="dot"></div>
+          <h3>Confirmada</h3>
+          <p>Só a instituição confirma — nunca apenas o voluntário.</p>
+        </article>
+      </div>
+
+      <div class="cycle-note reveal">
+        <span>⚠️</span>
+        <p style="margin:0">
+          <b>RN-02:</b> oferta que ultrapassa o prazo expira sozinha e vira
+          <em>descarte registrado</em> — nada de alimento órfão no feed.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARA QUEM ================= -->
+  <section class="section personas" id="para-quem">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="kicker">Para quem é</span>
+        <h2>Três perfis, um só fluxo.</h2>
+        <p>Cadastro em minutos, com as regras de segurança embutidas no formulário.</p>
+      </div>
+
+      <div class="persona-grid">
+        <article class="persona is-featured reveal">
+          <span class="tag">Perfil · Doador</span>
+          <h3>Quem tem sobra</h3>
+          <p>Restaurantes, cantinas, mercados e buffets com excedente de produção.</p>
+          <ul>
+            <li>Publica oferta com validade e fotos</li>
+            <li>Cadastro sanitário obrigatório (RN-05)</li>
+            <li>Vê para quem o alimento foi doado</li>
+          </ul>
+        </article>
+
+        <article class="persona reveal">
+          <span class="tag">Perfil · Instituição</span>
+          <h3>Quem recebe</h3>
+          <p>ONGs, projetos sociais, cozinhas comunitárias e casas de acolhimento.</p>
+          <ul>
+            <li>CNPJ e responsável legal (RN-03)</li>
+            <li>Informa se tem refrigeração</li>
+            <li>Prioridade para quem recebeu menos kg em 30 dias (RN-06)</li>
+          </ul>
+        </article>
+
+        <article class="persona reveal">
+          <span class="tag">Perfil · Voluntário</span>
+          <h3>Quem transporta</h3>
+          <p>Pessoas com tempo e deslocamento para buscar e entregar com cuidado.</p>
+          <ul>
+            <li>Declara caixa térmica (RN-04)</li>
+            <li>Assume coletas atribuídas</li>
+            <li>Não encerra a entrega — quem confirma é a instituição (RN-07)</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TELAS ================= -->
+  <section class="section" id="telas">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="kicker">Protótipo</span>
+        <h2>As telas, prontas para clicar.</h2>
+        <p>Design system no Penpot e exportado para SVG + PNG nesta mesma pasta
+           (<code>design/</code>) — 9 telas desktop e 7 mobile + menu lateral.</p>
+      </div>
+
+      <div class="gallery-tabs" role="tablist">
+        <button class="gallery-tab is-active" data-panel="desk">Desktop</button>
+      </div>
+
+      <div class="gallery-panel is-active" id="panel-desk">
+        <div class="gallery-grid">
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/desktop/04-publicar-oferta.png" alt="Tela Publicar oferta" loading="lazy"></div>
+            <figcaption><b>04 · Publicar oferta</b><span>formulário + RN-05</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/desktop/05-ofertas-disponiveis.png" alt="Tela Ofertas disponíveis" loading="lazy"></div>
+            <figcaption><b>05 · Ofertas disponíveis</b><span>feed com validade</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/desktop/06-acompanhar-aceita.png" alt="Tela Acompanhamento Aceita" loading="lazy"></div>
+            <figcaption><b>06 · Aceita</b><span>ciclo em andamento</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/desktop/09-cadastro-doadores.png" alt="Tela Cadastro de doadores" loading="lazy"></div>
+            <figcaption><b>09 · Cadastro doadores</b><span>3 perfis em tabs</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/desktop/10-cadastro-instituicoes.png" alt="Tela Cadastro de instituições" loading="lazy"></div>
+            <figcaption><b>10 · Instituições</b><span>CNPJ + responsável</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/desktop/12-relatorio-doacoes.png" alt="Tela Relatório de doações" loading="lazy"></div>
+            <figcaption><b>12 · Relatório</b><span>KPIs e equidade (RN-06)</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= REGRAS ================= -->
+  <section class="section rules" id="regras">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="kicker">Regras de negócio</span>
+        <h2>Oito regras que protegem quem come.</h2>
+        <p>Negócio não é enfeite: prazo, frio e assinatura de quem recebe são requisitos do produto.</p>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule reveal"><code>RN-01</code><p>Alimento preparado: 4h entre o fim do preparo e a coleta, 2h entre coleta e entrega.</p></div>
+        <div class="rule reveal"><code>RN-02</code><p>Oferta que estoura o prazo expira sozinha e é registrada como descarte.</p></div>
+        <div class="rule reveal"><code>RN-03</code><p>Instituição sem refrigeração não pode aceitar oferta que exija frio.</p></div>
+        <div class="rule reveal"><code>RN-04</code><p>Voluntário sem caixa térmica não pode transportar alimento.</p></div>
+        <div class="rule reveal"><code>RN-05</code><p>Cadastro sanitário vencido: não ofertar preparado, apenas não perecível.</p></div>
+        <div class="rule reveal"><code>RN-06</code><p>Feed prioriza a instituição que recebeu menos quilos nos últimos 30 dias.</p></div>
+        <div class="rule reveal"><code>RN-07</code><p>Entrega só conclui com confirmação da instituição, nunca só do voluntário.</p></div>
+        <div class="rule reveal"><code>RN-08</code><p>Congelado não é preparado: prazo estendido de 48 horas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="section cta-band">
+    <div class="container">
+      <h2>Chega de ver comida boa ir para o lixo.</h2>
+      <p>Crie sua conta como doador, instituição ou voluntário e publique a primeira
+         oferta em menos de dois minutos.</p>
+      <div class="row">
+        <a class="btn btn-light btn-lg" href="pages/cadastro.html">Criar conta</a>
+        <a class="btn btn-ghost-light btn-lg" href="pages/login.html">Já tenho conta</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="imags/Logo/Logo.svg" alt="Sobra Zero">
+          <p>Plataforma de doação de alimentos do Squad Lilás.
+             Da faculdade para a mesa de quem precisa.</p>
+        </div>
+
+        <div>
+          <h4>Produto</h4>
+          <ul>
+            <li><a href="#ciclo">Como funciona</a></li>
+            <li><a href="#para-quem">Para quem é</a></li>
+            <li><a href="#telas">Telas do protótipo</a></li>
+            <li><a href="#regras">Regras de negócio</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Conta</h4>
+          <ul>
+            <li><a href="pages/login.html">Entrar</a></li>
+            <li><a href="pages/cadastro.html">Criar conta</a></li>
+            <li><a href="pages/termos.html">Termos de uso</a></li>
+            <li><a href="design/structure.json">Design tokens (JSON)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Squad Lilás · Sobra Zero</span>
+        <span>Faculdade · Projeto do semestre</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // menu mobile
+    const header = document.getElementById('header');
+    document.getElementById('burger').addEventListener('click', function () {
+      const open = header.classList.toggle('is-open');
+      this.setAttribute('aria-expanded', open);
+    });
+
+    // abas da galeria
+    document.querySelectorAll('.gallery-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('is-active'));
+        document.querySelectorAll('.gallery-panel').forEach(p => p.classList.remove('is-active'));
+        tab.classList.add('is-active');
+        document.getElementById('panel-' + tab.dataset.panel).classList.add('is-active');
+      });
+    });
+
+    // reveal on scroll
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

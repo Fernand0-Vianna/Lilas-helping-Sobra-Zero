@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Entrar na conta Sobra Zero — doadores, instituições e voluntários.">
+  <title>Entrar — Sobra Zero</title>
+  <link rel="stylesheet" href="../css/stily.css">
+</head>
+<body>
+
+  <main class="auth">
+    <!-- painel da marca -->
+    <aside class="auth-aside">
+      <a class="brand" href="../index.html">
+        <img src="../imags/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span>
+          <strong>Sobra Zero</strong>
+          <small>Squad Lilás</small>
+        </span>
+      </a>
+
+      <blockquote>Bem-vindo de volta. Tem <em>comida boa</em> esperando por você.</blockquote>
+      <p style="color:rgba(255,255,255,.7); max-width:40ch; font-size:.95rem">
+        Entre para publicar ofertas, aceitar doações e acompanhar cada coleta
+        do começo ao fim.
+      </p>
+
+      <ul class="aside-list">
+        <li>Rastro completo em 6 etapas</li>
+        <li>Alertas de prazo e refrigeração</li>
+        <li>Confirmação de quem realmente recebe</li>
+      </ul>
+
+      <span class="aside-foot">Protótipo estático · nenhum dado é enviado</span>
+    </aside>
+
+    <!-- formulário -->
+    <section class="auth-main">
+      <div class="auth-card">
+        <span class="kicker">Acesso</span>
+        <h1>Entrar na conta</h1>
+        <p class="sub">Use o e-mail cadastrado — doador, instituição ou voluntário.</p>
+
+        <div class="alert alert-info" role="note">
+          <span>ℹ️</span>
+          <div>
+            <b>Demonstração</b>
+            Esta é uma maquete estática do projeto: qualquer e-mail e senha
+            avançam para a tela seguinte.
+          </div>
+        </div>
+
+        <form class="form-grid" id="form-login" novalidate>
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="voce@exemplo.com"
+                   autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="••••••••"
+                   autocomplete="current-password" minlength="6" required>
+          </div>
+
+          <label class="check">
+            <input type="checkbox" name="lembrar">
+            <span>Lembrar deste dispositivo</span>
+          </label>
+
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Entrar</button>
+        </form>
+
+        <div class="quick-row" aria-label="Acesso rápido de demonstração">
+          <button class="qchip" type="button" data-email="doador@cantinadoze.com">ato como doador</button>
+          <button class="qchip" type="button" data-email="contato@larbompastor.org">instituição</button>
+          <button class="qchip" type="button" data-email="cleber.andrade@email.com">voluntário</button>
+        </div>
+
+        <p class="auth-switch">
+          Ainda não tem conta? <a href="cadastro.html">Criar usuário grátis</a>
+        </p>
+        <p class="auth-switch" style="margin-top:.4rem">
+          Ao continuar você concorda com os
+          <a href="termos.html">Termos de uso</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // preenche o e-mail nos chips de demonstração
+    document.querySelectorAll('.qchip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        document.getElementById('email').value = chip.dataset.email;
+        document.getElementById('senha').value = 'sobrazero123';
+        document.getElementById('email').focus();
+      });
+    });
+
+    // maquete: não envia para lugar nenhum
+    document.getElementById('form-login').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('email');
+      const senha = document.getElementById('senha');
+      if (!email.value || !email.value.includes('@')) { email.focus(); return; }
+      if (!senha.value || senha.value.length < 6) { senha.focus(); return; }
+      // protótipo estático → volta para a landing
+      window.location.href = '../index.html#telas';
+    });
+  </script>
+</body>
+</html>

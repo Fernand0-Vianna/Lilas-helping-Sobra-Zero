@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Criar usuário no Sobra Zero — doador, instituição ou voluntário.">
+  <title>Criar conta — Sobra Zero</title>
+  <link rel="stylesheet" href="../css/stily.css">
+</head>
+<body>
+
+  <main class="auth">
+    <!-- painel da marca -->
+    <aside class="auth-aside">
+      <a class="brand" href="../index.html">
+        <img src="../imags/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span>
+          <strong>Sobra Zero</strong>
+          <small>Squad Lilás</small>
+        </span>
+      </a>
+
+      <blockquote>Uma conta. <em>Três formas</em> de fazer a diferença.</blockquote>
+      <p style="color:rgba(255,255,255,.7); max-width:40ch; font-size:.95rem">
+        Escolha seu perfil — as regras de segurança do cadastro já vêm
+        aplicadas em cada formulário.
+      </p>
+
+      <ul class="aside-list">
+        <li>Doador: cadastro sanitário obrigatório (RN-05)</li>
+        <li>Instituição: CNPJ e refrigeração (RN-03)</li>
+        <li>Voluntário: caixa térmica declarada (RN-04)</li>
+      </ul>
+
+      <span class="aside-foot">Protótipo estático · nenhum dado é enviado</span>
+    </aside>
+
+    <!-- formulário -->
+    <section class="auth-main">
+      <div class="auth-card" style="width:min(560px,100%)">
+        <span class="kicker">Cadastro</span>
+        <h1>Criar usuário</h1>
+        <p class="sub">Leva menos de dois minutos. Depois é só publicar ou aceitar a primeira oferta.</p>
+
+        <!-- abas de perfil (mesma lógica das telas 09/10/11 e M4/M5/M6) -->
+        <div class="tabs" role="tablist" aria-label="Tipo de usuário">
+          <button type="button" class="is-active" data-tab="doador" role="tab" aria-selected="true">Doador</button>
+          <button type="button" data-tab="instituicao" role="tab" aria-selected="false">Instituição</button>
+          <button type="button" data-tab="voluntario" role="tab" aria-selected="false">Voluntário</button>
+        </div>
+
+        <form id="form-cadastro" novalidate>
+
+          <!-- ---------- DOADOR ---------- -->
+          <div class="tab-panel is-active form-grid" id="tab-doador" role="tabpanel">
+            <div class="field">
+              <label for="d-nome">Nome do estabelecimento <span class="hint">ex.: Cantina do Zé</span></label>
+              <input id="d-nome" type="text" placeholder="Nome fantasia" required>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="d-resp">Responsável</label>
+                <input id="d-resp" type="text" placeholder="Quem assina a doação" required>
+              </div>
+              <div class="field">
+                <label for="d-tel">Telefone</label>
+                <input id="d-tel" type="tel" placeholder="(11) 90000-0000">
+              </div>
+            </div>
+            <div class="field">
+              <label for="d-email">E-mail</label>
+              <input id="d-email" type="email" placeholder="voce@exemplo.com" required>
+            </div>
+            <div class="field">
+              <label for="d-sanitario">Validade do cadastro sanitário <span class="hint">RN-05: vencido, só não perecível</span></label>
+              <input id="d-sanitario" type="date" value="2026-11-30" required>
+            </div>
+          </div>
+
+          <!-- ---------- INSTITUIÇÃO ---------- -->
+          <div class="tab-panel form-grid" id="tab-instituicao" role="tabpanel">
+            <div class="field">
+              <label for="i-nome">Razão social / nome do projeto</label>
+              <input id="i-nome" type="text" placeholder="ex.: Casa São Judas" required>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="i-cnpj">CNPJ <span class="hint">RN-03: obrigatório</span></label>
+                <input id="i-cnpj" type="text" placeholder="00.000.000/0001-00" required>
+              </div>
+              <div class="field">
+                <label for="i-resp">Responsável legal</label>
+                <input id="i-resp" type="text" placeholder="Nome completo" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="i-email">E-mail institucional</label>
+              <input id="i-email" type="email" placeholder="contato@instituicao.org" required>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="i-frio">Refrigeração</label>
+                <select id="i-frio" required>
+                  <option value="">Selecione…</option>
+                  <option value="sim">Sim, tem refrigeração</option>
+                  <option value="nao">Não tem</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="i-neces">Necessidade semanal</label>
+                <select id="i-neces" required>
+                  <option value="">Selecione…</option>
+                  <option>Até 20 kg</option>
+                  <option>21 a 60 kg</option>
+                  <option>61 a 150 kg</option>
+                  <option>Mais de 150 kg</option>
+                </select>
+              </div>
+            </div>
+            <div class="alert alert-warn" style="margin:0">
+              <span>⚠️</span>
+              <div><b>RN-06</b> — sem refrigeração você não recebe ofertas que exijam frio,
+                   e o feed te prioriza se você foi quem recebeu menos quilos nos últimos 30 dias.</div>
+            </div>
+          </div>
+
+          <!-- ---------- VOLUNTÁRIO ---------- -->
+          <div class="tab-panel form-grid" id="tab-voluntario" role="tabpanel">
+            <div class="form-row">
+              <div class="field">
+                <label for="v-nome">Nome completo</label>
+                <input id="v-nome" type="text" placeholder="Seu nome" required>
+              </div>
+              <div class="field">
+                <label for="v-tel">Telefone / WhatsApp</label>
+                <input id="v-tel" type="tel" placeholder="(11) 90000-0000" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="v-email">E-mail</label>
+              <input id="v-email" type="email" placeholder="voce@exemplo.com" required>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="v-termica">Caixa térmica <span class="hint">RN-04</span></label>
+                <select id="v-termica" required>
+                  <option value="">Selecione…</option>
+                  <option value="sim">Sim, tenho</option>
+                  <option value="nao">Não tenho</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="v-veic">Meio de transporte</label>
+                <select id="v-veic" required>
+                  <option value="">Selecione…</option>
+                  <option>Carro</option>
+                  <option>Moto / bicicleta</option>
+                  <option>A pé / transporte público</option>
+                </select>
+              </div>
+            </div>
+            <div class="alert alert-info" style="margin:0">
+              <span>ℹ️</span>
+              <div><b>RN-07</b> — você registra a coleta e a entrega, mas a entrega só é
+                   concluída quando a instituição confirma.</div>
+            </div>
+          </div>
+
+          <!-- ---------- comum aos 3 perfis ---------- -->
+          <div class="form-grid" style="margin-top:1.15rem; padding-top:1.4rem; border-top:1.5px solid var(--border)">
+            <div class="form-row">
+              <div class="field">
+                <label for="senha">Senha</label>
+                <input id="senha" type="password" placeholder="mínimo 8 caracteres" minlength="8" required>
+                <div class="meter" id="meter" data-score="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                <span class="meter-label" id="meter-label">força da senha</span>
+              </div>
+              <div class="field">
+                <label for="senha2">Confirmar senha</label>
+                <input id="senha2" type="password" placeholder="repita a senha" minlength="8" required>
+              </div>
+            </div>
+
+            <label class="check">
+              <input type="checkbox" id="aceite" required>
+              <span>Li e aceito os <a href="termos.html" target="_blank">Termos de uso</a> e a
+                    política de tratamento de dados do Sobra Zero.</span>
+            </label>
+
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Criar minha conta</button>
+            <p id="erro" class="alert alert-warn" style="display:none; margin:0"></p>
+          </div>
+        </form>
+
+        <p class="auth-switch">
+          Já tem conta? <a href="login.html">Entrar</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // abas de perfil
+    document.querySelectorAll('.tabs button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.tabs button').forEach(b => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('is-active');
+      });
+    });
+
+    // força da senha
+    const senha = document.getElementById('senha');
+    const meter = document.getElementById('meter');
+    const label = document.getElementById('meter-label');
+    const rotulos = ['força da senha', 'fraca', 'razoável', 'boa', 'forte'];
+    senha.addEventListener('input', function () {
+      const v = senha.value;
+      let s = 0;
+      if (v.length >= 8) s++;
+      if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++;
+      if (/\d/.test(v)) s++;
+      if (/[^A-Za-z0-9]/.test(v)) s++;
+      meter.dataset.score = s;
+      label.textContent = rotulos[s];
+    });
+
+    // validação da maquete
+    document.getElementById('form-cadastro').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const erro = document.getElementById('erro');
+      const ativo = document.querySelector('.tab-panel.is-active');
+      const vazio = [...ativo.querySelectorAll('[required]')].find(i => !i.value);
+      if (vazio) { vazio.focus(); return; }
+      if (senha.value.length < 8) { erro.textContent = 'A senha precisa de pelo menos 8 caracteres.'; erro.style.display = 'flex'; senha.focus(); return; }
+      if (senha.value !== document.getElementById('senha2').value) { erro.textContent = 'As senhas não conferem.'; erro.style.display = 'flex'; document.getElementById('senha2').focus(); return; }
+      if (!document.getElementById('aceite').checked) { erro.textContent = 'É preciso aceitar os Termos de uso.'; erro.style.display = 'flex'; return; }
+      window.location.href = 'login.html?conta=criada';
+    });
+  </script>
+</body>
+</html>
