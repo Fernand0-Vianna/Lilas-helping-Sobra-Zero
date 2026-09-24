@@ -29,7 +29,7 @@ O **Sobra Zero** é a plataforma que conecta esses três lados:
 Cada doação nasce com **validade**, passa por **rastro** e só termina quando quem
 recebe confirma — nada de alimento órfão, dado falso ou entrega nunca concluída.
 
-## 🎯 Objetivo
+## Objetivo
 
 > Construir a interface completa (UI) da plataforma Sobra Zero, em **desktop (1440)**
 > e **mobile (390)**, cobrindo as 7 telas essenciais do produto, menus navegáveis,
@@ -45,7 +45,7 @@ Objetivos específicos:
 - [x] Landing com hero + páginas de login, criação de usuário e termos de uso
 - [x] Exportação da estrutura (SVG + PNG + `structure.json`) para a pasta do projeto
 
-## 🖼️ Imagens e logo
+## Imagens e logo
 
 <p align="center">
   <img src="imags/Logo/Logo.webp" alt="Logo Sobra Zero" width="180">
@@ -101,11 +101,11 @@ fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 - `pages/cadastro.html` — criação de usuário com abas de perfil
 - `pages/termos.html` — termos de uso em 9 cláusulas
 
-> ⚠️ **Estado atual:** ainda **não existem links externos nem backend** — esta é
+>  **Estado atual:** ainda **não existem links externos nem backend** — esta é
 > apenas a construção da UI. Login e cadastro são maquetes estáticas (nenhum dado
 > é enviado) e apontam de volta para a landing.
 
-## 🗂️ Estrutura da pasta
+##  Estrutura da pasta
 
 ```
 Lilas_Helpig/
@@ -123,7 +123,7 @@ Lilas_Helpig/
 ├── imags/Logo/             # logo (SVG e WebP)
 ```
 
-## 🧾 Regras de negócio na interface
+##  Regras de negócio na interface
 
 | Regra | Resumo |
 |---|---|
@@ -139,12 +139,12 @@ Lilas_Helpig/
 **Ciclo de vida da oferta:** Publicada → Aceita → Transporte atribuído → Coletada →
 Entregue → Confirmada.
 
-## 🛠️ Como abrir
+##  Como abrir
 
 Basta abrir o `index.html` no navegador (HTML/CSS/JS puro, sem build).
 As imagens vêm da pasta `design/` e o logo de `imags/Logo/`.
 
-## 📄 Licença e contexto
+##  Licença e contexto
 
 Projeto acadêmico do semestre — **Squad Lilás**. Design original no Penpot,
 exportado para SVG/PNG nesta pasta.
