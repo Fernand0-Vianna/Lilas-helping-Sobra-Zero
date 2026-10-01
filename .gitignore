@@ -36,3 +36,4 @@ agent/
 .claude/skills/
 .skills-lock.json
 .mcp.json
+.plano/

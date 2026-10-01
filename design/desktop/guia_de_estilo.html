@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Guide — Sobra Zero · Lilas Helping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Phudu:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 1. Cores — base Style Guide.svg */
+  --primary:#7C5CE0;
+  --primary-dark:#5B3FC4;
+  --primary-tint:#EFEBFD;
+  --white:#FFFFFF;
+  --bg-page:#F5F4FA;
+  --text-primary:#111827;
+  --text-secondary:#6B7280;
+  --border:#E5E7EB;
+  --success:#16A34A;
+  --success-bg:#DCFCE7;
+  --success-text:#166534;
+  --warning:#D97706;
+  --warning-bg:#FEF3C7;
+  --warning-text:#92400E;
+  --danger:#DC2626;
+  --danger-bg:#FEE2E2;
+  --danger-text:#991B1B;
+  --info-bg:#DBEAFE;
+  --info-text:#1E40AF;
+  --radius-s:8px;
+  --radius-m:12px;
+  --radius-l:16px;
+  --font-ui:'IBM Plex Sans',system-ui,sans-serif;
+  --font-brand:'Phudu',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-ui);background:var(--bg-page);color:var(--text-primary);line-height:1.5}
+.wrap{max-width:1312px;margin:0 auto;padding:32px 64px 80px;background:#fff}
+header.top{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:32px}
+.logo{width:120px;height:50px;background:var(--primary);border-radius:var(--radius-s);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-brand);font-weight:700;font-size:18px}
+.logo span.bar{font-weight:400;opacity:.6;margin:0 2px}
+.top h1{font-size:20px;font-weight:600}
+section{margin-bottom:56px}
+section>h2{font-size:24px;font-weight:600;margin-bottom:8px}
+section>p.desc{color:var(--text-secondary);font-size:16px;margin-bottom:24px;max-width:800px}
+.grid-colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.swatch{border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:#fff}
+.swatch .c{height:64px}
+.swatch .t{padding:12px;font-size:12px;font-weight:600}
+.swatch .t small{display:block;font-weight:400;color:var(--text-secondary);font-size:11px}
+.type-row{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);align-items:baseline}
+.type-row .fam{color:var(--text-secondary);font-size:14px}
+.h1{font-size:32px;font-weight:600}.h2{font-size:24px;font-weight:600}.h3{font-size:20px;font-weight:600}
+.body{font-size:16px}.small{font-size:14px}.caption{font-size:12px;color:var(--text-secondary)}
+.brand{font-family:var(--font-brand);font-size:40px;font-weight:700;letter-spacing:.02em}
+/* 3. Botões */
+.btn-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{font-family:var(--font-ui);font-size:15px;font-weight:600;padding:14px 24px;border-radius:var(--radius-s);border:1.5px solid transparent;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-secondary{background:#fff;color:var(--primary);border-color:var(--primary)}
+.btn-secondary:hover{background:var(--primary-tint)}
+.btn-ghost{background:transparent;color:var(--text-primary)}
+.btn-ghost:hover{background:var(--border)}
+.btn-disabled{background:#E5E7EB;color:#9CA3AF;cursor:not-allowed}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#B91C1C}
+/* 4. Campos */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+.field input,.field select{width:100%;padding:13px 14px;border:1px solid var(--border);border-radius:var(--radius-s);font-size:15px;font-family:var(--font-ui);background:#fff;color:var(--text-primary)}
+.field input::placeholder{color:var(--text-secondary)}
+.field .hint{font-size:12px;color:var(--text-secondary);margin-top:6px}
+.field.error input{border-color:var(--danger)}
+.field.error .hint{color:var(--danger)}
+/* 5. Chips */
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:#fff}
+.chip-publicada{background:#EDE9FE;color:var(--primary-dark);border-color:#DDD6FE}
+.chip-aceita{background:var(--info-bg);color:var(--info-text);border-color:#BFDBFE}
+.chip-transporte{background:#CCFBF1;color:#0F766E;border-color:#99F6E4}
+.chip-coletada{background:var(--warning-bg);color:var(--warning-text);border-color:#FDE68A}
+.chip-entregue{background:var(--success-bg);color:var(--success-text);border-color:#BBF7D0}
+.chip-confirmada{background:#DCFCE7;color:#047857;border-color:#6EE7B7}
+.chip-expirada{background:#F3F4F6;color:#4B5563;border-color:var(--border)}
+.chip-cancelada{background:var(--danger-bg);color:var(--danger-text);border-color:#FECACA}
+/* 6. Alertas RN */
+.alerts{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.alert{border-radius:var(--radius-m);padding:16px;border:1px solid var(--border);background:#fff}
+.alert strong{display:block;font-size:14px;margin-bottom:6px}
+.alert p{font-size:14px;color:var(--text-secondary)}
+.alert-rn01{border-left:4px solid var(--primary);background:var(--primary-tint)}
+.alert-rn05{border-left:4px solid var(--danger);background:#FEF2F2}
+.alert-rn02{border-left:4px solid var(--warning);background:#FFFBEB}
+.alert-rn06{border-left:4px solid var(--success);background:#F0FDF4}
+/* 7. Card */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-l);padding:20px;max-width:420px;box-shadow:0 1px 3px rgba(17,24,39,.08)}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.card-exp{font-size:12px;color:var(--warning-text);font-weight:600}
+.card h3{font-size:17px;font-weight:600;margin-bottom:4px}
+.card .meta{font-size:13px;color:var(--text-secondary);margin-bottom:12px}
+.card-tags{display:flex;gap:8px;margin-bottom:16px}
+.tag{font-size:12px;font-weight:600;background:var(--bg-page);border:1px solid var(--border);padding:4px 10px;border-radius:999px}
+/* 8. Logo */
+.logo-box{display:flex;gap:32px;align-items:center;background:var(--text-primary);color:#fff;padding:32px;border-radius:var(--radius-l)}
+.wordmark{font-family:var(--font-brand);font-size:32px;font-weight:700}
+.usage{font-size:14px;color:var(--text-secondary);margin-top:12px}
+code{background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:13px}
+pre{background:#111827;color:#E5E7EB;padding:16px;border-radius:var(--radius-m);overflow:auto;font-size:13px;margin-top:16px}
+footer{color:var(--text-secondary);font-size:12px;border-top:1px solid var(--border);padding-top:16px}
+@media(max-width:768px){.wrap{padding:20px}.type-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">LILAS<span class="bar">|</span>HELPING</div>
+    <h1>Style Guide — Sobra Zero</h1>
+  </header>
+
+  <!-- 1. CORES -->
+  <section id="cores">
+    <h2>1. Cores</h2>
+    <p class="desc">Paleta principal da marca Lilas Helping + neutros e cores de status para o produto.</p>
+    <div class="grid-colors">
+      <div class="swatch"><div class="c" style="background:#7C5CE0"></div><div class="t">Primary<small>#7C5CE0 · var(--primary)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#5B3FC4"></div><div class="t">Primary Dark<small>#5B3FC4 · var(--primary-dark)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#EFEBFD"></div><div class="t">Primary Tint<small>#EFEBFD · var(--primary-tint)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#FFFFFF;border-bottom:1px solid #E5E7EB"></div><div class="t">White<small>#FFFFFF · var(--white)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#F5F4FA"></div><div class="t">BG Page<small>#F5F4FA · var(--bg-page)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#111827"></div><div class="t">Text Primary<small>#111827 · var(--text-primary)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#6B7280"></div><div class="t">Text Secondary<small>#6B7280 · var(--text-secondary)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#E5E7EB"></div><div class="t">Border<small>#E5E7EB · var(--border)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#16A34A"></div><div class="t">Success<small>#16A34A · var(--success)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#D97706"></div><div class="t">Warning<small>#D97706 · var(--warning)</small></div></div>
+      <div class="swatch"><div class="c" style="background:#DC2626"></div><div class="t">Danger<small>#DC2626 · var(--danger)</small></div></div>
+    </div>
+  </section>
+
+  <!-- 2. TIPOGRAFIA -->
+  <section id="tipografia">
+    <h2>2. Tipografia</h2>
+    <p class="desc">IBM Plex Sans para textos da interface; Phudu apenas no logo/branding.</p>
+    <div class="type-row"><span class="fam">IBM Plex Sans</span><span class="h1">H1 · 32/600 — Publicar oferta</span></div>
+    <div class="type-row"><span class="fam">IBM Plex Sans</span><span class="h2">H2 · 24/600 — Ofertas disponíveis</span></div>
+    <div class="type-row"><span class="fam">IBM Plex Sans</span><span class="h3">H3 · 20/600 — Acompanhamento da oferta</span></div>
+    <div class="type-row"><span class="fam">IBM Plex Sans</span><span class="body">Body · 16/400 — Alimento preparado tem 4 horas entre o fim do preparo e a coleta.</span></div>
+    <div class="type-row"><span class="fam">IBM Plex Sans</span><span class="small">Small · 14/400 — Ordenado por equidade: prioriza quem recebeu menos (RN-06).</span></div>
+    <div class="type-row"><span class="fam">IBM Plex Sans</span><span class="caption">Caption · 12/400 — Expira em 14:30 · Peso: 8 kg</span></div>
+    <div class="type-row"><span class="fam">Phudu</span><span class="brand">Brand · Phudu 40/700 — LILAS HELPING</span></div>
+  </section>
+
+  <!-- 3. BOTÕES -->
+  <section id="botoes">
+    <h2>3. Botões</h2>
+    <p class="desc">Primário ação principal; secundário alternativa; ghost texto; disabled quando a regra bloqueia.</p>
+    <div class="btn-row">
+      <button class="btn btn-primary">Publicar oferta</button>
+      <button class="btn btn-secondary">Ver detalhes</button>
+      <button class="btn btn-ghost">Cancelar</button>
+      <button class="btn btn-disabled" disabled>Sem caixa térmica</button>
+      <button class="btn btn-danger">Expirar oferta</button>
+    </div>
+<pre>&lt;button class="btn btn-primary"&gt;Publicar oferta&lt;/button&gt;
+&lt;button class="btn btn-secondary"&gt;Ver detalhes&lt;/button&gt;
+&lt;button class="btn btn-ghost"&gt;Cancelar&lt;/button&gt;
+&lt;button class="btn btn-disabled" disabled&gt;Sem caixa térmica&lt;/button&gt;
+&lt;button class="btn btn-danger"&gt;Expirar oferta&lt;/button&gt;</pre>
+  </section>
+
+  <!-- 4. CAMPOS -->
+  <section id="campos">
+    <h2>4. Campos de formulário</h2>
+    <p class="desc">Labels acima, placeholder em texto secundário, estado de erro com a mensagem da regra.</p>
+    <div class="form-grid">
+      <div class="field"><label>Tipo de alimento</label><select><option>Alimento preparado</option><option>Não perecível</option></select></div>
+      <div class="field"><label>Peso (kg)</label><input placeholder="8,0" value="8,0"></div>
+      <div class="field"><label>Horário do preparo</label><input placeholder="11:30" value="11:30"><div class="hint">Prazo calculado automaticamente (RN-01)</div></div>
+      <div class="field error"><label>Cadastro sanitário</label><input value="vencido em 12/09/2026"><div class="hint">RN-05: cadastro vencido não pode ofertar</div></div>
+    </div>
+  </section>
+
+  <!-- 5. CHIPS -->
+  <section id="chips">
+    <h2>5. Chips de status da oferta</h2>
+    <p class="desc">Ciclo de vida: Publicada → Aceita → Transporte atribuído → Coletada → Entregue → Confirmada · Alternativos: Expirada · Cancelada</p>
+    <div class="chips">
+      <span class="chip chip-publicada">Publicada</span>
+      <span class="chip chip-aceita">Aceita</span>
+      <span class="chip chip-transporte">Transporte atribuído</span>
+      <span class="chip chip-coletada">Coletada</span>
+      <span class="chip chip-entregue">Entregue</span>
+      <span class="chip chip-confirmada">Confirmada</span>
+      <span class="chip chip-expirada">Expirada</span>
+      <span class="chip chip-cancelada">Cancelada</span>
+    </div>
+  </section>
+
+  <!-- 6. ALERTAS -->
+  <section id="alertas">
+    <h2>6. Alertas e regras (RN)</h2>
+    <p class="desc">Blocos para validações, avisos de prazo e bloqueios de regra de negócio.</p>
+    <div class="alerts">
+      <div class="alert alert-rn01"><strong>RN-01 · Prazo automático</strong><p>Alimento preparado: 4h entre o fim do preparo e a coleta + 2h entre a coleta e a entrega.</p></div>
+      <div class="alert alert-rn05"><strong>RN-05 · Cadastro sanitário</strong><p>Cadastro vencido não pode ofertar alimento preparado — mas pode ofertar não perecível.</p></div>
+      <div class="alert alert-rn02"><strong>RN-02 · Expiração</strong><p>Oferta que ultrapassa o prazo expira automaticamente e é registrada como descarte.</p></div>
+      <div class="alert alert-rn06"><strong>RN-06 · Equidade</strong><p>A lista prioriza a instituição que recebeu menos quilos nos últimos 30 dias.</p></div>
+    </div>
+  </section>
+
+  <!-- 7. CARD -->
+  <section id="card">
+    <h2>7. Card de oferta</h2>
+    <p class="desc">Unidade mínima da lista — identifica tipo, peso, prazo restante e status.</p>
+    <div class="card">
+      <div class="card-top"><span class="chip chip-publicada">Publicada</span><span class="card-exp">Expira em 2h15</span></div>
+      <h3>Marmitas de frango — Cantina do Zé</h3>
+      <div class="meta">Tatuapé · 8 kg · preparado às 11:30</div>
+      <div class="card-tags"><span class="tag">Exige frio</span><span class="tag">Preparado</span></div>
+      <button class="btn btn-secondary" style="width:100%">Ver detalhes</button>
+    </div>
+  </section>
+
+  <!-- 8. LOGO -->
+  <section id="logo">
+    <h2>8. Logo</h2>
+    <p class="desc">Phudu no wordmark. Usar com respiro mínimo equivalente à altura da barra vertical.</p>
+    <div class="logo-box"><div class="wordmark">LILAS | HELPING</div></div>
+    <p class="usage">Fonte: <code>Phudu 700</code> · Não usar IBM Plex no logo · Fundo escuro ou roxo <code>#7C5CE0</code> preferencial.</p>
+  </section>
+
+  <footer>Fonte: design/desktop/Style Guide.svg · Guia base para as páginas futuras (publicar oferta, ofertas disponíveis, acompanhamento, cadastros, relatório).</footer>
+</div>
+</body>
+</html>
