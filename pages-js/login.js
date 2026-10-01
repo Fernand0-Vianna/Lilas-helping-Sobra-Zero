@@ -7,7 +7,27 @@
  * redirecionar conforme o perfil (doador / instituicao / voluntario).
  */
 
-import supabase, { getSession, getUserProfile, mostrarAlerta } from './supabase.js';
+import supabase, { getSession, getUserProfile, mostrarPopup } from './supabase.js';
+
+/**
+ * Traduz erros do Supabase Auth para mensagens amigáveis em pt-BR.
+ */
+function traduzirErroLogin(error) {
+  const msg = error.message || '';
+  if (msg.includes('Invalid login credentials')) {
+    return ['E-mail ou senha incorretos',
+      'Verifique os dados e tente de novo. Se acabou de criar a conta, confirme seu e-mail antes de entrar.'];
+  }
+  if (msg.includes('Email not confirmed')) {
+    return ['E-mail não confirmado',
+      'Enviamos um link de confirmação para o seu e-mail. Clique nele e tente entrar novamente.'];
+  }
+  if (msg.includes('Too many requests')) {
+    return ['Muitas tentativas',
+      'Aguarde alguns minutos antes de tentar novamente.'];
+  }
+  return ['Erro no login', msg];
+}
 
 // --- Inicialização segura ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -36,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (senha.length < 6) {
-      mostrarAlerta('warn', 'A senha precisa ter pelo menos 6 caracteres.');
+      mostrarPopup('warn', 'Senha muito curta', 'A senha precisa ter pelo menos 6 caracteres.');
       senhaInput.focus();
       return;
     }
@@ -48,7 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (error) {
-      mostrarAlerta('danger', `Erro no login: ${error.message}`);
+      const [titulo, texto] = traduzirErroLogin(error);
+      mostrarPopup('danger', titulo, texto);
       return;
     }
 
@@ -56,8 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const profile = await getUserProfile();
 
     if (!profile) {
-      mostrarAlerta('warn', 'Usuário sem perfil cadastrado. Redirecionando para criar conta.');
-      window.location.href = 'cadastro.html';
+      mostrarPopup('warn', 'Conta sem perfil',
+        'Entramos, mas não achamos seu perfil. Complete o cadastro para continuar.');
+      setTimeout(() => { window.location.href = 'cadastro.html'; }, 2500);
       return;
     }
 

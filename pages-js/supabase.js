@@ -161,6 +161,48 @@ export function mostrarAlerta(tipo, texto) {
 }
 
 /**
+ * Exibe um popup modal de erro/alerta centralizado na tela.
+ * Fecha no botão, no clique fora ou na tecla Escape.
+ *
+ * @param {string} tipo - 'info' | 'warn' | 'danger'
+ * @param {string} titulo - título do popup
+ * @param {string} texto - mensagem a exibir
+ */
+export function mostrarPopup(tipo, titulo, texto) {
+  fecharPopup();
+
+  const icone = tipo === 'info' ? 'ℹ️' : tipo === 'warn' ? '⚠️' : '❌';
+  const backdrop = document.createElement('div');
+  backdrop.id = 'popup-backdrop';
+  backdrop.style.cssText =
+    'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;' +
+    'align-items:center;justify-content:center;z-index:9999;padding:1rem';
+
+  backdrop.innerHTML =
+    '<div class="card" role="alertdialog" aria-modal="true" style="max-width:420px;width:100%">' +
+      '<h3 style="margin-top:0"><span>' + icone + '</span> ' + titulo + '</h3>' +
+      '<p style="color:var(--muted)">' + texto + '</p>' +
+      '<button class="btn btn-primary btn-block" id="popup-fechar" type="button">Entendi</button>' +
+    '</div>';
+
+  document.body.appendChild(backdrop);
+
+  const fechar = () => fecharPopup();
+  document.getElementById('popup-fechar').addEventListener('click', fechar);
+  backdrop.addEventListener('click', (e) => { if (e.target === backdrop) fechar(); });
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { fechar(); document.removeEventListener('keydown', esc); }
+  });
+}
+
+/**
+ * Remove o popup modal da tela, se existir.
+ */
+export function fecharPopup() {
+  document.getElementById('popup-backdrop')?.remove();
+}
+
+/**
  * Limpa alertas prévios com o ID fornecido.
  */
 export function limparAlerta(id = 'erro') {
