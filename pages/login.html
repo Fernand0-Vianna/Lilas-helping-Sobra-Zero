@@ -89,26 +89,6 @@
     </section>
   </main>
 
-  <script>
-    // preenche o e-mail nos chips de demonstração
-    document.querySelectorAll('.qchip').forEach(function (chip) {
-      chip.addEventListener('click', function () {
-        document.getElementById('email').value = chip.dataset.email;
-        document.getElementById('senha').value = 'sobrazero123';
-        document.getElementById('email').focus();
-      });
-    });
-
-    // maquete: não envia para lugar nenhum
-    document.getElementById('form-login').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const email = document.getElementById('email');
-      const senha = document.getElementById('senha');
-      if (!email.value || !email.value.includes('@')) { email.focus(); return; }
-      if (!senha.value || senha.value.length < 6) { senha.focus(); return; }
-      // protótipo estático → volta para a landing
-      window.location.href = '../index.html#telas';
-    });
-  </script>
+  <script type="module" src="../pages-js/login.js"></script>
 </body>
 </html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acompanhar oferta — Sobra Zero">
+  <title>Oferta — Sobra Zero</title>
+  <link rel="stylesheet" href="../css/stily.css">
+</head>
+<body>
+  <header class="site-header" id="header">
+    <div class="container">
+      <a class="brand" href="../index.html">
+        <img src="../design/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span><strong>Sobra Zero</strong><small>Squad Lilás</small></span>
+      </a>
+      <nav class="nav">
+        <a href="ofertas.html">Ofertas</a>
+        <a href="publicar-oferta.html">Publicar</a>
+        <a href="relatorio.html">Relatório</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="btn-sair" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding:2rem 1rem 4rem; max-width:720px">
+    <a href="ofertas.html" style="font-size:.9rem">← Voltar ao feed</a>
+    <span class="kicker" style="display:block; margin-top:1rem">Telas 06/07/08 · Ciclo: publicada → aceita → coletada → entregue → confirmada</span>
+    <h1 id="oferta-titulo">Acompanhar oferta</h1>
+
+    <div class="card" style="margin-top:1.5rem">
+      <h3 style="margin-top:0">Linha do tempo</h3>
+      <div id="timeline-oferta"><p style="color:var(--muted)">Carregando timeline...</p></div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3 style="margin-top:0">Ações</h3>
+      <div id="acoes-oferta" style="display:grid; gap:.75rem"><p style="color:var(--muted)">Carregando ações...</p></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { logout } from '../pages-js/supabase.js';
+    document.getElementById('btn-sair')?.addEventListener('click', logout);
+  </script>
+  <script type="module" src="../pages-js/oferta.js"></script>
+</body>
+</html>

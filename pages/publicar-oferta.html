@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Publicar oferta — Sobra Zero">
+  <title>Publicar oferta — Sobra Zero</title>
+  <link rel="stylesheet" href="../css/stily.css">
+</head>
+<body>
+  <header class="site-header" id="header">
+    <div class="container">
+      <a class="brand" href="../index.html">
+        <img src="../design/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span><strong>Sobra Zero</strong><small>Squad Lilás</small></span>
+      </a>
+      <nav class="nav">
+        <a href="ofertas.html">Ofertas</a>
+        <a href="publicar-oferta.html">Publicar</a>
+        <a href="relatorio.html">Relatório</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="btn-sair" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding:2rem 1rem 4rem; max-width:720px">
+    <span class="kicker">Tela 04 / M1 · Somente doadores</span>
+    <h1>Publicar oferta</h1>
+    <p class="sub">Os prazos (RN-01/RN-08) são calculados automaticamente no banco. Com cadastro sanitário vencido, só é permitido não perecível (RN-05).</p>
+
+    <div class="card" style="margin-top:1.5rem">
+      <form id="form-publicar" class="form-grid" novalidate>
+        <div class="field">
+          <label for="titulo">Título (3–120 caracteres)</label>
+          <input id="titulo" type="text" placeholder="ex.: Marmitas de frango" required minlength="3" maxlength="120">
+        </div>
+        <div class="form-row" style="display:grid; gap:.75rem; grid-template-columns:1fr 1fr">
+          <div class="field">
+            <label for="tipo-alimento">Tipo de alimento</label>
+            <select id="tipo-alimento" required>
+              <option value="preparado">Preparado (4h+2h)</option>
+              <option value="nao_perecivel">Não perecível (24h)</option>
+              <option value="frio">Frio (4h+2h, exige frio)</option>
+              <option value="congelado">Congelado (48h)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="peso">Quantidade (kg)</label>
+            <input id="peso" type="number" step="0.01" min="0.01" max="5000" placeholder="ex.: 8.5" required>
+          </div>
+        </div>
+        <div class="form-row" style="display:grid; gap:.75rem; grid-template-columns:1fr 1fr">
+          <div class="field">
+            <label for="preparo-datetime">Data/hora do preparo</label>
+            <input id="preparo-datetime" type="datetime-local" required>
+          </div>
+          <div class="field">
+            <label for="porcoes">Porções (opcional)</label>
+            <input id="porcoes" type="number" min="1" placeholder="ex.: 17">
+          </div>
+        </div>
+        <div class="field">
+          <label for="endereco">Endereço de coleta</label>
+          <input id="endereco" type="text" placeholder="Rua X, 123" required>
+        </div>
+        <div class="field">
+          <label for="bairro">Bairro</label>
+          <input id="bairro" type="text" placeholder="ex.: Tatuapé">
+        </div>
+        <div class="field">
+          <label for="descricao">Descrição (opcional)</label>
+          <textarea id="descricao" placeholder="Detalhes, embalagem, observações..." style="min-height:90px"></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" id="btn-publicar" type="submit">Publicar oferta</button>
+      </form>
+    </div>
+  </main>
+
+  <script type="module">
+    import { logout } from '../pages-js/supabase.js';
+    document.getElementById('btn-sair')?.addEventListener('click', logout);
+  </script>
+  <script type="module" src="../pages-js/publicar-oferta.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Relatório de doações — Sobra Zero">
+  <title>Relatório — Sobra Zero</title>
+  <link rel="stylesheet" href="../css/stily.css">
+</head>
+<body>
+  <header class="site-header" id="header">
+    <div class="container">
+      <a class="brand" href="../index.html">
+        <img src="../design/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span><strong>Sobra Zero</strong><small>Squad Lilás</small></span>
+      </a>
+      <nav class="nav">
+        <a href="ofertas.html">Ofertas</a>
+        <a href="publicar-oferta.html">Publicar</a>
+        <a href="relatorio.html">Relatório</a>
+      </nav>
+      <div class="header-actions">
+        <span id="usuario-nome" style="font-size:.85rem"></span>
+        <button class="btn btn-ghost" id="btn-sair" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding:2rem 1rem 4rem; max-width:1100px">
+    <span class="kicker">Tela 12 / M7 · KPIs + equidade (RN-06) + descartes (RN-02)</span>
+    <h1>Relatório de doações</h1>
+
+    <div style="display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); margin:1.5rem 0">
+      <div class="card"><small>kg distribuídos</small><h2 id="kpi-kg-doados">—</h2></div>
+      <div class="card"><small>Doações concluídas</small><h2 id="kpi-doacoes-concluidas">—</h2></div>
+      <div class="card"><small>Instituições atendidas</small><h2 id="kpi-instituicoes-atendidas">—</h2></div>
+      <div class="card"><small>Descartes (RN-02)</small><h2 id="kpi-descartes">—</h2></div>
+      <div class="card"><small>Total de ofertas</small><h2 id="kpi-total-ofertas">—</h2></div>
+      <div class="card"><small>Doadores ativos</small><h2 id="kpi-doadores-ativos">—</h2></div>
+      <div class="card"><small>Voluntários ativos</small><h2 id="kpi-voluntarios-ativos">—</h2></div>
+      <div class="card"><small>Taxa de aproveitamento</small><h2 id="kpi-taxa-aproveitamento">—</h2></div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3 style="margin-top:0">Por doador (kg doados × descartes)</h3>
+      <div id="tabela-doadores"><p style="color:var(--muted)">Carregando...</p></div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3 style="margin-top:0">Descartes registrados (RN-02)</h3>
+      <div id="tabela-descartes" style="overflow-x:auto"><p style="color:var(--muted)">Carregando...</p></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { logout } from '../pages-js/supabase.js';
+    document.getElementById('btn-sair')?.addEventListener('click', logout);
+  </script>
+  <script type="module" src="../pages-js/relatorio.js"></script>
+</body>
+</html>

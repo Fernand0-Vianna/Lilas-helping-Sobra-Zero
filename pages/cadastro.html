@@ -229,19 +229,7 @@
       meter.dataset.score = s;
       label.textContent = rotulos[s];
     });
-
-    // validação da maquete
-    document.getElementById('form-cadastro').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const erro = document.getElementById('erro');
-      const ativo = document.querySelector('.tab-panel.is-active');
-      const vazio = [...ativo.querySelectorAll('[required]')].find(i => !i.value);
-      if (vazio) { vazio.focus(); return; }
-      if (senha.value.length < 8) { erro.textContent = 'A senha precisa de pelo menos 8 caracteres.'; erro.style.display = 'flex'; senha.focus(); return; }
-      if (senha.value !== document.getElementById('senha2').value) { erro.textContent = 'As senhas não conferem.'; erro.style.display = 'flex'; document.getElementById('senha2').focus(); return; }
-      if (!document.getElementById('aceite').checked) { erro.textContent = 'É preciso aceitar os Termos de uso.'; erro.style.display = 'flex'; return; }
-      window.location.href = 'login.html?conta=criada';
-    });
   </script>
+  <script type="module" src="../pages-js/cadastro.js"></script>
 </body>
 </html>

@@ -37,3 +37,5 @@ agent/
 .skills-lock.json
 .mcp.json
 .plano/
+.env
+.env.local

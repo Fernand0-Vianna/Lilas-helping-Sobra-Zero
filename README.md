@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="imags/Logo/Logo.svg" alt="Logo Sobra Zero" width="220">
+  <img src="/design/Logo/Logo.svg" alt="Logo Sobra Zero" width="220">
 </p>
 
 <h1 align="center">Sobra Zero</h1>
