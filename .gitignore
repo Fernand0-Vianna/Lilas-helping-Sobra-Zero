@@ -34,3 +34,5 @@ Thumbs.db
 .agent/
 agent/
 .claude/skills/
+.skills-lock.json
+.mcp.json
