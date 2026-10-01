@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/design/Logo/Logo.svg" alt="Logo Sobra Zero" width="220">
+  <img src="design/Logo/Logo.svg" alt="Logo Sobra Zero" width="220">
 </p>
 
 <h1 align="center">Sobra Zero</h1>
@@ -48,7 +48,7 @@ Objetivos específicos:
 ## Imagens e logo
 
 <p align="center">
-  <img src="imags/Logo/Logo.webp" alt="Logo Sobra Zero" width="180">
+  <img src="design/Logo/Logo.webp" alt="Logo Sobra Zero" width="180">
 </p>
 
 **Identidade:** roxo `#7C5CE0` / `#5B3FC4`, fundo `#F5F4FA`, tinta `#111827`;
@@ -94,18 +94,21 @@ fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
   </tr>
 </table>
 
-### Landing e páginas de acesso
+### Landing, acesso e app
 
 - `index.html` — hero do projeto, ciclo em 6 etapas, personas, galeria das telas e as 8 RNs
-- `pages/login.html` — tela de entrada (doador / instituição / voluntário)
-- `pages/cadastro.html` — criação de usuário com abas de perfil
-- `pages/termos.html` — termos de uso em 9 cláusulas
+- `pages/login.html` — entrada real via `supabase.auth.signInWithPassword` + redirect por `user_type`
+- `pages/cadastro.html` — `signUp` + insert em doadores/instituições/voluntários (abas de perfil)
+- `pages/termos.html` — termos de uso em 9 cláusulas (conteúdo fixo)
+- `pages/ofertas.html` — feed via `vw_ofertas_feed`, ordenado por equidade RN-06
+- `pages/publicar-oferta.html` — formulário doador → RPC `criar_oferta` (RN-01/05/08)
+- `pages/oferta.html?id=...` — timeline (`oferta_historico`) + ações do ciclo (RN-01 a RN-07)
+- `pages/relatorio.html` — KPIs via `vw_kpis_gerais` + tabelas de doadores e descartes
 
->  **Estado atual:** ainda **não existem links externos nem backend** — esta é
-> apenas a construção da UI. Login e cadastro são maquetes estáticas (nenhum dado
-> é enviado) e apontam de volta para a landing.
+> **Estado atual:** backend Supabase ativo. Login, cadastro, feed, publicação,
+> ciclo e relatório falam com o banco real via `pages-js/` + RLS + RPCs.
 
-##  Estrutura da pasta
+## 🗂️ Estrutura da pasta
 
 ```
 Lilas_Helpig/
@@ -113,15 +116,51 @@ Lilas_Helpig/
 ├── css/
 │   └── stily.css           # design system completo (tokens + componentes)
 ├── pages/
-│   ├── login.html          # entrar
+│   ├── login.html          # entrar (Supabase Auth)
 │   ├── cadastro.html       # criar usuário (3 perfis)
-│   └── termos.html         # termos de uso
+│   ├── termos.html         # termos de uso
+│   ├── ofertas.html        # feed (tela 05 / M2)
+│   ├── publicar-oferta.html# publicar (tela 04 / M1)
+│   ├── oferta.html         # acompanhar (telas 06/07/08)
+│   └── relatorio.html      # relatório (tela 12 / M7)
+├── pages-js/               # frontend JS (ES modules, sem build)
+│   ├── supabase.js         # cliente centralizado + helpers de auth/UI
+│   ├── login.js            # signInWithPassword + redirect por perfil
+│   ├── cadastro.js         # signUp + insert na tabela de detalhe
+│   ├── publicar-oferta.js  # RPC criar_oferta (RN-01/05/08)
+│   ├── ofertas.js          # feed ordenado por equidade (RN-06)
+│   ├── oferta.js           # timeline + avançar ciclo (RN-01 a RN-07)
+│   └── relatorio.js        # KPIs + tabelas (RN-02/06/07)
+├── supabase/
+│   ├── config.toml         # config local da CLI
+│   ├── functions/          # Edge Functions (vazio por enquanto)
+│   └── migrations/         # 4 migrations SQL (espelho de plano/migrations/)
+├── plano/                  # documentação do plano de implementação
+│   ├── README.md           # índice navegável + mapa de RNs
+│   ├── 01-supabase-setup.md … 06-migrating-from-static.md
+│   ├── migrations/         # fonte das migrations
+│   └── pages-js/           # fonte dos JS
 ├── design/
+│   ├── Logo/               # logo (SVG e WebP)
 │   ├── desktop/            # 9 telas × SVG + PNG @2x
 │   ├── mobile/             # 7 telas + drawer × SVG + PNG @2x
 │   └── structure.json      # tokens, telas, fluxos e mapa de interações
-├── imags/Logo/             # logo (SVG e WebP)
+├── .env.example            # modelo de variáveis
+└── .env.local              # URL + keys reais (NÃO commitar)
 ```
+
+## 🛠️ Backend Supabase (resumo)
+
+Tabelas: `profiles` (1:1 com `auth.users`) → `doadores` / `instituicoes` /
+`voluntarios`; núcleo `ofertas` + `oferta_historico` (timeline) +
+`recebimentos` (RN-07). Views: `vw_ofertas_feed`, `vw_equidade_instituicoes`
+(RN-06), `vw_descartes` (RN-02), `vw_relatorio_doadores`, `vw_kpis_gerais`.
+Todo avanço de status passa por RPC (`criar_oferta`, `aceitar_oferta`,
+`assumir_transporte`, `avancar_status`, `confirmar_recebimento`); expiração
+automática via `fn_expirar_ofertas()` + `pg_cron` a cada 15 min.
+
+Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
+(RLS), `05-jobs-functions.md` (triggers/jobs), `01-supabase-setup.md` (setup).
 
 ##  Regras de negócio na interface
 
@@ -139,10 +178,28 @@ Lilas_Helpig/
 **Ciclo de vida da oferta:** Publicada → Aceita → Transporte atribuído → Coletada →
 Entregue → Confirmada.
 
-##  Como abrir
+## 🚀 Como rodar
 
-Basta abrir o `index.html` no navegador (HTML/CSS/JS puro, sem build).
-As imagens vêm da pasta `design/` e o logo de `imags/Logo/`.
+**Frontend (sem build):** basta abrir o `index.html` no navegador ou servir a
+pasta (ex.: `python3 -m http.server 5500`). As páginas do app exigem login:
+`pages/cadastro.html` → `pages/login.html` → `pages/ofertas.html`.
+A chave usada no browser é a **publishable** (`pages-js/supabase.js`);
+nunca exponha a `SECRET_KEY` no frontend.
+
+**Backend (Supabase):**
+
+```bash
+npm install -g supabase
+supabase login
+supabase link --project-ref SEU_REF   # prefixo da URL https://SEU_REF.supabase.co
+supabase db push                      # aplica as 4 migrations de supabase/migrations/
+```
+
+Sem CLI, rode os 4 arquivos de `supabase/migrations/` na ordem no SQL Editor
+e habilite `pg_cron` em Database → Extensions (expiração RN-02).
+
+Variáveis: copie `.env.example` para `.env.local` e preencha
+`NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` (publishable key).
 
 ##  Licença e contexto
 
