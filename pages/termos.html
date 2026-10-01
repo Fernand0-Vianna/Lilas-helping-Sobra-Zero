@@ -42,11 +42,14 @@
   <!-- ================= HERO DOS TERMOS ================= -->
   <section class="legal-hero">
     <div class="container">
-      <span class="stamp">Documento · v1.0 · vigência imediata</span>
+      <span class="stamp">Documento · v1.1 · protótipo acadêmico — sem validade para operação real</span>
       <h1>Termos de uso</h1>
       <p>Regras claras para quem doa, quem recebe e quem transporta comida.
          Este documento regula o uso da plataforma Sobra Zero e faz parte do
-         contrato de adesão aceito no cadastro.</p>
+         contrato de adesão aceito no cadastro. A Sobra Zero é um
+         <strong>protótipo educacional</strong> desenvolvido como trabalho de
+         faculdade (Squad Lilás, Cruzeiro do Sul): não substitui processos
+         reais de vigilância sanitária e não deve operar doações de verdade.</p>
     </div>
   </section>
 
@@ -63,10 +66,11 @@
           <li><a href="#c3">Cadastro e segurança</a></li>
           <li><a href="#c4">Doações e rastro</a></li>
           <li><a href="#c5">Responsabilidades</a></li>
-          <li><a href="#c6">Dados pessoais</a></li>
+          <li><a href="#c6">Dados pessoais e privacidade (LGPD)</a></li>
           <li><a href="#c7">Limitação de responsabilidade</a></li>
           <li><a href="#c8">Suspensão e encerramento</a></li>
-          <li><a href="#c9">Alterações e contato</a></li>
+          <li><a href="#c9">Propriedade intelectual e licença de uso</a></li>
+          <li><a href="#c10">Alterações, foro e contato</a></li>
         </ol>
       </nav>
 
@@ -100,7 +104,9 @@
             <li><strong>Voluntário</strong> — pessoa que declara aptidão para coleta e
                 entrega, incluindo posse de caixa térmica quando o alimento exigir frio (RN-04).</li>
           </ul>
-          <p>É vedada a criação de conta em nome de terceiros ou com informações falsas.</p>
+          <p>É vedada a criação de conta em nome de terceiros ou com informações falsas.
+             Somente maiores de 18 anos (ou emancipados) podem criar conta; não
+             coletamos deliberadamente dados de crianças e adolescentes.</p>
         </section>
 
         <section class="clause" id="c3">
@@ -154,17 +160,43 @@
         </section>
 
         <section class="clause" id="c6">
-          <h2><span>06</span> Dados pessoais</h2>
-          <p>Os dados cadastrais (nome, CNPJ, e-mail, telefone, endereço e histórico de
-             doações) são usados exclusivamente para operar a plataforma, gerar rastro e
-             exibir indicadores agregados nos relatórios.</p>
+          <h2><span>06</span> Dados pessoais e privacidade (LGPD — Lei nº 13.709/2018)</h2>
+          <p><strong>6.1. Agentes de tratamento.</strong> O <strong>Squad Lilás</strong>
+             é o <em>controlador</em> dos dados desta plataforma acadêmica; o
+             <strong>Supabase</strong> atua como <em>operador</em>, armazenando os
+             dados em infraestrutura localizada em São Paulo/SP (região
+             <code>sa-east-1</code>), sem transferência internacional como regra.</p>
+          <p><strong>6.2. Base legal e finalidade.</strong> Tratamos seus dados com base
+             no seu <strong>consentimento</strong> (art. 7º, I da LGPD), colhido de
+             forma livre e destacada no cadastro, e na <strong>execução do contrato
+             de adesão</strong> a estes Termos (art. 7º, V), exclusivamente para:</p>
           <ul>
-            <li>Não vendemos nem compartilhamos dados com terceiros para fins comerciais;</li>
-            <li>O histórico de doações aparece por instituição e por doador de forma
-                agregada (RN-06);</li>
-            <li>Solicitações de acesso ou exclusão podem ser feitas pelos canais de contato
-                ao final destes Termos.</li>
+            <li>criar e manter sua conta (nome, e-mail, telefone, CNPJ, endereço);</li>
+            <li>operar o ciclo de doação, o rastro das ofertas e os contatos da operação;</li>
+            <li>exibir indicadores agregados nos relatórios (sem expor dado individual);</li>
+            <li>manter a sessão no navegador via armazenamento local
+                (<code>localStorage</code> do Supabase Auth).</li>
           </ul>
+          <p><strong>6.3. O que não fazemos.</strong> Não vendemos nem compartilhamos
+             seus dados com terceiros para fins comerciais. Não coletamos dados
+             sensíveis (art. 11 da LGPD).</p>
+          <p><strong>6.4. Seus direitos (art. 18 da LGPD).</strong> Você pode, a qualquer
+             tempo: confirmar o tratamento, acessar, corrigir, anonimizar, bloquear ou
+             eliminar dados, pedir portabilidade e <strong>revogar o consentimento</strong>
+             (o que encerra sua conta). Solicitações pelo e-mail do encarregado abaixo,
+             com resposta em até <strong>15 dias</strong>.</p>
+          <p><strong>6.5. Retenção e eliminação (arts. 15 e 16).</strong> Mantemos os dados
+             enquanto sua conta estiver ativa. Ao encerrar a conta, eliminamos os dados
+             pessoais ou os anonimizamos, exceto o que a lei mandar guardar (ex.:
+             registros de segurança) e o histórico agregado sem identificação.</p>
+          <p><strong>6.6. Segurança e incidentes (arts. 46 e 48).</strong> Aplicamos
+             controle de acesso por perfil (RLS), senhas e criptografia do provedor.
+             Em caso de incidente com risco relevante, comunicaremos você e a ANPD
+             nos termos da lei.</p>
+          <div class="ref">
+            <strong>Encarregado (art. 41 da LGPD):</strong>
+            squad.lilas@cscruzeirodosul.edu.br · prazo de resposta: até 15 dias.
+          </div>
         </section>
 
         <section class="clause" id="c7">
@@ -177,7 +209,10 @@
             <li>Interrupções técnicas em ambiente acadêmico de demonstração.</li>
           </ul>
           <p>As regras de prazo e de confirmação existem justamente para reduzir riscos —
-             mas a decisão de doar, aceitar e transportar é sempre das partes.</p>
+             mas a decisão de doar, aceitar e transportar é sempre das partes.
+             Por se tratar de <strong>protótipo acadêmico sem garantia de funcionamento
+             contínuo</strong>, o serviço pode apresentar indisponibilidades e não há
+             suporte técnico além do escopo avaliativo do semestre.</p>
         </section>
 
         <section class="clause" id="c8">
@@ -189,16 +224,39 @@
             <li>descumpram regras de temperatura, prazo ou transporte;</li>
             <li>usem a plataforma para fins não relacionados à doação de alimentos.</li>
           </ul>
-          <p>O usuário pode encerrar sua conta a qualquer momento pelos canais de contato.</p>
+          <p>O usuário pode encerrar sua conta a qualquer momento pelos canais de contato.
+             O encerramento implica a eliminação ou anonimização dos dados pessoais,
+             nos termos da cláusula 6.5.</p>
         </section>
 
         <section class="clause" id="c9">
-          <h2><span>09</span> Alterações e contato</h2>
+          <h2><span>09</span> Propriedade intelectual e licença de uso (Lei nº 9.609/1998)</h2>
+          <p>O software, o código-fonte, o design, o nome e o logotipo
+             <strong>Sobra Zero</strong> pertencem ao <strong>Squad Lilás</strong>,
+             desenvolvidos como obra acadêmica.</p>
+          <ul>
+            <li>Você recebe uma licença <strong>gratuita, precária, intransferível e
+                não exclusiva</strong> apenas para <em>usar</em> a plataforma — sem
+                transferência de propriedade;</li>
+            <li>É vedado copiar, redistribuir, modificar ou tentar engenharia reversa
+                fora do escopo avaliativo autorizado pela equipe;</li>
+            <li>O registro no INPI é facultativo (art. 2º, § 3º) e poderá ser requerido
+                pela equipe para proteção da obra.</li>
+          </ul>
+        </section>
+
+        <section class="clause" id="c10">
+          <h2><span>10</span> Alterações, foro e contato</h2>
           <p>Estes Termos podem ser atualizados; a versão vigente estará sempre nesta página,
              com a data da última revisão. O uso continuado após alterações implica aceite.</p>
+          <p>Aplicam-se a legislação brasileira, incluídas a LGPD (Lei nº 13.709/2018)
+             e a Lei do Software (Lei nº 9.609/1998). Fica eleito o foro da comarca de
+             <strong>São Paulo/SP</strong> para dirimir controvérsias.</p>
           <div class="ref">
-            <strong>Última revisão:</strong> 24 de setembro de 2026 · versão 1.0<br>
-            <strong>Contato:</strong> squad.lilas@cscruzeirodosul.edu.br · projeto acadêmico Sobra Zero
+            <strong>Histórico:</strong> v1.0 (24 de setembro de 2026) — versão inicial;
+            v1.1 (1º de outubro de 2026) — adequação LGPD e Lei do Software.<br>
+            <strong>Contato e encarregado LGPD:</strong> squad.lilas@cscruzeirodosul.edu.br ·
+            projeto acadêmico Sobra Zero
           </div>
           <p style="margin-top:1.4rem">
             <a class="btn btn-ghost" href="../index.html">Voltar ao início</a>
