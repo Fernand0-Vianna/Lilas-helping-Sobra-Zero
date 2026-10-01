@@ -1,0 +1,30 @@
+# ── Secrets / environment ─────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ── Supabase CLI (local) ──────────────────────────────
+supabase/.branches/
+supabase/.temp/
+supabase/config.toml
+
+# ── Node (futuro backend / tooling) ───────────────────
+node_modules/
+npm-debug.log*
+dist/
+build/
+
+# ── OS / editores ─────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*~
+
+# ── MCP auth local (não commitar credenciais) ─────────
+.mcp.json.local
+*.mcp.json.bak
