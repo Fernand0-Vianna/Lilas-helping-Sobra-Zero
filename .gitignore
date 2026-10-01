@@ -28,3 +28,9 @@ Thumbs.db
 # ── MCP auth local (não commitar credenciais) ─────────
 .mcp.json.local
 *.mcp.json.bak
+
+# ── Agent skills (instalação local, restaura via skills-lock.json)
+.agents/
+.agent/
+agent/
+.claude/skills/
