@@ -1,0 +1,30 @@
+{
+  "descricao": "MODELO — copie para contas-teste.json e preencha com as contas reais. NUNCA commitar senhas.",
+  "contas": [
+    {
+      "perfil": "doador",
+      "email": "doador@teste.com",
+      "senha": "PREENCHER_LOCAL",
+      "observacao": "Cai em publicar-oferta.html após login"
+    },
+    {
+      "perfil": "instituicao",
+      "email": "instituicao@teste.com",
+      "senha": "PREENCHER_LOCAL",
+      "observacao": "Cai em ofertas.html; testa aceitar (RN-03) e confirmar (RN-07)"
+    },
+    {
+      "perfil": "voluntario",
+      "email": "voluntario@teste.com",
+      "senha": "PREENCHER_LOCAL",
+      "observacao": "Cai em ofertas.html; testa assumir transporte (RN-04)"
+    }
+  ],
+  "roteiro": [
+    "1. Login como doador > publicar oferta de teste",
+    "2. Login como instituicao > aceitar a oferta",
+    "3. Login como voluntario > assumir transporte > registrar coleta > registrar entrega",
+    "4. Login como instituicao > confirmar recebimento (RN-07)",
+    "5. Conferir timeline em oferta.html e KPIs em relatorio.html"
+  ]
+}

@@ -29,6 +29,12 @@ Thumbs.db
 .mcp.json.local
 *.mcp.json.bak
 
+# ── Testes locais (contas e credenciais — NUNCA commitar) ──
+tests/contas-teste.json
+tests/*.local.json
+tests/.env.test
+*.test.local
+
 # ── Agent skills (instalação local, restaura via skills-lock.json)
 .agents/
 .agent/
