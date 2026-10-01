@@ -162,27 +162,49 @@ export function mostrarAlerta(tipo, texto) {
 
 /**
  * Exibe um popup modal de erro/alerta centralizado na tela.
+ * Segue o guia de estilo (design/desktop/guia_de_estilo.html):
+ * fonte IBM Plex Sans, radius 16px, alerta tipo RN-05 com mensagem em vermelho.
  * Fecha no botão, no clique fora ou na tecla Escape.
+ *
+ * Tokens: danger #DC2626 · danger-bg #FEE2E2 · danger-text #991B1B
+ *         primary #7C5CE0 · border #E5E7EB · text #111827
  *
  * @param {string} tipo - 'info' | 'warn' | 'danger'
  * @param {string} titulo - título do popup
- * @param {string} texto - mensagem a exibir
+ * @param {string} texto - mensagem a exibir (em vermelho)
  */
 export function mostrarPopup(tipo, titulo, texto) {
   fecharPopup();
 
-  const icone = tipo === 'info' ? 'ℹ️' : tipo === 'warn' ? '⚠️' : '❌';
+  const paleta = {
+    info:    { barra: '#1E40AF', fundo: '#DBEAFE', texto: '#1E40AF', btn: '#7C5CE0' },
+    warn:    { barra: '#D97706', fundo: '#FFFBEB', texto: '#92400E', btn: '#7C5CE0' },
+    danger:  { barra: '#DC2626', fundo: '#FEF2F2', texto: '#991B1B', btn: '#DC2626' },
+  }[tipo] || { barra: '#DC2626', fundo: '#FEF2F2', texto: '#991B1B', btn: '#DC2626' };
+
   const backdrop = document.createElement('div');
   backdrop.id = 'popup-backdrop';
   backdrop.style.cssText =
-    'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;' +
+    'position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;' +
     'align-items:center;justify-content:center;z-index:9999;padding:1rem';
 
   backdrop.innerHTML =
-    '<div class="card" role="alertdialog" aria-modal="true" style="max-width:420px;width:100%">' +
-      '<h3 style="margin-top:0"><span>' + icone + '</span> ' + titulo + '</h3>' +
-      '<p style="color:var(--muted)">' + texto + '</p>' +
-      '<button class="btn btn-primary btn-block" id="popup-fechar" type="button">Entendi</button>' +
+    '<div role="alertdialog" aria-modal="true" style="' +
+      'max-width:420px;width:100%;background:#fff;border:1px solid #E5E7EB;' +
+      'border-radius:16px;padding:20px;box-shadow:0 1px 3px rgba(17,24,39,.2);' +
+      'font-family:\'IBM Plex Sans\',system-ui,sans-serif;color:#111827;line-height:1.5">' +
+      '<div style="' +
+        'border-left:4px solid ' + paleta.barra + ';background:' + paleta.fundo + ';' +
+        'border-radius:12px;padding:16px;margin-bottom:16px">' +
+        '<strong style="display:block;font-size:14px;margin-bottom:6px;color:' + paleta.texto + '">' +
+          escaparHtml(titulo) +
+        '</strong>' +
+        '<p style="font-size:14px;margin:0;color:#DC2626">' + escaparHtml(texto) + '</p>' +
+      '</div>' +
+      '<button id="popup-fechar" type="button" style="' +
+        'width:100%;font-family:inherit;font-size:15px;font-weight:600;' +
+        'padding:14px 24px;border-radius:8px;border:1.5px solid transparent;' +
+        'cursor:pointer;background:' + paleta.btn + ';color:#fff">Entendi</button>' +
     '</div>';
 
   document.body.appendChild(backdrop);
@@ -193,6 +215,15 @@ export function mostrarPopup(tipo, titulo, texto) {
   document.addEventListener('keydown', function esc(e) {
     if (e.key === 'Escape') { fechar(); document.removeEventListener('keydown', esc); }
   });
+}
+
+/**
+ * Escapa HTML para exibir mensagens com segurança no popup.
+ */
+function escaparHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
 }
 
 /**
