@@ -99,7 +99,7 @@ comment on type public.meio_transporte is
 -- 3. Funções utilitárias
 -- =====================================================================
 
--- 3.1. Mantém `updated_at` sempre coerente.
+-- 3.1. Mantém `atualizado_em` sempre coerente.
 -- Regra genérica de housekeeping: nunca confie no front-end para marcar
 -- "quando mudou"; o banco é a fonte da verdade.
 create or replace function public.fn_touch_updated_at()
@@ -109,13 +109,13 @@ security invoker
 set search_path = public, pg_temp
 as $$
 begin
-  new.updated_at := now();
+  new.atualizado_em := now();
   return new;
 end;
 $$;
 
 comment on function public.fn_touch_updated_at() is
-  'Trigger genérica: preenche updated_at automaticamente em qualquer tabela que a usar.';
+  'Trigger genérica: preenche atualizado_em automaticamente em qualquer tabela que a usar.';
 
 -- 3.2. Calcula os prazos da oferta a partir do tipo de alimento.
 -- RN-01: preparado  -> coleta em até 4h do preparo; entrega em até 2h da coleta.

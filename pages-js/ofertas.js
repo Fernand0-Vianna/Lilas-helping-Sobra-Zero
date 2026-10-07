@@ -12,7 +12,10 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, redirectIfNotAuthenticated, mostrarAlerta } from './supabase.js';
+import { getUserProfile, redirectIfNotAuthenticated, mostrarAlerta, mostrarPopup, fecharPopup } from './supabase.js';
+
+// Perfil logado (para saber quais ofertas são minhas)
+let perfilLogado = null;
 
 // Estado dos filtros ativos
 let filtrosAtivos = {
@@ -28,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- Carrega perfil para contexto de perfil ---
   const profile = await getUserProfile();
+  perfilLogado = profile;
 
   // --- Renderiza o feed ---
   await renderizarFeed();
@@ -123,31 +127,38 @@ async function renderizarFeed() {
   }
 
   container.innerHTML = ofertas.map(oferta => criarCardOferta(oferta)).join('');
-
-  // Anexa eventos de clique nos cards
-  container.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
-      window.location.href = `oferta.html?id=${card.dataset.id}`;
-    });
-  });
 }
 
 /**
- * Cria o HTML de um card de oferta usando classes CSS existentes.
+ * Cria o HTML de um card de oferta seguindo o guia de estilo
+ * (design/desktop/guia_de_estilo.html §7 Card, §5 Chips, §3 Botões, §6 Alertas).
+ *
+ * Estrutura: card-top (chip de status + prazo) → h3 → meta → tags →
+ * box de detalhes → alerta de frio (RN-03/RN-04) → botões.
  *
  * @param {object} o - oferta do vw_ofertas_feed
  * @returns {string} HTML do card
  */
 function criarCardOferta(o) {
-  // Calcula tempo restante até expira_em
-  const agora = new Date();
-  const expira = new Date(o.expira_em);
-  const diffMs = expira - agora;
-  const diffHoras = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffMin = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-  const tempoRestante = `${diffHoras}h${diffMin.toString().padStart(2, '0')}m`;
+  const rotuloTipo = {
+    preparado: 'Preparado',
+    nao_perecivel: 'Não perecível',
+    frio: 'Frio',
+    congelado: 'Congelado',
+  }[o.tipo_alimento] || o.tipo_alimento;
 
-  // Classe do chip de status
+  const rotuloStatus = {
+    publicada: 'Publicada',
+    aceita: 'Aceita',
+    coletada: 'Coletada',
+    entregue: 'Entregue',
+    confirmada: 'Confirmada',
+    expirada: 'Expirada',
+    descartada: 'Descartada',
+    cancelada: 'Cancelada',
+  }[o.status] || o.status;
+
+  // Classe do chip de status (§5 Chips)
   const statusClasse = {
     publicada: 'chip-publicada',
     aceita: 'chip-aceita',
@@ -155,44 +166,186 @@ function criarCardOferta(o) {
     entregue: 'chip-entregue',
     confirmada: 'chip-confirmada',
     expirada: 'chip-expirada',
+    descartada: 'chip-cancelada',
     cancelada: 'chip-cancelada',
   }[o.status] || '';
 
-  // Tags de tipo e frio
-  const tags = [];
-  tags.push(`<span class="tag">${o.tipo_alimento.replace(/_/g, ' ')}</span>`);
-  if (o.exige_frio) tags.push('<span class="tag">Exige frio</span>');
-  if (o.tipo_alimento === 'congelado') tags.push('<span class="tag">Congelado (48h)</span>');
+  // Prazo restante no padrão do guia ("Expira em 2h15")
+  const agora = new Date();
+  const expira = new Date(o.expira_em);
+  const diffMs = expira - agora;
+  let prazo;
+  if (diffMs <= 0) {
+    prazo = 'Prazo encerrado';
+  } else {
+    const h = Math.floor(diffMs / (1000 * 60 * 60));
+    const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    prazo = h > 0 ? `Expira em ${h}h${String(m).padStart(2, '0')}` : `Expira em ${m}min`;
+  }
 
-  // Alerta de frio para instituições/voluntários sem capacidade (RN-03/RN-04)
-  const alertaFrio = (!o.voluntario_nome && o.exige_frio)
-    ? `<div class="alert alert-info" style="margin:0; margin-top:.75rem; padding:.5rem .75rem; font-size:.8rem">
-         <span>⛈️</span>
-         <div>Este alimento exige caixa térmica (RN-03/RN-04).</div>
+  // Linha meta no padrão do guia ("Tatuapé · 8 kg · preparado às 11:30")
+  const metaPartes = [
+    o.bairro_coleta || o.doador_bairro || null,
+    `${formatarKg(o.quantidade_kg)} kg`,
+    `${rotuloTipo.toLowerCase()} às ${formatarHora(o.data_preparo)}`,
+  ].filter(Boolean);
+
+  // Tags (§7: card-tags)
+  const tags = [`<span class="tag">${escaparHtml(rotuloTipo)}</span>`];
+  if (o.exige_frio) tags.push('<span class="tag">Exige frio</span>');
+  if (o.tipo_alimento === 'congelado') tags.push('<span class="tag">Prazo 48h</span>');
+  if (o.porcoes) tags.push(`<span class="tag">${o.porcoes} porções</span>`);
+
+  // Box de detalhes (descrição + coleta + prazos)
+  const detalheLinhas = [];
+  if (o.descricao) {
+    detalheLinhas.push(
+      `<div class="detalhe-linha"><span>Descrição</span><p>${escaparHtml(o.descricao)}</p></div>`
+    );
+  }
+  detalheLinhas.push(
+    `<div class="detalhe-linha"><span>Coleta</span><p>${escaparHtml(o.endereco_coleta || '—')}</p></div>` +
+    `<div class="detalhe-linha"><span>Coletar até</span><p>${formatarDataHora(o.prazo_coleta)}</p></div>` +
+    `<div class="detalhe-linha"><span>Entregar até</span><p>${formatarDataHora(o.prazo_entrega)}</p></div>`
+  );
+  if (o.doador_nome) {
+    detalheLinhas.push(
+      `<div class="detalhe-linha"><span>Doador</span><p>${escaparHtml(o.doador_nome)}</p></div>`
+    );
+  }
+  const boxDetalhes = `
+    <div class="detalhe-box">
+      ${detalheLinhas.join('')}
+    </div>`;
+
+  // Alerta de cadeia de frio, padrão §6 (sem emoji)
+  const alertaFrio = o.exige_frio
+    ? `<div class="alert alert-rn02" style="margin:0 0 1rem">
+         <strong>Cadeia de frio</strong>
+         <p>Este alimento exige refrigeração na instituição (RN-03) e caixa térmica no transporte (RN-04).</p>
        </div>`
     : '';
 
+  // Botão de edição: só o doador dono da oferta vê
+  const souDono = perfilLogado?.user_type === 'doador'
+    && perfilLogado?.detalhe?.id
+    && o.doador_id === perfilLogado.detalhe.id;
+  const botaoEditar = souDono
+    ? `<button class="btn btn-ghost" style="flex:1" onclick="event.stopPropagation();abrirEdicao('${o.id}')">
+         Editar
+       </button>`
+    : '';
+
   return `
-    <div class="card" data-id="${o.id}" style="cursor:pointer; transition:transform .2s">
+    <div class="card" data-id="${o.id}">
       <div class="card-top">
-        <span class="chip ${statusClasse}">${o.status}</span>
-        <span class="card-exp">Expira em ${tempoRestante}</span>
+        <span class="chip ${statusClasse}">${escaparHtml(rotuloStatus)}</span>
+        <span class="card-exp">${prazo}</span>
       </div>
-      <h3>${o.titulo}</h3>
-      <div class="meta">
-        ${o.doador_nome || 'Doador anônimo'} · ${o.quantidade_kg} kg
-        ${o.porcoes ? `· ${o.porcoes} porções` : ''}
-      </div>
-      <div class="card-tags">
-        ${tags.join('')}
-      </div>
+      <h3>${escaparHtml(o.titulo)}</h3>
+      <div class="meta">${metaPartes.map(escaparHtml).join(' · ')}</div>
+      <div class="card-tags">${tags.join('')}</div>
+      ${boxDetalhes}
       ${alertaFrio}
-      <button class="btn btn-secondary" style="width:100%; margin-top:.75rem"
-              onclick="window.location.href='oferta.html?id=${o.id}'">
-        Ver detalhes
-      </button>
+      <div style="display:flex; gap:.6rem">
+        <button class="btn btn-secondary" style="flex:2"
+                onclick="window.location.href='oferta.html?id=${o.id}'">
+          Ver detalhes
+        </button>
+        ${botaoEditar}
+      </div>
     </div>
   `;
+}
+
+/**
+ * Abre o modal de edição das observações da oferta.
+ * Limite do banco (RLS): só a coluna `observacoes` pode ser editada
+ * diretamente — título, tipo e quantidade são fixos após publicar.
+ */
+window.abrirEdicao = async function (ofertaId) {
+  const { data: oferta, error } = await supabase
+    .from('ofertas')
+    .select('id, titulo, observacoes')
+    .eq('id', ofertaId)
+    .single();
+
+  if (error || !oferta) {
+    mostrarPopup('danger', 'Não foi possível carregar',
+      'Verifique se você ainda é o doador desta oferta.');
+    return;
+  }
+
+  fecharPopup();
+  const backdrop = document.createElement('div');
+  backdrop.id = 'popup-backdrop';
+  backdrop.style.cssText =
+    'position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;' +
+    'align-items:center;justify-content:center;z-index:9999;padding:1rem';
+  backdrop.innerHTML =
+    '<div role="dialog" aria-modal="true" style="' +
+      'max-width:420px;width:100%;background:#fff;border:1px solid #E5E7EB;' +
+      'border-radius:16px;padding:20px;box-shadow:0 1px 3px rgba(17,24,39,.2);' +
+      'font-family:\'IBM Plex Sans\',system-ui,sans-serif;color:#111827;line-height:1.5">' +
+      `<h3 style="margin-top:0">Editar oferta</h3>` +
+      `<p style="font-size:14px;color:#6B7280">${escaparHtml(oferta.titulo)}</p>` +
+      '<div class="field" style="margin:1rem 0">' +
+        '<label for="edit-observacoes">Observações</label>' +
+        `<textarea id="edit-observacoes" style="width:100%;min-height:90px" placeholder="Ponto de referência, horário preferencial...">${escaparHtml(oferta.observacoes || '')}</textarea>` +
+        '<div class="hint">Título, tipo e quantidade são fixos após a publicação.</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:.6rem">' +
+        '<button class="btn btn-primary" style="flex:1" id="edit-salvar" type="button">Salvar</button>' +
+        '<button class="btn btn-ghost" style="flex:1" id="edit-cancelar" type="button">Cancelar</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(backdrop);
+
+  document.getElementById('edit-cancelar').addEventListener('click', fecharPopup);
+  backdrop.addEventListener('click', (e) => { if (e.target === backdrop) fecharPopup(); });
+  document.getElementById('edit-salvar').addEventListener('click', async () => {
+    const valor = document.getElementById('edit-observacoes').value.trim() || null;
+    const { error: erroSalvar } = await supabase
+      .from('ofertas')
+      .update({ observacoes: valor })
+      .eq('id', ofertaId);
+
+    if (erroSalvar) {
+      mostrarPopup('danger', 'Não foi possível salvar', erroSalvar.message);
+      return;
+    }
+    fecharPopup();
+    mostrarPopup('info', 'Oferta atualizada', 'Observações salvas com sucesso.');
+    await renderizarFeed();
+  });
+};
+
+// ====================================================================
+// UTILITÁRIOS
+// ====================================================================
+
+function escaparHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+function formatarKg(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    minimumFractionDigits: 0, maximumFractionDigits: 2,
+  });
+}
+
+function formatarHora(iso) {
+  if (!iso) return '--';
+  return new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatarDataHora(iso) {
+  if (!iso) return '--';
+  return new Date(iso).toLocaleString('pt-BR', {
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
+  });
 }
 
 // Exporta para uso em outros módulos (ex.: refresh manual)
