@@ -17,7 +17,7 @@
  * Ciclo: publicada → aceita → coletada → entregue → confirmada
  */
 
-import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarAlerta } from './supabase.js';
+import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarPopup } from './supabase.js';
 
 // Estados do ciclo em ordem (para timeline visual)
 const CICLO_STATUS = [
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ofertaId = params.get('id');
 
   if (!ofertaId) {
-    mostrarAlerta('warn', 'Oferta não especificada.');
+    mostrarPopup('warn', 'Oferta não especificada', 'Volte ao feed e escolha uma oferta.');
     window.location.href = 'ofertas.html';
     return;
   }
@@ -73,7 +73,7 @@ async function carregarOferta() {
     .single();
 
   if (eOferta || !ofertaData) {
-    mostrarAlerta('danger', `Oferta não encontrada: ${eOferta?.message || 'id inválido'}`);
+    mostrarPopup('danger', 'Oferta não encontrada', eOferta?.message || 'ID inválido.');
     window.location.href = 'ofertas.html';
     return;
   }
@@ -264,11 +264,11 @@ window.aceitarOferta = async function () {
   });
 
   if (error) {
-    mostrarAlerta('danger', `Não foi possível aceitar: ${error.message}`);
+    mostrarPopup('danger', 'Não foi possível aceitar', error.message);
     return;
   }
 
-  mostrarAlerta('info', 'Oferta aceita com sucesso!');
+  mostrarPopup('info', 'Oferta aceita', 'Oferta aceita com sucesso!');
   await carregarOferta(); // recarrega para atualizar timeline
 };
 
@@ -282,11 +282,11 @@ window.assumirTransporte = async function () {
   });
 
   if (error) {
-    mostrarAlerta('danger', `Não foi possível assumir: ${error.message}`);
+    mostrarPopup('danger', 'Não foi possível assumir', error.message);
     return;
   }
 
-  mostrarAlerta('info', 'Transporte assumido! Registre a coleta quando for buscar.');
+  mostrarPopup('info', 'Transporte assumido', 'Transporte assumido! Registre a coleta quando for buscar.');
   await carregarOferta();
 };
 
@@ -316,11 +316,11 @@ async function avancarStatus(destino, comentario = null) {
   });
 
   if (error) {
-    mostrarAlerta('danger', `Não foi possível avançar: ${error.message}`);
+    mostrarPopup('danger', 'Não foi possível avançar', error.message);
     return;
   }
 
-  mostrarAlerta('info', `Status atualizado para: ${destino}`);
+  mostrarPopup('info', 'Status atualizado', `Status atualizado para: ${destino}`);
   await carregarOferta();
 }
 
@@ -370,7 +370,7 @@ window.confirmarRecebimento = async function () {
   const kg = parseFloat(kgInput?.value);
 
   if (isNaN(kg) || kg <= 0) {
-    mostrarAlerta('warn', 'Informe uma quantidade válida em kg.');
+    mostrarPopup('warn', 'Quantidade inválida', 'Informe uma quantidade válida em kg.');
     kgInput?.focus();
     return;
   }
@@ -382,12 +382,12 @@ window.confirmarRecebimento = async function () {
   });
 
   if (error) {
-    mostrarAlerta('danger', `Erro ao confirmar: ${error.message}`);
+    mostrarPopup('danger', 'Erro ao confirmar', error.message);
     return;
   }
 
   window.fecharModalRecebimento();
-  mostrarAlerta('info', 'Recebimento confirmado! Doação concluída. 🎉');
+  mostrarPopup('info', 'Recebimento confirmado', 'Recebimento confirmado! Doação concluída.');
   await carregarOferta();
 };
 

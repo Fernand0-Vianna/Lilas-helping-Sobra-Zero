@@ -12,7 +12,7 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, redirectIfNotAuthenticated, mostrarAlerta, mostrarPopup, fecharPopup } from './supabase.js';
+import { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, fecharPopup } from './supabase.js';
 
 // Perfil logado (para saber quais ofertas são minhas)
 let perfilLogado = null;
@@ -110,7 +110,7 @@ async function renderizarFeed() {
 
   if (error) {
     console.error('[ofertas] Erro ao buscar feed:', error.message);
-    mostrarAlerta('danger', `Erro ao carregar ofertas: ${error.message}`);
+    mostrarPopup('danger', 'Erro ao carregar ofertas', error.message);
     return;
   }
 

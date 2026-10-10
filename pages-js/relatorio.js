@@ -12,7 +12,7 @@
  *   RN-07 — doações concluídas (status confirmada)
  */
 
-import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarAlerta } from './supabase.js';
+import supabase, { getUserProfile, redirectIfNotAuthenticated } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- Proteção de rota ---

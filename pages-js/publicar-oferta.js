@@ -12,7 +12,7 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, mostrarAlerta, redirectIfNotAuthenticated } from './supabase.js';
+import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- Proteção de rota ---
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Só doadores podem publicar
   if (profile?.user_type !== 'doador') {
-    mostrarAlerta('warn', 'Apenas doadores podem publicar ofertas.');
+    mostrarPopup('warn', 'Acesso restrito', 'Apenas doadores podem publicar ofertas.');
     window.location.href = 'ofertas.html';
     return;
   }
@@ -88,22 +88,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Validações básicas
     if (!titulo || titulo.length < 3) {
-      mostrarAlerta('warn', 'O título deve ter pelo menos 3 caracteres.');
+      mostrarPopup('warn', 'Título inválido', 'O título deve ter pelo menos 3 caracteres.');
       return;
     }
     if (isNaN(peso) || peso <= 0 || peso > 5000) {
-      mostrarAlerta('warn', 'A quantidade em kg deve estar entre 0,01 e 5.000.');
+      mostrarPopup('warn', 'Quantidade inválida', 'A quantidade em kg deve estar entre 0,01 e 5.000.');
       return;
     }
     if (!dataPreparo) {
-      mostrarAlerta('warn', 'Informe a data e hora do preparo.');
+      mostrarPopup('warn', 'Data ausente', 'Informe a data e hora do preparo.');
       return;
     }
 
     // RN-05: checagem final antes de enviar
     if (sanitarioVencido && tipo !== 'nao_perecivel') {
-      mostrarAlerta('danger',
-        'Cadastro sanitário vencido. Você só pode ofertar não perecível (RN-05).'
+      mostrarPopup('danger', 'Cadastro sanitário vencido',
+        'Você só pode ofertar alimento não perecível (RN-05).'
       );
       return;
     }
@@ -132,17 +132,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (error) {
       // Mensagens amigáveis conforme a RN que foi violada
       if (error.message.includes('cadastro sanitario')) {
-        mostrarAlerta('danger', error.message);
+        mostrarPopup('danger', 'Cadastro sanitário vencido', error.message);
       } else if (error.message.includes('futuro')) {
-        mostrarAlerta('warn', 'A data de preparo não pode estar no futuro.');
+        mostrarPopup('warn', 'Data inválida', 'A data de preparo não pode estar no futuro.');
       } else {
-        mostrarAlerta('danger', `Erro ao publicar: ${error.message}`);
+        mostrarPopup('danger', 'Erro ao publicar', error.message);
       }
       return;
     }
 
     // Sucesso → redireciona para o feed
-    mostrarAlerta('info', 'Oferta publicada com sucesso! Redirecionando...');
+    mostrarPopup('info', 'Oferta publicada', 'Oferta publicada com sucesso! Redirecionando...');
     setTimeout(() => {
       window.location.href = 'ofertas.html';
     }, 1500);

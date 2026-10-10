@@ -14,7 +14,7 @@
  *   RN-05 — Validade cadastro sanitário no doador
  */
 
-import supabase, { mostrarAlerta } from './supabase.js';
+import supabase, { mostrarPopup } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-cadastro');
@@ -30,17 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Validações ---
     if (senha !== senha2) {
-      mostrarAlerta('warn', 'As senhas não conferem.');
+      mostrarPopup('warn', 'Senhas diferentes', 'As senhas não conferem. Digite novamente.');
       document.getElementById('senha2').focus();
       return;
     }
     if (senha.length < 8) {
-      mostrarAlerta('warn', 'A senha precisa ter pelo menos 8 caracteres.');
+      mostrarPopup('warn', 'Senha muito curta', 'A senha precisa ter pelo menos 8 caracteres.');
       document.getElementById('senha').focus();
       return;
     }
     if (!document.getElementById('aceite').checked) {
-      mostrarAlerta('warn', 'É preciso aceitar os Termos de uso.');
+      mostrarPopup('warn', 'Aceite os Termos', 'É preciso aceitar os Termos de uso para continuar.');
       return;
     }
 
@@ -107,12 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (signUpError) {
-      mostrarAlerta('danger', `Erro no cadastro: ${signUpError.message}`);
+      mostrarPopup('danger', 'Erro no cadastro', signUpError.message);
       return;
     }
 
     if (!user) {
-      mostrarAlerta('warn', 'Confirme seu e-mail antes de tentar entrar.');
+      mostrarPopup('warn', 'Confirme seu e-mail', 'Enviamos um link de confirmação. Clique nele antes de entrar.');
       return;
     }
 
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (profileError && profileError.code !== '23505') { // 23505 = já existe (ok)
-      mostrarAlerta('warn', `Aviso: ${profileError.message}`);
+      mostrarPopup('warn', 'Aviso no perfil', profileError.message);
     }
 
     // --- 3. Insere na tabela de detalhe ---
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (insertError) {
-      mostrarAlerta('danger', `Erro ao salvar dados: ${insertError.message}`);
+      mostrarPopup('danger', 'Erro ao salvar dados', insertError.message);
       console.error(insertError);
       return;
     }
