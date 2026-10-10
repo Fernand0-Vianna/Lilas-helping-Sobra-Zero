@@ -12,7 +12,7 @@
 
 ## Proposta do projeto
 
-Todo dia comida boa vai para o lixo — enquanto muita gente passa fome. Restaurantes,
+Todo dia comida boa vai para o lixo enquanto muita gente passa fome. Restaurantes,
 cantinas e mercados descartam excedentes de produção que ainda estão aptos ao consumo,
 mas não têm como distribuí-los; instituições sociais precisam desses alimentos e não
 têm visibilidade sobre o que sobra onde; voluntários têm vontade de ajudar, mas falta
