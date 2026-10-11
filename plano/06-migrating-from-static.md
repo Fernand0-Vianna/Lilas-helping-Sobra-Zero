@@ -1,4 +1,4 @@
-# 🔄 06 — Migração das Páginas Estáticas
+# 🔄 06-Migração das Páginas Estáticas
 
 > Guia para transformar as páginas HTML estáticas em páginas conectadas ao
 > Supabase, passo a passo, mantendo o CSS existente.
@@ -12,7 +12,7 @@
 | `index.html` | Landing estática | Proteger links para páginas logadas (login) |
 | `pages/login.html` | Maquete estática | Conectar com `supabase.auth.signInWithPassword` |
 | `pages/cadastro.html` | Maquete estática | Conectar com `supabase.auth.signUp` + insert tabela de detalhe |
-| `pages/termos.html` | Estatística | (não precisa migrar — é conteúdo fixo) |
+| `pages/termos.html` | Estatística | (não precisa migrar-é conteúdo fixo) |
 
 ### Novas páginas a criar (pasta raiz ou `pages/`)
 
@@ -56,7 +56,7 @@ Lilas_Helpig/
 
 ## 2️⃣ Migrando `login.html` → login real
 
-### Passo 1 — Incluir o cliente Supabase
+### Passo 1-Incluir o cliente Supabase
 
 ```html
 <!-- antes de fechar </body> -->
@@ -66,7 +66,7 @@ Lilas_Helpig/
 > Copie a versão da raiz (`plano/pages-js/supabase.js`) para `../pages-js/`
 > na pasta principal do projeto.
 
-### Passo 2 — Substituir o JS estático
+### Passo 2-Substituir o JS estático
 
 O script atual no `login.html` redirige para a landing. Substitua por:
 
@@ -118,7 +118,7 @@ O script atual no `login.html` redirige para a landing. Substitua por:
 </script>
 ```
 
-### Passo 3 — Manter os chips de demonstração
+### Passo 3-Manter os chips de demonstração
 
 Os chips (`doador@cantinadoze.com`, etc.) continuam funcionando —
 agora eles preparam os campos e o clique no "Entrar" dispara o `signInWithPassword`.
@@ -300,13 +300,13 @@ const { data: ofertas, error } = await supabase
 
 | Passo | Como testar |
 |-------|-------------|
-| 1. Auth funciona | Faça login com um usuário criado — deve redirecionar para a dashboard |
+| 1. Auth funciona | Faça login com um usuário criado-deve redirecionar para a dashboard |
 | 2. Cadastro cria profile | Após `signUp`, verifique `profiles` no painel → Table Editor |
-| 3. Publicar oferta | Como doador, crie uma oferta — confira se `prazo_coleta` foi calculado |
-| 4. Feed ordenado | Abra o feed — instituições com menos kg aparecem primeiro (RN-06) |
-| 5. Policies aplicadas | Tente acessar como outro usuário — deve bloquear |
-| 6. pg_cron expira | Crie uma oferta expirada — aguarde 15 min → status deve virar `expirada` |
-| 7. Timeline | Abra uma oferta — a timeline (`oferta_historico`) deve mostrar eventos |
+| 3. Publicar oferta | Como doador, crie uma oferta-confira se `prazo_coleta` foi calculado |
+| 4. Feed ordenado | Abra o feed-instituições com menos kg aparecem primeiro (RN-06) |
+| 5. Policies aplicadas | Tente acessar como outro usuário-deve bloquear |
+| 6. pg_cron expira | Crie uma oferta expirada-aguarde 15 min → status deve virar `expirada` |
+| 7. Timeline | Abra uma oferta-a timeline (`oferta_historico`) deve mostrar eventos |
 
 ---
 

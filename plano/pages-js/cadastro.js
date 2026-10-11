@@ -1,5 +1,5 @@
 /**
- * cadastro.js — Cadastro de usuário + insert na tabela de detalhe
+ * cadastro.js-Cadastro de usuário + insert na tabela de detalhe
  * ====================================================================
  * Substitui a maquete estática de pages/cadastro.html.
  *
@@ -9,9 +9,9 @@
  *   3. Insert na tabela de detalhe correta (doadores / instituicoes / voluntarios)
  *
  * RNs envolvidas:
- *   RN-03 — CNPJ obrigatório + responsável legal na instituição
- *   RN-04 — Caixa térmica declarada no voluntário
- *   RN-05 — Validade cadastro sanitário no doador
+ *   RN-03-CNPJ obrigatório + responsável legal na instituição
+ *   RN-04-Caixa térmica declarada no voluntário
+ *   RN-05-Validade cadastro sanitário no doador
  */
 
 import supabase, { mostrarAlerta } from './supabase.js';

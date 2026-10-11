@@ -1,4 +1,4 @@
-# 🔐 04 — Políticas RLS (Row Level Security)
+# 🔐 04-Políticas RLS (Row Level Security)
 
 > Como o Supabase protege cada tabela do **Sobra Zero** e como cada policy
 > se relaciona com as regras de negócio (RN).
@@ -14,13 +14,13 @@
 - **`auth.uid()`:** retorna o UUID do usuário logado (do GoTrue)
 
 > Sem policy, a tabela fica **totalmente bloqueada** para `authenticated`.
-> Sempre habilite RLS **e** crie policies — uma sem a outra é perigo.
+> Sempre habilite RLS **e** crie policies-uma sem a outra é perigo.
 
 ---
 
 ## 🛡️ Políticas por tabela
 
-### `profiles` — dado privado, só você vê
+### `profiles`-dado privado, só você vê
 
 ```sql
 alter table public.profiles enable row level security;
@@ -42,7 +42,7 @@ create policy profiles_update_own on public.profiles
   with check (id = auth.uid());
 ```
 
-### `doadores` — leitura aberta para autenticado, escrita só do dono
+### `doadores`-leitura aberta para autenticado, escrita só do dono
 
 ```sql
 alter table public.doadores enable row level security;
@@ -66,7 +66,7 @@ create policy doadores_update_own on public.doadores
 > **Trade-off consciente:** em produção, substituir por uma view pública
 > com apenas `id`, `nome_estabelecimento` e `bairro`.
 
-### `instituicoes` — mesmo padrão de `doadores`
+### `instituicoes`-mesmo padrão de `doadores`
 
 ```sql
 alter table public.instituicoes enable row level security;
@@ -75,7 +75,7 @@ create policy instituicoes_insert_own for insert to authenticated with check (pr
 create policy instituicoes_update_own for update to authenticated using (profile_id = auth.uid()) with check (profile_id = auth.uid());
 ```
 
-### `voluntarios` — mesmo padrão
+### `voluntarios`-mesmo padrão
 
 ```sql
 alter table public.voluntarios enable row level security;
@@ -84,7 +84,7 @@ create policy voluntarios_insert_own for insert to authenticated with check (pro
 create policy voluntarios_update_own for update to authenticated using (profile_id = auth.uid()) with check (profile_id = auth.uid());
 ```
 
-### `ofertas` — política central do projeto
+### `ofertas`-política central do projeto
 
 ```sql
 alter table public.ofertas enable row level security;
@@ -119,7 +119,7 @@ revoke insert, delete on public.ofertas from anon, authenticated;
 > ⚠️ **Todo avanço de status passa por RPC** (`aceitar_oferta`, `assumir_transporte`,
 > `avancar_status`, `confirmar_recebimento`). A policy acima só protege `observacoes`.
 
-### `oferta_historico` — append-only
+### `oferta_historico`-append-only
 
 ```sql
 alter table public.oferta_historico enable row level security;
@@ -138,11 +138,11 @@ create policy oferta_historico_select_envolvidos on public.oferta_historico
     )
   );
 
--- INSERT/UPDATE/DELETE: bloqueados — só os triggers escrevem
+-- INSERT/UPDATE/DELETE: bloqueados-só os triggers escrevem
 revoke insert, update, delete on public.oferta_historico from anon, authenticated;
 ```
 
-### `recebimentos` — RN-07 na prática
+### `recebimentos`-RN-07 na prática
 
 ```sql
 alter table public.recebimentos enable row level security;
@@ -177,7 +177,7 @@ revoke update, delete on public.recebimentos from anon, authenticated;
 
 | Policy | Tabela | Protege | RN relacionada |
 |--------|--------|---------|----------------|
-| `profiles_select_own` | profiles | Dados pessoais 1:1 | — |
+| `profiles_select_own` | profiles | Dados pessoais 1:1 |-|
 | `doadores_insert_own` | doadores | Cadastro sanitário só pelo dono | RN-05 |
 | `instituicoes_insert_own` | instituicoes | CNPJ/refrigeração só pelo dono | RN-03 |
 | `voluntarios_insert_own` | voluntarios | Caixa térmica só pelo dono | RN-04 |
@@ -246,7 +246,7 @@ to authenticated;
 - [ ] Policies de SELECT cobrem leitura pública (feed) + privada (envolvidos)
 - [ ] Policies de INSERT/UPDATE exigem `auth.uid()` via helper
 - [ ] `revoke` em `anon` e `authenticated` para escritas não-autorizadas
-- [ ] `grant update (observacoes)` em `ofertas` — nada mais
+- [ ] `grant update (observacoes)` em `ofertas`-nada mais
 - [ ] `revoke insert, update, delete` em `oferta_historico` (append-only)
 - [ ] TRIGGER `fn_registrar_historico` é `SECURITY DEFINER`
 - [ ] Todas as RPCs têm `SECURITY DEFINER`

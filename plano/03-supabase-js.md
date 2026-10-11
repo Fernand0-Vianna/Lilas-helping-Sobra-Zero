@@ -1,8 +1,8 @@
-# 📦 03 — `supabase-js` no Browser (Browser-Native)
+# 📦 03-`supabase-js` no Browser (Browser-Native)
 
 > Como incluir o cliente `supabase-js` via CDN, configurar o cliente
 > centralizado e usar helpers de auth e dados em páginas estáticas.
-> **Zero build tools, zero npm — funciona direto no browser.**
+> **Zero build tools, zero npm-funciona direto no browser.**
 
 ---
 
@@ -24,14 +24,14 @@ as páginas que precisam falar com o Supabase:
 </script>
 ```
 
-> **Alternativa mais simples** — carregue como módulo externo:
+> **Alternativa mais simples**-carregue como módulo externo:
 > ```html
 > <script type="module" src="../pages-js/supabase.js"></script>
 > ```
 
 ### Por que CDN e não `npm install`?
 
-- O Sobra Zero é um **projeto estático (HTML/CSS/JS puro)** — não há bundler.
+- O Sobra Zero é um **projeto estático (HTML/CSS/JS puro)**-não há bundler.
 - `supabase-js` v2 já suporta ESM nativo no browser.
 - Skypack resolve todas as dependências transitivas automaticamente.
 
@@ -69,7 +69,7 @@ export default supabase;
 
 ## 3️⃣ Helpers de Auth
 
-### `getSession()` — obtém a sessão atual
+### `getSession()`-obtém a sessão atual
 
 ```js
 import { supabase } from '../pages-js/supabase.js';
@@ -86,7 +86,7 @@ if (!session) {
 }
 ```
 
-### `getUserProfile()` — carrega o profile + detalhe
+### `getUserProfile()`-carrega o profile + detalhe
 
 ```js
 import { supabase } from '../pages-js/supabase.js';
@@ -128,7 +128,7 @@ async function getUserProfile() {
 }
 ```
 
-### `redirectIfNotAuthenticated()` — proteção de rotas
+### `redirectIfNotAuthenticated()`-proteção de rotas
 
 ```js
 import { supabase } from '../pages-js/supabase.js';
@@ -147,7 +147,7 @@ const session = await redirectIfNotAuthenticated();
 if (!session) return; // já redirecionado
 ```
 
-### `logout()` — encerrar sessão
+### `logout()`-encerrar sessão
 
 ```js
 import { supabase } from '../pages-js/supabase.js';
@@ -164,7 +164,7 @@ async function logout() {
 
 ## 4️⃣ Helpers de dados (queries)
 
-### Buscar ofertas do feed (com equidade — RN-06)
+### Buscar ofertas do feed (com equidade-RN-06)
 
 ```js
 async function buscarFeedOfertas() {
@@ -177,7 +177,7 @@ async function buscarFeedOfertas() {
 }
 ```
 
-### Publicar oferta (via RPC — RN-01, RN-05, RN-08)
+### Publicar oferta (via RPC-RN-01, RN-05, RN-08)
 
 ```js
 const { data, error } = await supabase.rpc('criar_oferta', {
@@ -185,7 +185,7 @@ const { data, error } = await supabase.rpc('criar_oferta', {
   p_tipo: 'preparado',
   p_quantidade_kg: 8.5,
   p_data_preparo: '2026-10-01T10:00:00Z',
-  p_endereco_coleta: 'Rua X, 123 — Tatuapé',
+  p_endereco_coleta: 'Rua X, 123-Tatuapé',
   p_descricao: 'Restam 10 unidades, embaladas individualmente.',
   p_porcoes: 17,
   p_bairro_coleta: 'Tatuapé',
@@ -193,7 +193,7 @@ const { data, error } = await supabase.rpc('criar_oferta', {
 });
 ```
 
-### Avançar status (via RPC — RN-01 a RN-07)
+### Avançar status (via RPC-RN-01 a RN-07)
 
 ```js
 // Instituição aceita:

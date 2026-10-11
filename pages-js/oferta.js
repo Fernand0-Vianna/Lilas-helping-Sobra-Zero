@@ -1,18 +1,18 @@
 /**
- * oferta.js — Tela de acompanhamento de uma oferta específica
+ * oferta.js-Tela de acompanhamento de uma oferta específica
  * ====================================================================
  * Mostra o ciclo de vida (timeline), o histórico de status e permite
  * avançar o ciclo conforme as regras de negócio.
  *
  * RNs envolvidas:
- *   RN-01 — prazos exibidos; validação de validade
- *   RN-02 — oferta expirada/descartada mostra motivo
- *   RN-03 — instituição sem frio não pode aceitar oferta de frio
- *   RN-04 — voluntário sem caixa térmica não pode assumir oferta de frio
- *   RN-05 — validado no momento da publicação (criar_oferta)
- *   RN-06 — equidade já aplicada no feed
- *   RN-07 — confirmação só pela instituição dona da oferta
- *   RN-08 — congelado = 48h
+ *   RN-01-prazos exibidos; validação de validade
+ *   RN-02-oferta expirada/descartada mostra motivo
+ *   RN-03-instituição sem frio não pode aceitar oferta de frio
+ *   RN-04-voluntário sem caixa térmica não pode assumir oferta de frio
+ *   RN-05-validado no momento da publicação (criar_oferta)
+ *   RN-06-equidade já aplicada no feed
+ *   RN-07-confirmação só pela instituição dona da oferta
+ *   RN-08-congelado = 48h
  *
  * Ciclo: publicada → aceita → coletada → entregue → confirmada
  */
@@ -87,7 +87,7 @@ async function carregarOferta() {
     .eq('oferta_id', ofertaId)
     .order('criado_em', { ascending: true });
 
-  document.title = `Oferta: ${oferta.titulo} — Sobra Zero`;
+  document.title = `Oferta: ${oferta.titulo}-Sobra Zero`;
 
   renderizarTimeline(historico || [], oferta);
   renderizarAcoes(oferta, profile);
@@ -182,7 +182,7 @@ function renderizarAcoes(oferta, profile) {
     const instituicao = profile.detalhe;
     if (exigeFrio && !instituicao.tem_refrigeracao) {
       botoes.push(`<button class="btn btn-disabled" disabled>
-        ❌ Você não tem refrigeração — não pode aceitar ofertas de frio (RN-03)
+        ❌ Você não tem refrigeração-não pode aceitar ofertas de frio (RN-03)
       </button>`);
     } else {
       botoes.push(`<button class="btn btn-primary" onclick="aceitarOferta()">
@@ -196,7 +196,7 @@ function renderizarAcoes(oferta, profile) {
     const voluntario = profile.detalhe;
     if (exigeFrio && !voluntario.tem_caixa_termica) {
       botoes.push(`<button class="btn btn-disabled" disabled>
-        ❌ Você não tem caixa térmica — não pode transportar alimentos de frio (RN-04)
+        ❌ Você não tem caixa térmica-não pode transportar alimentos de frio (RN-04)
       </button>`);
     } else {
       botoes.push(`<button class="btn btn-primary" onclick="assumirTransporte()">

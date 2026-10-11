@@ -71,7 +71,7 @@ create table public.doadores (
 comment on table public.doadores is
   'Perfil estendido do doador: quem publica a oferta de alimento excedente.';
 comment on column public.doadores.cadastro_sanitario_validade is
-  'RN-05 — se vencido na data da publicação, a função pode_ofertar() só aceita tipo nao_perecivel.';
+  'RN-05-se vencido na data da publicação, a função pode_ofertar() só aceita tipo nao_perecivel.';
 comment on column public.doadores.nome_estabelecimento is
   'Nome fantasia (ex.: "Cantina do Zé"), campo d-nome do formulário de cadastro.';
 
@@ -81,7 +81,7 @@ create trigger trg_doadores_updated_at
 
 
 -- =====================================================================
--- 3. instituicoes  (tela 10 · Cadastro de instituições — RN-03)
+-- 3. instituicoes  (tela 10 · Cadastro de instituições-RN-03)
 -- =====================================================================
 create table public.instituicoes (
   id                uuid primary key default gen_random_uuid(),
@@ -126,7 +126,7 @@ create trigger trg_instituicoes_updated_at
 
 
 -- =====================================================================
--- 4. voluntarios  (tela 11 · Cadastro de voluntários — RN-04)
+-- 4. voluntarios  (tela 11 · Cadastro de voluntários-RN-04)
 -- =====================================================================
 create table public.voluntarios (
   id                uuid primary key default gen_random_uuid(),
@@ -146,7 +146,7 @@ create table public.voluntarios (
 comment on table public.voluntarios is
   'Perfil estendido do voluntário que assume o transporte (RN-04) e registra coleta/entrega (RN-07).';
 comment on column public.voluntarios.tem_caixa_termica is
-  'RN-04 — obrigatório (true) para assumir ofertas do tipo frio ou congelado.';
+  'RN-04-obrigatório (true) para assumir ofertas do tipo frio ou congelado.';
 comment on column public.voluntarios.disponivel is
   'Permite pausar a disponibilidade sem perder o histórico de transportes.';
 

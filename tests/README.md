@@ -1,9 +1,9 @@
-# Contas de teste — Sobra Zero (Squad Lilás)
+# Contas de teste-Sobra Zero (Squad Lilás)
 
 Esta pasta guarda as **contas locais de teste**. Regras:
 
-- `contas-teste.example.json` — modelo versionado (sem dados reais), pode commitar.
-- `contas-teste.json` — arquivo **local e gitignorado** com os e-mails/senhas reais.
+- `contas-teste.example.json`-modelo versionado (sem dados reais), pode commitar.
+- `contas-teste.json`-arquivo **local e gitignorado** com os e-mails/senhas reais.
   Copie o modelo e preencha:
 
 ```bash

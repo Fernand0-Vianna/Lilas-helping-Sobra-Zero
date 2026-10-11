@@ -1,5 +1,5 @@
 {
-  "descricao": "MODELO — copie para contas-teste.json e preencha com as contas reais. NUNCA commitar senhas.",
+  "descricao": "MODELO-copie para contas-teste.json e preencha com as contas reais. NUNCA commitar senhas.",
   "contas": [
     {
       "perfil": "doador",

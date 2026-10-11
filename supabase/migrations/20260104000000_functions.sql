@@ -74,7 +74,7 @@ comment on function public.meu_user_type() is
 -- PARTE 2 · Regras de negocio (RN-03, RN-04, RN-05)
 -- =====================================================================
 
--- 2.1. RN-05 — cadastro sanitario vencido so permite nao_perecivel.
+-- 2.1. RN-05-cadastro sanitario vencido so permite nao_perecivel.
 create or replace function public.pode_ofertar(
   p_doador_id uuid,
   p_tipo      public.tipo_alimento
@@ -99,7 +99,7 @@ $$;
 comment on function public.pode_ofertar(uuid, public.tipo_alimento) is
   'RN-05: com cadastro sanitario vencido, o doador so pode ofertar nao_perecivel.';
 
--- 2.2. RN-03 — instituicao sem refrigeracao nao aceita alimento que exige frio.
+-- 2.2. RN-03-instituicao sem refrigeracao nao aceita alimento que exige frio.
 -- Tambem exige que a oferta ainda esteja dentro do prazo (RN-01/RN-02).
 create or replace function public.pode_aceitar(
   p_instituicao_id uuid,
@@ -131,7 +131,7 @@ $$;
 comment on function public.pode_aceitar(uuid, uuid) is
   'RN-03: so aceita oferta nao expirada e, se exige frio, exige refrigeracao na instituicao.';
 
--- 2.3. RN-04 — voluntario sem caixa termica nao transporta alimento frio/congelado.
+-- 2.3. RN-04-voluntario sem caixa termica nao transporta alimento frio/congelado.
 create or replace function public.pode_assumir(
   p_voluntario_id uuid,
   p_oferta_id     uuid
@@ -157,7 +157,7 @@ $$;
 comment on function public.pode_assumir(uuid, uuid) is
   'RN-04: voluntario precisa estar disponivel e ter caixa termica se a oferta exigir frio.';
 
--- 2.4. RN-07 — somente a instituicao dona da oferta pode confirmar o recebimento.
+-- 2.4. RN-07-somente a instituicao dona da oferta pode confirmar o recebimento.
 create or replace function public.pode_confirmar(
   p_user_id   uuid,
   p_oferta_id uuid
@@ -491,7 +491,7 @@ $$;
 comment on function public.avancar_status(uuid, public.status_oferta, text) is
   'RPC: avanca o ciclo de vida da oferta validando quem pode fazer cada passo (RN-07 inclusa).';
 
--- 4.5. RN-07 — a instituicao confirma e o ciclo fecha.
+-- 4.5. RN-07-a instituicao confirma e o ciclo fecha.
 create or replace function public.confirmar_recebimento(
   p_oferta_id              uuid,
   p_quantidade_recebida_kg numeric,
@@ -532,7 +532,7 @@ comment on function public.confirmar_recebimento(uuid, numeric, text) is
 
 
 -- =====================================================================
--- PARTE 5 · RN-02 — expirar ofertas fora do prazo (pg_cron)
+-- PARTE 5 · RN-02-expirar ofertas fora do prazo (pg_cron)
 -- =====================================================================
 
 -- 5.1. A funcao em si. Pode ser chamada na mao (para testar) ou pelo cron.
@@ -630,7 +630,7 @@ $$;
 -- `force row level security` garante que ate o dono da tabela sofra RLS.
 
 -- ---------------------------------------------------------------------
--- 6.1. profiles — cada um ve so a si mesmo
+-- 6.1. profiles-cada um ve so a si mesmo
 -- ---------------------------------------------------------------------
 alter table public.profiles enable row level security;
 
@@ -648,7 +648,7 @@ create policy profiles_update_own on public.profiles
   with check (id = auth.uid());
 
 -- ---------------------------------------------------------------------
--- 6.2. doadores — leitura para montar o feed; escrita só do próprio
+-- 6.2. doadores-leitura para montar o feed; escrita só do próprio
 -- ---------------------------------------------------------------------
 alter table public.doadores enable row level security;
 
@@ -706,7 +706,7 @@ create policy voluntarios_update_own on public.voluntarios
   with check (profile_id = auth.uid());
 
 -- ---------------------------------------------------------------------
--- 6.5. ofertas — a policy mais importante do projeto
+-- 6.5. ofertas-a policy mais importante do projeto
 -- ---------------------------------------------------------------------
 alter table public.ofertas enable row level security;
 
@@ -736,7 +736,7 @@ create policy ofertas_update_doador on public.ofertas
   with check (doador_id = public.meu_doador_id());
 
 -- Reforço: como o update é de coluna restrita, a policy acima cobre o
--- suficiente. Participantes não alteram a oferta direto — eles usam RPC.
+-- suficiente. Participantes não alteram a oferta direto-eles usam RPC.
 
 -- Privilégio de coluna: sem isso, um doador poderia fazer
 -- UPDATE ofertas SET status='confirmada' sem passar pela instituição (violando RN-07).
@@ -745,7 +745,7 @@ grant  update (observacoes) on public.ofertas to authenticated;
 revoke insert, delete on public.ofertas from anon, authenticated;
 
 -- ---------------------------------------------------------------------
--- 6.6. oferta_historico — append-only, leitura só de quem participa
+-- 6.6. oferta_historico-append-only, leitura só de quem participa
 -- ---------------------------------------------------------------------
 alter table public.oferta_historico enable row level security;
 
@@ -768,7 +768,7 @@ create policy oferta_historico_select_envolvidos on public.oferta_historico
 revoke insert, update, delete on public.oferta_historico from anon, authenticated;
 
 -- ---------------------------------------------------------------------
--- 6.7. recebimentos — RN-07 na prática
+-- 6.7. recebimentos-RN-07 na prática
 -- ---------------------------------------------------------------------
 alter table public.recebimentos enable row level security;
 
@@ -784,7 +784,7 @@ create policy recebimentos_select_envolvidos on public.recebimentos
     )
   );
 
--- Só a instituição dona da oferta insere — e a RPC ainda exige status 'entregue'.
+-- Só a instituição dona da oferta insere-e a RPC ainda exige status 'entregue'.
 create policy recebimentos_insert_instituicao on public.recebimentos
   for insert to authenticated
   with check (

@@ -1,12 +1,12 @@
 /**
- * publicar-oferta.js — Publicar oferta de alimento
+ * publicar-oferta.js-Publicar oferta de alimento
  * ====================================================================
  * Conecta o formulário da tela 04 à RPC criar_oferta no Supabase.
  *
  * RNs envolvidas:
- *   RN-01 — prazos calculados no banco (4h preparo→coleta, 6h total)
- *   RN-05 — valida cadastro sanitário vencido (bloqueia preparado, frio, congelado)
- *   RN-08 — congelado tem prazo de 48h (calculado via fn_prazo_padrao)
+ *   RN-01-prazos calculados no banco (4h preparo→coleta, 6h total)
+ *   RN-05-valida cadastro sanitário vencido (bloqueia preparado, frio, congelado)
+ *   RN-08-congelado tem prazo de 48h (calculado via fn_prazo_padrao)
  *
  * O front-end pré-valida, mas a autoridade final é a função pode_ofertar() no banco.
  */

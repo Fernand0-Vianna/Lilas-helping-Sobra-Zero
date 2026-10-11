@@ -170,7 +170,7 @@ comment on column public.recebimentos.confirmado_por is
 -- 4. Views
 -- =====================================================================
 
--- 4.1. RN-06 — equidade entre instituições.
+-- 4.1. RN-06-equidade entre instituições.
 -- "Feed prioriza a instituicao que recebeu menos kg em 30 dias."
 -- Calculamos os kg confirmados na janela e ordenamos do MENOR para o MAIOR.
 create or replace view public.vw_equidade_instituicoes
@@ -197,7 +197,7 @@ group by i.id, p.nome, i.razao_social, i.bairro, i.tem_refrigeracao, i.necessida
 comment on view public.vw_equidade_instituicoes is
   'RN-06: kg recebidos por instituicao na janela de 30 dias. Use ORDER BY kg_recebidos_30d ASC para priorizar quem recebeu menos.';
 
--- 4.2. RN-02 — tudo que virou descarte (expirado ou descartado).
+-- 4.2. RN-02-tudo que virou descarte (expirado ou descartado).
 create or replace view public.vw_descartes
 with (security_invoker = true) as
 select

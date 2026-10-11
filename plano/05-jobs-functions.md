@@ -1,4 +1,4 @@
-# ⚙️ 05 — Jobs, Triggers e Funções
+# ⚙️ 05-Jobs, Triggers e Funções
 
 > Explicação detalhada de cada função, trigger e job agendado do **Sobra Zero**,
 > com foco nas RNs que cada uma implementa.
@@ -11,13 +11,13 @@
 |---|--------|------|-----|
 | 1 | `fn_expirar_ofertas()` | Função + job pg_cron | RN-02 |
 | 2 | `fn_oferta_setar_prazos()` | Trigger (BEFORE INSERT) | RN-01, RN-08 |
-| 3 | `fn_registrar_historico()` | Trigger (AFTER) | — |
-| 4 | `fn_touch_updated_at()` | Trigger genérica | — |
-| 5 | `fn_handle_new_user()` | Trigger (auth.users) | — |
+| 3 | `fn_registrar_historico()` | Trigger (AFTER) |-|
+| 4 | `fn_touch_updated_at()` | Trigger genérica |-|
+| 5 | `fn_handle_new_user()` | Trigger (auth.users) |-|
 | 6 | `fn_prazo_padrao()` | Função SQL imutável | RN-01, RN-08 |
 | 7 | `fn_alimento_exige_frio()` | Função SQL imutável | RN-03, RN-04 |
-| 8 | `fn_transicao_valida()` | Função SQL imutável | — |
-| 9 | `meu_doador_id()` / `minha_instituicao_id()` / `meu_voluntario_id()` / `meu_user_type()` | Helper | — |
+| 8 | `fn_transicao_valida()` | Função SQL imutável |-|
+| 9 | `meu_doador_id()` / `minha_instituicao_id()` / `meu_voluntario_id()` / `meu_user_type()` | Helper |-|
 | 10 | `pode_ofertar()` | Regra de negócio | RN-05 |
 | 11 | `pode_aceitar()` | Regra de negócio | RN-03 |
 | 12 | `pode_assumir()` | Regra de negócio | RN-04 |
@@ -30,7 +30,7 @@
 
 ---
 
-## 1️⃣ `fn_expirar_ofertas()` — RN-02 (expiração automática)
+## 1️⃣ `fn_expirar_ofertas()`-RN-02 (expiração automática)
 
 ### O que faz
 
@@ -108,7 +108,7 @@ select public.fn_expirar_ofertas();
 
 ---
 
-## 2️⃣ `fn_oferta_setar_prazos()` — RN-01, RN-08
+## 2️⃣ `fn_oferta_setar_prazos()`-RN-01, RN-08
 
 ### O que faz
 
@@ -150,7 +150,7 @@ $$;
 
 ---
 
-## 3️⃣ `fn_registrar_historico()` — Timeline append-only
+## 3️⃣ `fn_registrar_historico()`-Timeline append-only
 
 Dispara em `AFTER INSERT OR UPDATE OF status` na tabela `ofertas`.
 Cada mudança de status vira uma linha em `oferta_historico`.
@@ -187,14 +187,14 @@ $$;
 
 ---
 
-## 4️⃣ `fn_touch_updated_at()` — Housekeeping
+## 4️⃣ `fn_touch_updated_at()`-Housekeeping
 
 Trigger genérica que atualiza a coluna `atualizado_em` em qualquer tabela
 que a adicione. Conceito: **o banco é a fonte da verdade para timestamps**.
 
 ---
 
-## 5️⃣ `fn_handle_new_user()` — Trigger de criação de profile
+## 5️⃣ `fn_handle_new_user()`-Trigger de criação de profile
 
 Dispara em `AFTER INSERT` em `auth.users` (via GoTrue `signUp`).
 Lê `raw_user_meta_data` para gravar `user_type`, `nome` e `telefone` no
@@ -202,13 +202,13 @@ profile automaticamente.
 
 ---
 
-## 6️⃣ `fn_prazo_padrao(tipo, data_preparo)` — RN-01, RN-08
+## 6️⃣ `fn_prazo_padrao(tipo, data_preparo)`-RN-01, RN-08
 
 Função `IMMUTABLE` que deriva os prazos do tipo de alimento.
 
 ---
 
-## 7️⃣ `fn_alimento_exige_frio(tipo)` — RN-03, RN-04
+## 7️⃣ `fn_alimento_exige_frio(tipo)`-RN-03, RN-04
 
 Retorna `true` para `frio` e `congelado`. Usada internamente pelo
 `exige_frio` (coluna gerada) e pode ser chamada no front-end para
@@ -216,7 +216,7 @@ mostrar alertas de cadeia de frio.
 
 ---
 
-## 8️⃣ `fn_transicao_valida(de, para)` — Whitelist do ciclo
+## 8️⃣ `fn_transicao_valida(de, para)`-Whitelist do ciclo
 
 Garante que o status avance **sequencialmente**, sem saltos.
 
@@ -246,7 +246,7 @@ else false
 
 ## 🔟 Regras de negócio (RN diretas)
 
-### `pode_ofertar(p_doador_id, p_tipo)` — RN-05
+### `pode_ofertar(p_doador_id, p_tipo)`-RN-05
 
 ```sql
 select exists (
@@ -261,7 +261,7 @@ select exists (
 
 > Com cadastro sanitário vencido, **só pode ofertar não perecível**.
 
-### `pode_aceitar(p_instituicao_id, p_oferta_id)` — RN-03
+### `pode_aceitar(p_instituicao_id, p_oferta_id)`-RN-03
 
 ```sql
 select exists (
@@ -283,7 +283,7 @@ select exists (
 
 > Instituição sem refrigeração **não pode aceitar oferta de frio/congelado**.
 
-### `pode_assumir(p_voluntario_id, p_oferta_id)` — RN-04
+### `pode_assumir(p_voluntario_id, p_oferta_id)`-RN-04
 
 ```sql
 select exists (
@@ -300,7 +300,7 @@ select exists (
 
 > Voluntário sem caixa térmica **não pode transportar frio/congelado**.
 
-### `pode_confirmar(p_user_id, p_oferta_id)` — RN-07
+### `pode_confirmar(p_user_id, p_oferta_id)`-RN-07
 
 ```sql
 select exists (
@@ -319,20 +319,20 @@ select exists (
 
 ## 🔢 RPCs chamadas pelo front-end
 
-### `criar_oferta(...)` — RN-01, RN-05, RN-08
+### `criar_oferta(...)`-RN-01, RN-05, RN-08
 
 Valida se o doador pode ofertar (RN-05), calcula prazos (RN-01/RN-08),
 rejeita datas futuras e insere a oferta.
 
-### `aceitar_oferta(uuid)` — RN-03
+### `aceitar_oferta(uuid)`-RN-03
 
 Valida `pode_aceitar()`, atualiza status → `aceita` + `instituicao_id` + `aceita_em`.
 
-### `assumir_transporte(uuid)` — RN-04
+### `assumir_transporte(uuid)`-RN-04
 
 Valida `pode_assumir()`, atualiza `voluntario_id`.
 
-### `avancar_status(uuid, status, comentario)` — RN-01 a RN-07
+### `avancar_status(uuid, status, comentario)`-RN-01 a RN-07
 
 Controla TODAS as transições:
 - `publicada → aceita` → **usar `aceitar_oferta()`**
@@ -342,7 +342,7 @@ Controla TODAS as transições:
 - `publicada/aceita → expirada/descartada` → só o doador
 - `publicada/aceita → cancelada` → doador ou instituição
 
-### `confirmar_recebimento(uuid, kg, obs)` — RN-07
+### `confirmar_recebimento(uuid, kg, obs)`-RN-07
 
 Valida `pode_confirmar()`, insere em `recebimentos`, atualiza status → `confirmada`.
 

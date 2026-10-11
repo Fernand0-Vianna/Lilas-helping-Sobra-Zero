@@ -1,5 +1,5 @@
 /**
- * supabase.js — Cliente centralizado do Supabase
+ * supabase.js-Cliente centralizado do Supabase
  * ====================================================================
  * Importado por todas as páginas JS. Via CDN, ES modules nativos.
  *

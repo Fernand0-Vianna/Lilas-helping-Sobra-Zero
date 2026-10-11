@@ -37,7 +37,7 @@ comment on schema public is
 -- 2. ENUMs de domínio
 -- =====================================================================
 
--- 2.1. Tipo do usuário — define qual tabela de perfil-o está filled.
+-- 2.1. Tipo do usuário-define qual tabela de perfil-o está filled.
 create type public.user_type as enum (
   'doador',        -- publica ofertas de alimento excedente
   'instituicao',   -- aceita ofertas e confirma o recebimento (RN-07)
@@ -47,7 +47,7 @@ create type public.user_type as enum (
 comment on type public.user_type is
   'Perfil do usuário. Determina a tabela de detalhes (doadores/instituicoes/voluntarios) e as permissões.';
 
--- 2.2. Tipo de alimento — controla o prazo e a cadeia de frio.
+-- 2.2. Tipo de alimento-controla o prazo e a cadeia de frio.
 create type public.tipo_alimento as enum (
   'preparado',     -- RN-01: 4h do preparo à coleta + 2h da coleta à entrega
   'nao_perecivel', -- RN-05: único tipo permitido com cadastro sanitário vencido

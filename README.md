@@ -5,7 +5,7 @@
 <h1 align="center">Sobra Zero</h1>
 <p align="center">
   Da sobra à mesa de quem precisa · <strong>Squad Lilás</strong><br>
-  Projeto de faculdade — Cruzeiro do Sul
+  Projeto de faculdade-Cruzeiro do Sul
 </p>
 
 ---
@@ -27,13 +27,13 @@ O **Sobra Zero** é a plataforma que conecta esses três lados:
 | **Voluntário** | Assume o transporte com as condições declaradas (frio, prazo) |
 
 Cada doação nasce com **validade**, passa por **rastro** e só termina quando quem
-recebe confirma — nada de alimento órfão, dado falso ou entrega nunca concluída.
+recebe confirma-nada de alimento órfão, dado falso ou entrega nunca concluída.
 
 ## Objetivo
 
 > Construir a interface completa (UI) da plataforma Sobra Zero, em **desktop (1440)**
 > e **mobile (390)**, cobrindo as 7 telas essenciais do produto, menus navegáveis,
-> protótipo clicável e a landing de apresentação — pronta para a etapa de
+> protótipo clicável e a landing de apresentação-pronta para a etapa de
 > desenvolvimento (código) do semestre.
 
 Objetivos específicos:
@@ -54,14 +54,14 @@ Objetivos específicos:
 **Identidade:** roxo `#7C5CE0` / `#5B3FC4`, fundo `#F5F4FA`, tinta `#111827`;
 fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 
-### Telas — desktop 1440
+### Telas-desktop 1440
 
 | | |
 |:---:|:---:|
 | <img src="design/desktop/04-publicar-oferta.png" width="420" alt="Publicar oferta"> | <img src="design/desktop/05-ofertas-disponiveis.png" width="420" alt="Ofertas disponíveis"> |
 | **04 · Publicar oferta** | **05 · Ofertas disponíveis** |
 | <img src="design/desktop/06-acompanhar-aceita.png" width="420" alt="Acompanhar Aceita"> | <img src="design/desktop/12-relatorio-doacoes.png" width="420" alt="Relatório"> |
-| **06 · Acompanhar — Aceita** | **12 · Relatório de doações** |
+| **06 · Acompanhar-Aceita** | **12 · Relatório de doações** |
 
 <details>
 <summary>Outras telas desktop (07–11)</summary>
@@ -77,7 +77,7 @@ fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 
 </details>
 
-### Telas — mobile 390
+### Telas-mobile 390
 
 <table>
   <tr>
@@ -96,14 +96,14 @@ fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 
 ### Landing, acesso e app
 
-- `index.html` — hero do projeto, ciclo em 6 etapas, personas, galeria das telas e as 8 RNs
-- `pages/login.html` — entrada real via `supabase.auth.signInWithPassword` + redirect por `user_type`
-- `pages/cadastro.html` — `signUp` + insert em doadores/instituições/voluntários (abas de perfil)
-- `pages/termos.html` — termos de uso em 9 cláusulas (conteúdo fixo)
-- `pages/ofertas.html` — feed via `vw_ofertas_feed`, ordenado por equidade RN-06
-- `pages/publicar-oferta.html` — formulário doador → RPC `criar_oferta` (RN-01/05/08)
-- `pages/oferta.html?id=...` — timeline (`oferta_historico`) + ações do ciclo (RN-01 a RN-07)
-- `pages/relatorio.html` — KPIs via `vw_kpis_gerais` + tabelas de doadores e descartes
+- `index.html`-hero do projeto, ciclo em 6 etapas, personas, galeria das telas e as 8 RNs
+- `pages/login.html`-entrada real via `supabase.auth.signInWithPassword` + redirect por `user_type`
+- `pages/cadastro.html`-`signUp` + insert em doadores/instituições/voluntários (abas de perfil)
+- `pages/termos.html`-termos de uso em 9 cláusulas (conteúdo fixo)
+- `pages/ofertas.html`-feed via `vw_ofertas_feed`, ordenado por equidade RN-06
+- `pages/publicar-oferta.html`-formulário doador → RPC `criar_oferta` (RN-01/05/08)
+- `pages/oferta.html?id=...`-timeline (`oferta_historico`) + ações do ciclo (RN-01 a RN-07)
+- `pages/relatorio.html`-KPIs via `vw_kpis_gerais` + tabelas de doadores e descartes
 
 > **Estado atual:** backend Supabase ativo. Login, cadastro, feed, publicação,
 > ciclo e relatório falam com o banco real via `pages-js/` + RLS + RPCs.
@@ -178,7 +178,7 @@ Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
 ### Tabelas
 
 <details>
-<summary><b>profiles</b> — espelho 1:1 de <code>auth.users</code></summary>
+<summary><b>profiles</b>-espelho 1:1 de <code>auth.users</code></summary>
 
 <table>
 <tr><th>Coluna</th><th>Tipo</th><th>Regra</th></tr>
@@ -192,7 +192,7 @@ Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
 </details>
 
 <details>
-<summary><b>doadores</b> — perfil estendido do doador (RN-05)</summary>
+<summary><b>doadores</b>-perfil estendido do doador (RN-05)</summary>
 
 <table>
 <tr><th>Coluna</th><th>Tipo</th><th>Regra</th></tr>
@@ -206,7 +206,7 @@ Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
 </details>
 
 <details>
-<summary><b>instituicoes</b> — perfil estendido da instituição (RN-03)</summary>
+<summary><b>instituicoes</b>-perfil estendido da instituição (RN-03)</summary>
 
 <table>
 <tr><th>Coluna</th><th>Tipo</th><th>Regra</th></tr>
@@ -222,7 +222,7 @@ Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
 </details>
 
 <details>
-<summary><b>voluntarios</b> — perfil estendido do voluntário (RN-04)</summary>
+<summary><b>voluntarios</b>-perfil estendido do voluntário (RN-04)</summary>
 
 <table>
 <tr><th>Coluna</th><th>Tipo</th><th>Regra</th></tr>
@@ -237,7 +237,7 @@ Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
 </details>
 
 <details>
-<summary><b>ofertas</b> — núcleo do produto (RN-01, RN-02, RN-08)</summary>
+<summary><b>ofertas</b>-núcleo do produto (RN-01, RN-02, RN-08)</summary>
 
 <table>
 <tr><th>Coluna</th><th>Tipo</th><th>Regra</th></tr>
@@ -256,7 +256,7 @@ Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
 </details>
 
 <details>
-<summary><b>oferta_historico</b> — timeline append-only</summary>
+<summary><b>oferta_historico</b>-timeline append-only</summary>
 
 <table>
 <tr><th>Coluna</th><th>Tipo</th><th>Regra</th></tr>
@@ -268,7 +268,7 @@ Detalhes em `plano/`: `02-database-schema.md` (schema), `04-rls-policies.md`
 </details>
 
 <details>
-<summary><b>recebimentos</b> — prova de entrega (RN-07)</summary>
+<summary><b>recebimentos</b>-prova de entrega (RN-07)</summary>
 
 <table>
 <tr><th>Coluna</th><th>Tipo</th><th>Regra</th></tr>
@@ -300,7 +300,7 @@ const { data: ofertas } = await supabase
   .select('*')
   .order('kg_recebidos_30d_prioridade', { ascending: true });
 
-// Publicar oferta (prazos calculados no banco — RN-01/RN-08)
+// Publicar oferta (prazos calculados no banco-RN-01/RN-08)
 const { data: oferta } = await supabase.rpc('criar_oferta', {
   p_titulo: 'Marmitas de frango',
   p_tipo: 'preparado',
@@ -360,5 +360,5 @@ Variáveis: copie `.env.example` para `.env.local` e preencha
 
 ##  Licença e contexto
 
-Projeto acadêmico do semestre — **Squad Lilás**. Design original no Penpot,
+Projeto acadêmico do semestre-**Squad Lilás**. Design original no Penpot,
 exportado para SVG/PNG nesta pasta.

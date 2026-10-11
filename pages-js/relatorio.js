@@ -1,5 +1,5 @@
 /**
- * relatorio.js — Tela de relatório e KPIs
+ * relatorio.js-Tela de relatório e KPIs
  * ====================================================================
  * Popula os cards de KPIs gerais e as tabelas de resumo usando as views
  * do Supabase: vw_kpis_gerais, vw_relatorio_doadores e vw_descartes.
@@ -7,9 +7,9 @@
  * Tela associada: 12 (desktop) / M7 (mobile).
  *
  * RNs envolvidas:
- *   RN-02 — métrica de descartes (kg e contagem)
- *   RN-06 — equidade: kg recebidos por instituição em 30 dias
- *   RN-07 — doações concluídas (status confirmada)
+ *   RN-02-métrica de descartes (kg e contagem)
+ *   RN-06-equidade: kg recebidos por instituição em 30 dias
+ *   RN-07-doações concluídas (status confirmada)
  */
 
 import supabase, { getUserProfile, redirectIfNotAuthenticated } from './supabase.js';
@@ -53,7 +53,7 @@ async function carregarKpis() {
     return;
   }
 
-  // Popula os cards — usa IDs baseados no HTML da tela 12
+  // Popula os cards-usa IDs baseados no HTML da tela 12
   const kpis = {
     kg_doados: data.kg_distribuidos || 0,
     doacoes_concluidas: data.ofertas_confirmadas || 0,

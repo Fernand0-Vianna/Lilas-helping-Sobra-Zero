@@ -1,5 +1,5 @@
 /**
- * perfil.js — Ver e editar o perfil do usuário logado
+ * perfil.js-Ver e editar o perfil do usuário logado
  * ====================================================================
  * Lê profiles + tabela de detalhe (doadores / instituicoes / voluntarios)
  * via getUserProfile() e permite UPDATE apenas nas linhas do próprio

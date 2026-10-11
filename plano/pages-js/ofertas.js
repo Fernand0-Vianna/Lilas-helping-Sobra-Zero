@@ -1,14 +1,14 @@
 /**
- * ofertas.js — Feed de ofertas disponíveis
+ * ofertas.js-Feed de ofertas disponíveis
  * ====================================================================
  * Exibe ofertas publicadas, ordenadas por equidade (RN-06),
  * com filtros por tipo de alimento e exigência de frio.
  *
  * RNs envolvidas:
- *   RN-02 — ofertas expiradas saem do feed automaticamente
- *   RN-03 — instituições sem refrigeração veem alerta em ofertas de frio
- *   RN-04 — voluntários sem caixa térmica veem alerta em ofertas de frio
- *   RN-06 — ORDER BY kg_recebidos_30d_prioridade ASC (quem recebeu menos primeiro)
+ *   RN-02-ofertas expiradas saem do feed automaticamente
+ *   RN-03-instituições sem refrigeração veem alerta em ofertas de frio
+ *   RN-04-voluntários sem caixa térmica veem alerta em ofertas de frio
+ *   RN-06-ORDER BY kg_recebidos_30d_prioridade ASC (quem recebeu menos primeiro)
  */
 
 import supabase from './supabase.js';

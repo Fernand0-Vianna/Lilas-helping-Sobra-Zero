@@ -1,4 +1,4 @@
-# 🗄️ 02 — Schema do Banco de Dados
+# 🗄️ 02-Schema do Banco de Dados
 
 > Documentação completa do modelo de dados do **Sobra Zero**, com mapeamento
 > de RN → colunas e diagrama ER em texto.
@@ -10,11 +10,11 @@
 O banco usa **um único schema `public`**, com todas as tabelas protegidas por
 **Row Level Security (RLS)**. O modelo segue o padrão:
 
-- `profiles` — espelho 1:1 de `auth.users` (o "quem é")
-- `doadores`, `instituicoes`, `voluntarios` — tabelas de detalhe, uma por perfil
-- `ofertas` — núcleo do produto
-- `oferta_historico` — rastro append-only do ciclo de vida
-- `recebimentos` — prova de entrega (RN-07)
+- `profiles`-espelho 1:1 de `auth.users` (o "quem é")
+- `doadores`, `instituicoes`, `voluntarios`-tabelas de detalhe, uma por perfil
+- `ofertas`-núcleo do produto
+- `oferta_historico`-rastro append-only do ciclo de vida
+- `recebimentos`-prova de entrega (RN-07)
 
 ### ENUMs de domínio
 
@@ -71,7 +71,7 @@ Views:
 | `telefone` | `text` | NULL | Telefone de contato |
 | `avatar_url` | `text` | NULL | URL da imagem |
 | `termos_aceitos_em` | `timestamptz` | NOT NULL, DEFAULT now() | Data de aceite dos termos |
-| `criado_em` | `timestamptz` | DEFAULT now() | — |
+| `criado_em` | `timestamptz` | DEFAULT now() |-|
 | `atualizado_em` | `timestamptz` | DEFAULT now() | Atualizado pelo trigger `fn_touch_updated_at()` |
 
 > Trigger: `trg_profiles_updated_at` → chama `fn_touch_updated_at()`
@@ -80,70 +80,70 @@ Views:
 
 | Coluna | Tipo | Constraints | RN | Comentário |
 |--------|------|-------------|-----|------------|
-| `id` | `uuid` | PK, DEFAULT gen_random_uuid() | — | ID interno |
-| `profile_id` | `uuid` | NOT NULL, UNIQUE → profiles.id ON DELETE CASCADE | — | Link com profile |
-| `nome_estabelecimento` | `text` | NOT NULL | — | Nome fantasia |
-| `responsavel` | `text` | NOT NULL | — | Responsável legal |
-| `telefone` | `text` | NULL | — | — |
+| `id` | `uuid` | PK, DEFAULT gen_random_uuid() |-| ID interno |
+| `profile_id` | `uuid` | NOT NULL, UNIQUE → profiles.id ON DELETE CASCADE |-| Link com profile |
+| `nome_estabelecimento` | `text` | NOT NULL |-| Nome fantasia |
+| `responsavel` | `text` | NOT NULL |-| Responsável legal |
+| `telefone` | `text` | NULL |-|-|
 | `cadastro_sanitario_validade` | `date` | NOT NULL, CHECK ≥ 2000-01-01 | **RN-05** | Validade do cadastro sanitário |
-| `endereco` | `text` | NULL | — | — |
-| `bairro` | `text` | NULL | — | — |
-| `criado_em` / `atualizado_em` | `timestamptz` | DEFAULT now() | — | Timestamps |
+| `endereco` | `text` | NULL |-|-|
+| `bairro` | `text` | NULL |-|-|
+| `criado_em` / `atualizado_em` | `timestamptz` | DEFAULT now() |-| Timestamps |
 
 ### `instituicoes` (Migration 02)
 
 | Coluna | Tipo | Constraints | RN | Comentário |
 |--------|------|-------------|-----|------------|
-| `id` | `uuid` | PK, DEFAULT gen_random_uuid() | — | ID interno |
-| `profile_id` | `uuid` | NOT NULL, UNIQUE → profiles.id | — | Link com profile |
-| `razao_social` | `text` | NOT NULL | — | Nome da instituição |
+| `id` | `uuid` | PK, DEFAULT gen_random_uuid() |-| ID interno |
+| `profile_id` | `uuid` | NOT NULL, UNIQUE → profiles.id |-| Link com profile |
+| `razao_social` | `text` | NOT NULL |-| Nome da instituição |
 | `cnpj` | `text` | NOT NULL, UNIQUE, CHECK 14 dígitos | **RN-03** | CNPJ sem formatação |
 | `responsavel_legal` | `text` | NOT NULL | **RN-03** | Nome do responsável |
-| `telefone` | `text` | NULL | — | — |
+| `telefone` | `text` | NULL |-|-|
 | `tem_refrigeracao` | `boolean` | NOT NULL, DEFAULT false | **RN-03** | Só aceita frio se true |
 | `capacidade_refrigeracao_kg` | `numeric(10,2)` | CHECK | **RN-03** | Capacidade da câmara |
-| `necessidade_semanal` | `faixa_necessidade` | NOT NULL, DEFAULT `ate_20kg` | — | Para triagem (não bloqueia) |
+| `necessidade_semanal` | `faixa_necessidade` | NOT NULL, DEFAULT `ate_20kg` |-| Para triagem (não bloqueia) |
 | `aceita_congelado` | `boolean` | NOT NULL, DEFAULT false | **RN-03** | Só relevante se `tem_refrigeracao` |
-| `endereco` / `bairro` | `text` | NULL | — | Localização |
+| `endereco` / `bairro` | `text` | NULL |-| Localização |
 
 ### `voluntarios` (Migration 02)
 
 | Coluna | Tipo | Constraints | RN | Comentário |
 |--------|------|-------------|-----|------------|
-| `id` | `uuid` | PK, DEFAULT gen_random_uuid() | — | ID interno |
-| `profile_id` | `uuid` | NOT NULL, UNIQUE → profiles.id | — | Link com profile |
-| `nome_completo` | `text` | NOT NULL | — | Nome do voluntário |
-| `telefone` | `text` | NOT NULL | — | WhatsApp para contato |
+| `id` | `uuid` | PK, DEFAULT gen_random_uuid() |-| ID interno |
+| `profile_id` | `uuid` | NOT NULL, UNIQUE → profiles.id |-| Link com profile |
+| `nome_completo` | `text` | NOT NULL |-| Nome do voluntário |
+| `telefone` | `text` | NOT NULL |-| WhatsApp para contato |
 | `tem_caixa_termica` | `boolean` | NOT NULL, DEFAULT false | **RN-04** | Obrigatório para frio/congelado |
-| `meio_transporte` | `meio_transporte` | NOT NULL | — | Carro, moto, transporte público |
-| `capacidade_kg` | `numeric(10,2)` | NULL | — | Quantidade que consegue carregar |
-| `raio_atuacao_km` | `integer` | NULL | — | Raio de atuação |
-| `disponivel` | `boolean` | NOT NULL, DEFAULT true | — | Pausar disponibilidade |
+| `meio_transporte` | `meio_transporte` | NOT NULL |-| Carro, moto, transporte público |
+| `capacidade_kg` | `numeric(10,2)` | NULL |-| Quantidade que consegue carregar |
+| `raio_atuacao_km` | `integer` | NULL |-| Raio de atuação |
+| `disponivel` | `boolean` | NOT NULL, DEFAULT true |-| Pausar disponibilidade |
 
 ### `ofertas` (Migration 03)
 
 | Coluna | Tipo | Constraints | RN | Comentário |
 |--------|------|-------------|-----|------------|
-| `id` | `uuid` | PK, DEFAULT gen_random_uuid() | — | — |
-| `doador_id` | `uuid` | NOT NULL → doadores.id ON DELETE RESTRICT | — | Fixo após criação |
-| `titulo` | `text` | NOT NULL, CHECK 3–120 chars | — | — |
-| `descricao` | `text` | NULL | — | Detalhes |
+| `id` | `uuid` | PK, DEFAULT gen_random_uuid() |-|-|
+| `doador_id` | `uuid` | NOT NULL → doadores.id ON DELETE RESTRICT |-| Fixo após criação |
+| `titulo` | `text` | NOT NULL, CHECK 3–120 chars |-|-|
+| `descricao` | `text` | NULL |-| Detalhes |
 | `tipo_alimento` | `tipo_alimento` | NOT NULL | RN-01, RN-08 | Define prazo |
 | `exige_frio` | `boolean` | GENERATED ALWAYS AS | RN-03, RN-04 | Derivado de tipo_alimento |
-| `quantidade_kg` | `numeric(10,2)` | NOT NULL, CHECK 0 < q ≤ 5000 | — | — |
+| `quantidade_kg` | `numeric(10,2)` | NOT NULL, CHECK 0 < q ≤ 5000 |-|-|
 | `porcoes` | `integer` | CHECK > 0 | NULL | Número de porções |
 | `data_preparo` | `timestamptz` | NOT NULL | RN-01, RN-08 | Referência para prazos |
 | `prazo_coleta` | `timestamptz` | NOT NULL | RN-01 | Calculado automaticamente |
 | `prazo_entrega` | `timestamptz` | NOT NULL | RN-01 | Calculado automaticamente |
 | `expira_em` | `timestamptz` | NOT NULL | RN-01, RN-02 | Limite usado pelo pg_cron |
-| `status` | `status_oferta` | NOT NULL, DEFAULT `publicada` | — | Ciclo de vida |
+| `status` | `status_oferta` | NOT NULL, DEFAULT `publicada` |-| Ciclo de vida |
 | `instituicao_id` | `uuid` | → instituicoes.id ON DELETE SET NULL | RN-03, RN-07 | Quem aceitou |
 | `voluntario_id` | `uuid` | → voluntarios.id ON DELETE SET NULL | RN-04 | Quem transporta |
-| `endereco_coleta` | `text` | NOT NULL | — | Local de retirada |
-| `bairro_coleta` | `text` | NULL | — | Bairro |
+| `endereco_coleta` | `text` | NOT NULL |-| Local de retirada |
+| `bairro_coleta` | `text` | NULL |-| Bairro |
 | `motivo_descarte` | `text` | NULL | RN-02 | Texto livre |
 | `expirada_em` / `descartada_em` | `timestamptz` | NULL | RN-02 | Timestamps do descarte |
-| `aceita_em` / `coletada_em` / `entregue_em` / `confirmada_em` / `cancelada_em` | `timestamptz` | NULL | — | Carimbos do ciclo |
+| `aceita_em` / `coletada_em` / `entregue_em` / `confirmada_em` / `cancelada_em` | `timestamptz` | NULL |-| Carimbos do ciclo |
 
 > Triggers: `trg_ofertas_updated_at`, `trg_ofertas_prazos`, `trg_ofertas_historico`
 
@@ -151,26 +151,26 @@ Views:
 
 | Coluna | Tipo | Constraints | Comentário |
 |--------|------|-------------|------------|
-| `id` | `bigint` | PK, GENERATED ALWAYS AS IDENTITY | — |
-| `oferta_id` | `uuid` | NOT NULL → ofertas.id ON DELETE CASCADE | — |
+| `id` | `bigint` | PK, GENERATED ALWAYS AS IDENTITY |-|
+| `oferta_id` | `uuid` | NOT NULL → ofertas.id ON DELETE CASCADE |-|
 | `status_anterior` | `status_oferta` | NULL | NULL no primeiro registro |
-| `status_novo` | `status_oferta` | NOT NULL | — |
+| `status_novo` | `status_oferta` | NOT NULL |-|
 | `ator_id` | `uuid` | → profiles.id ON DELETE SET NULL | NULL = evento automático |
 | `ator_tipo` | `user_type` | NULL | Tipo do ator |
 | `comentario` | `text` | NULL | Observação da mudança |
-| `criado_em` | `timestamptz` | DEFAULT now() | — |
+| `criado_em` | `timestamptz` | DEFAULT now() |-|
 
 ### `recebimentos` (Migration 03)
 
 | Coluna | Tipo | Constraints | RN | Comentário |
 |--------|------|-------------|-----|------------|
-| `id` | `uuid` | PK, DEFAULT gen_random_uuid() | — | — |
-| `oferta_id` | `uuid` | NOT NULL, UNIQUE → ofertas.id ON DELETE CASCADE | — | Uma oferta = um recebimento |
+| `id` | `uuid` | PK, DEFAULT gen_random_uuid() |-|-|
+| `oferta_id` | `uuid` | NOT NULL, UNIQUE → ofertas.id ON DELETE CASCADE |-| Uma oferta = um recebimento |
 | `instituicao_id` | `uuid` | NOT NULL → instituicoes.id ON DELETE RESTRICT | RN-07 | Quem recebeu |
 | `confirmado_por` | `uuid` | NOT NULL → profiles.id ON DELETE RESTRICT | RN-07 | Profile que confirmou |
 | `quantidade_recebida_kg` | `numeric(10,2)` | NOT NULL, CHECK > 0 | RN-07 | Peso efetivamente recebido |
-| `observacoes` | `text` | NULL | — | — |
-| `criado_em` | `timestamptz` | DEFAULT now() | — | — |
+| `observacoes` | `text` | NULL |-|-|
+| `criado_em` | `timestamptz` | DEFAULT now() |-|-|
 
 ---
 
@@ -228,14 +228,14 @@ contagem de perfis ativos.
 
 ## 📐 Regras de integridade (constraints)
 
-1. **`ofertas_status_carimbos`** — um carimbo (`aceita_em`, `coletada_em`, etc.)
+1. **`ofertas_status_carimbos`**-um carimbo (`aceita_em`, `coletada_em`, etc.)
    só pode existir se o `status` já passou por aquela etapa.
-2. **`ofertas_prazos_ordem`** — `prazo_coleta <= prazo_entrega`.
-3. **`ofertas_expira_dentro_do_prazo`** — `expira_em <= prazo_entrega`.
-4. **`doadores_sanitario_nao_passado`** — `cadastro_sanitario_validade >= 2000-01-01`.
-5. **`instituicoes_capacidade_com_refrigeracao`** — se não tem refrigeração,
+2. **`ofertas_prazos_ordem`**-`prazo_coleta <= prazo_entrega`.
+3. **`ofertas_expira_dentro_do_prazo`**-`expira_em <= prazo_entrega`.
+4. **`doadores_sanitario_nao_passado`**-`cadastro_sanitario_validade >= 2000-01-01`.
+5. **`instituicoes_capacidade_com_refrigeracao`**-se não tem refrigeração,
    a capacidade deve ser NULL ou > 0.
-6. **`instituicoes.cnpj`** — 14 dígitos, formato `~ '^[0-9]{14}$'`.
+6. **`instituicoes.cnpj`**-14 dígitos, formato `~ '^[0-9]{14}$'`.
 
 ---
 
@@ -243,7 +243,7 @@ contagem de perfis ativos.
 
 | Função | Tipo | Stabilidade | Uso |
 |--------|------|-------------|-----|
-| `fn_touch_updated_at()` | trigger | — | Atualiza `updated_at` automaticamente |
+| `fn_touch_updated_at()` | trigger |-| Atualiza `updated_at` automaticamente |
 | `fn_prazo_padrao(tipo, data_preparo)` | sql | `immutable` | Calcula `prazo_coleta` e `prazo_entrega` |
 | `fn_alimento_exige_frio(tipo)` | sql | `immutable` | Retorna `true` para `frio` e `congelado` |
 | `fn_transicao_valida(de, para)` | sql | `immutable` | Whitelist do ciclo de vida |
@@ -260,4 +260,4 @@ contagem de perfis ativos.
 ```
 
 > As migrations são nomeadas com timestamp prefixado para garantir a ordem.
-> Nunca reordene — cada uma depende da anterior.
+> Nunca reordene-cada uma depende da anterior.

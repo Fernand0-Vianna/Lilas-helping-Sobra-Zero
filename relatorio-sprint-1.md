@@ -1,4 +1,4 @@
-# Relatório — Sprint 1
+# Relatório-Sprint 1
 
 **Projeto:** Sobra Zero (Squad Lilás) · **Período da sprint:** 24/09/2026 a 02/10/2026
 
@@ -51,21 +51,21 @@ dv.el("div", svg);
 
 ## O que ficou para trás
 
-- **Integração completa das páginas HTML com o Supabase JS** — faltou definir o fluxo de sessão com as contas de teste; segue para a Sprint 2.
-- **Popup de erro em todas as telas** (RN de validação) — apenas login/cadastro receberam o padrão; segue para a Sprint 2.
+- **Integração completa das páginas HTML com o Supabase JS**-faltou definir o fluxo de sessão com as contas de teste; segue para a Sprint 2.
+- **Popup de erro em todas as telas** (RN de validação)-apenas login/cadastro receberam o padrão; segue para a Sprint 2.
 
 ## Impedimentos
 
-- **Falha no `.gitignore`** que expunha credenciais do Supabase no repositório — detectada e corrigida em 24/09/2026 pelo dono do repositório; sem dias perdidos, mas gerou a decisão de manter credenciais apenas em `tests/contas-teste.example.json`. Ficou aberto: revisar segredos no histórico antes do merge final.
+- **Falha no `.gitignore`** que expunha credenciais do Supabase no repositório-detectada e corrigida em 24/09/2026 pelo dono do repositório; sem dias perdidos, mas gerou a decisão de manter credenciais apenas em `tests/contas-teste.example.json`. Ficou aberto: revisar segredos no histórico antes do merge final.
 
 ## Decisões tomadas
 
-- **24/09/2026** — Estrutura inicial sem framework (HTML/CSS/JS puro + Supabase), responsável: líder do Squad Lilás.
-- **01/10/2026** — Contas de teste em arquivo separado com exemplo versionado e real ignorado, responsável: líder do Squad Lilás.
-- **01/10/2026** — Inclusão de seção de LGPD nos Termos de Uso, responsável: líder do Squad Lilás.
+- **24/09/2026**-Estrutura inicial sem framework (HTML/CSS/JS puro + Supabase), responsável: líder do Squad Lilás.
+- **01/10/2026**-Contas de teste em arquivo separado com exemplo versionado e real ignorado, responsável: líder do Squad Lilás.
+- **01/10/2026**-Inclusão de seção de LGPD nos Termos de Uso, responsável: líder do Squad Lilás.
 
 ## Ações para a próxima sprint
 
-1. Integrar todas as páginas com Supabase JS (autenticação e sessão) — dono: líder · prazo: 09/10/2026.
-2. Padronizar popup de erro em todas as telas — dono: líder · prazo: 09/10/2026.
-3. Revisar histórico do git em busca de credenciais expostas — dono: líder · prazo: 06/10/2026.
+1. Integrar todas as páginas com Supabase JS (autenticação e sessão)-dono: líder · prazo: 09/10/2026.
+2. Padronizar popup de erro em todas as telas-dono: líder · prazo: 09/10/2026.
+3. Revisar histórico do git em busca de credenciais expostas-dono: líder · prazo: 06/10/2026.

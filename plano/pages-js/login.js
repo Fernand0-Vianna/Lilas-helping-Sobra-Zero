@@ -1,5 +1,5 @@
 /**
- * login.js — Autenticação com Supabase
+ * login.js-Autenticação com Supabase
  * ====================================================================
  * Substitui a maquete estática de pages/login.html por login real.
  *

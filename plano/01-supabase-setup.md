@@ -1,7 +1,7 @@
-# ☁️ 01 — Configuração do Supabase
+# ☁️ 01-Configuração do Supabase
 
 > Guia passo-a-passo para levantar o ambiente Supabase do **Sobra Zero** do zero.
-> Executar em ordem sequencial — dura cerca de 10 minutos.
+> Executar em ordem sequencial-dura cerca de 10 minutos.
 
 ---
 
@@ -12,7 +12,7 @@
 | Node.js    | 18.x LTS      | `node -v`  |
 | npm        | 9.x           | `npm -v`   |
 | Git        | 2.x           | `git -v`   |
-| Navegador  | Chrome/Edge/Firefox (modo incógnit o recomendado para testes) | — |
+| Navegador  | Chrome/Edge/Firefox (modo incógnit o recomendado para testes) |-|
 
 > **Dica:** se ainda não tem Node.js, instale via [nvm](https://github.com/nvm-sh/nvm):
 > ```bash
@@ -24,12 +24,12 @@
 
 ## 1️⃣ Criar conta e projeto no Supabase
 
-### Passo 1 — Criar conta
+### Passo 1-Criar conta
 
 Acesse [https://supabase.com](https://supabase.com) e clique em **"Start in Slack"** ou
 **"Sign up"**. Use um e-mail válido (a confirmação de e-mail é obrigatória).
 
-### Passo 2 — Criar projeto
+### Passo 2-Criar projeto
 
 No painel, clique em **"New project"** e preencha:
 
@@ -37,13 +37,13 @@ No painel, clique em **"New project"** e preencha:
 |-------------|----------------|
 | **Name**     | `sobra-zero-prototipo` |
 | **Organization** | Crie uma nova: `Squad Lilás` |
-| **Password** | Uma senha forte (ex.: `S0braZero!2026`) — **anote em local seguro** |
+| **Password** | Uma senha forte (ex.: `S0braZero!2026`)-**anote em local seguro** |
 | **Region**   | `South America (São Paulo) .sa-east-1` (mais próximo do Brasil) |
 
 Clique em **"Create project"**. A inicialização leva 1–3 minutos. Enquanto isso,
-vá passo 3 — instalar a CLI.
+vá passo 3-instalar a CLI.
 
-### Passo 3 — Pegar URL e anon key
+### Passo 3-Pegar URL e anon key
 
 No painel do seu projeto → **Project Settings** (ícone de engrenagem no canto
 inferior esquerdo) → **API**:
@@ -51,7 +51,7 @@ inferior esquerdo) → **API**:
 - **URL:** algo como `https://abcde12345.supabase.co`
 - **anon public key:** uma string longa que começa com `eyJhbGciOi...`
 
-> Copie ambas — você vai precisar no `.env.local`.
+> Copie ambas-você vai precisar no `.env.local`.
 
 ---
 
@@ -79,7 +79,7 @@ supabase version
 
 ## 3️⃣ Login e inicialização
 
-### Passo 4 — Fazer login
+### Passo 4-Fazer login
 
 ```bash
 supabase login
@@ -88,7 +88,7 @@ supabase login
 Abrirá uma página no navegador para confirmar a autenticação. Após o login,
 o token fica armazenado em `~/.supabase/config.json`.
 
-### Passo 5 — Inicializar o projeto local
+### Passo 5-Inicializar o projeto local
 
 Dentro da pasta raiz do projeto:
 
@@ -106,7 +106,7 @@ Isso cria a estrutura local:
 └── migrations/      # Pasta de migrations (criada automaticamente)
 ```
 
-### Passo 6 — Configurar `.env.local`
+### Passo 6-Configurar `.env.local`
 
 Crie o arquivo `.env.local` na raiz do projeto:
 
@@ -122,7 +122,7 @@ EOF
 ```
 
 > **IMPORTANTE para o Sobra Zero:**
-> - Não commite `.env.local` ao Git — já está no `.gitignore`.
+> - Não commite `.env.local` ao Git-já está no `.gitignore`.
 > - Para páginas estáticas (como esta), o JS lê `NEXT_PUBLIC_SUPABASE_URL` e
 >   `NEXT_PUBLIC_SUPABASE_ANON_KEY` via `import.meta.env` (Vite) ou variável
 >   global configurada manualmente. Veja [`03-supabase-js.md`](./03-supabase-js.md).
@@ -131,7 +131,7 @@ EOF
 
 ## 4️⃣ Linkar ao projeto remoto
 
-### Passo 7 — Linkar
+### Passo 7-Linkar
 
 ```bash
 supabase link --project-id SEU_PROJECT_ID
@@ -146,7 +146,7 @@ Se pedir a URL e a chave, informe as copiadas no passo 3.
 
 ## 5️⃣ Subir as migrations
 
-### Passo 8 — Rodar `db push`
+### Passo 8-Rodar `db push`
 
 ```bash
 supabase db push
@@ -165,7 +165,7 @@ Schema: public
 ✓ Migration 20260104000000_functions.sql applied
 ```
 
-### Passo 9 (alternativo) — Rodar localmente primeiro
+### Passo 9 (alternativo)-Rodar localmente primeiro
 
 Para testar sem tocar o remoto:
 
