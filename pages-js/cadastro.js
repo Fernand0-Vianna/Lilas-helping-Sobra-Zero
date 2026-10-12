@@ -117,7 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 2. Garante que o profile existe (backup caso trigger falhe) ---
-    const { error: profileError } = await supabase.from('profiles').upsert({
+    // INSERT puro (sem upsert): a trigger fn_handle_new_user já cria a linha
+    // no signup. UPDATE em profiles é restrito a colunas de contato, então
+    // um upsert com user_type seria negado (trava anti auto-promoção admin).
+    const { error: profileError } = await supabase.from('profiles').insert({
       id: user.id,
       user_type: aba,
       nome: nome,
@@ -125,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
       telefone: telefone || null,
     });
 
-    if (profileError && profileError.code !== '23505') { // 23505 = já existe (ok)
+    if (profileError && profileError.code !== '23505' && profileError.code !== '409') {
       mostrarPopup('warn', 'Aviso no perfil', profileError.message);
     }
 

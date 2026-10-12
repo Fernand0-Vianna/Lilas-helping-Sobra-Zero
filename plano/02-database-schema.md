@@ -20,7 +20,7 @@ O banco usa **um único schema `public`**, com todas as tabelas protegidas por
 
 | Tipo | Valores | Uso |
 |------|---------|-----|
-| `user_type` | `doador`, `instituicao`, `voluntario` | Define qual tabela de detalhe |
+| `user_type` | `doador`, `instituicao`, `voluntario`, `admin` | Define qual tabela de detalhe (admin tem vínculo nas 3 e flutua entre papéis) |
 | `tipo_alimento` | `preparado`, `nao_perecivel`, `frio`, `congelado` | Define prazo (RN-01/RN-08) e exigência de frio |
 | `status_oferta` | `publicada`, `aceita`, `coletada`, `entregue`, `confirmada`, `expirada`, `descartada`, `cancelada` | Ciclo de vida da oferta |
 | `faixa_necessidade` | `ate_20kg`, `de_21_a_60kg`, `de_61_a_150kg`, `mais_de_150kg` | Capacidade declarada pela instituição (tela 10) |

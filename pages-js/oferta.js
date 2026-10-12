@@ -17,7 +17,7 @@
  * Ciclo: publicada → aceita → coletada → entregue → confirmada
  */
 
-import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarPopup } from './supabase.js';
+import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, papelEfetivo, vinculoDe, renderPapelSwitcher } from './supabase.js';
 
 // Estados do ciclo em ordem (para timeline visual)
 const CICLO_STATUS = [
@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.location.href = 'login.html';
     return;
   }
+
+  // --- Switcher de papel (só renderiza para admin) ---
+  renderPapelSwitcher(profile);
 
   // --- Carrega a oferta + histórico ---
   await carregarOferta();
@@ -172,15 +175,19 @@ function renderizarAcoes(oferta, profile) {
   }
 
   const botoes = [];
-  const tipo = profile.user_type;
+  const tipo = papelEfetivo(profile);
   const exigeFrio = oferta.exige_frio;
 
   // --- RN-07: Instituição que aceitou pode avançar a "coletada" ---
   // (normalmente o voluntário faz, mas a instituição também pode avançar)
   if (oferta.status === 'publicada' && tipo === 'instituicao') {
-    // RN-03: verifica refrigeração
-    const instituicao = profile.detalhe;
-    if (exigeFrio && !instituicao.tem_refrigeracao) {
+    // RN-03: verifica refrigeração (sem vínculo: orienta a completar o perfil)
+    const instituicao = vinculoDe(profile, 'instituicao');
+    if (!instituicao) {
+      botoes.push(`<button class="btn btn-disabled" disabled>
+        Complete seu vínculo de instituição no perfil para aceitar ofertas.
+      </button>`);
+    } else if (exigeFrio && !instituicao.tem_refrigeracao) {
       botoes.push(`<button class="btn btn-disabled" disabled>
         ❌ Você não tem refrigeração-não pode aceitar ofertas de frio (RN-03)
       </button>`);
@@ -193,8 +200,12 @@ function renderizarAcoes(oferta, profile) {
 
   // --- RN-04: Voluntário assume transporte ---
   if (oferta.status === 'publicada' && tipo === 'voluntario') {
-    const voluntario = profile.detalhe;
-    if (exigeFrio && !voluntario.tem_caixa_termica) {
+    const voluntario = vinculoDe(profile, 'voluntario');
+    if (!voluntario) {
+      botoes.push(`<button class="btn btn-disabled" disabled>
+        Complete seu vínculo de voluntário no perfil para assumir transportes.
+      </button>`);
+    } else if (exigeFrio && !voluntario.tem_caixa_termica) {
       botoes.push(`<button class="btn btn-disabled" disabled>
         ❌ Você não tem caixa térmica-não pode transportar alimentos de frio (RN-04)
       </button>`);
@@ -206,8 +217,9 @@ function renderizarAcoes(oferta, profile) {
   }
 
   // --- Coletada (voluntário que assumiu) ---
+  const vincVol = vinculoDe(profile, 'voluntario');
   if (oferta.status === 'aceita' && tipo === 'voluntario' &&
-      oferta.voluntario_id && oferta.voluntario_nome) {
+      vincVol?.id && oferta.voluntario_id === vincVol.id) {
     botoes.push(`<button class="btn btn-primary" onclick="avancarColetada()">
       📦 Registrar coleta
     </button>`);
@@ -215,14 +227,16 @@ function renderizarAcoes(oferta, profile) {
 
   // --- Entregue (voluntário que assumiu) ---
   if (oferta.status === 'coletada' && tipo === 'voluntario' &&
-      oferta.voluntario_id && oferta.voluntario_nome) {
+      vincVol?.id && oferta.voluntario_id === vincVol.id) {
     botoes.push(`<button class="btn btn-primary" onclick="avancarEntregue()">
       🏠 Registrar entrega
     </button>`);
   }
 
   // --- Confirmada (RN-07: só instituição dona confirma) ---
-  if (oferta.status === 'entregue' && tipo === 'instituicao') {
+  const vincInst = vinculoDe(profile, 'instituicao');
+  if (oferta.status === 'entregue' && tipo === 'instituicao'
+      && vincInst?.id && oferta.instituicao_id === vincInst.id) {
     botoes.push(`<button class="btn btn-primary" onclick="abrirConfirmar()">
       ✓✓ Confirmar recebimento
     </button>`);
@@ -230,8 +244,10 @@ function renderizarAcoes(oferta, profile) {
 
   // --- Cancelar (doador ou instituição dona) ---
   const podeCancelar =
-    (tipo === 'doador' && oferta.doador_id === profile.detalhe?.id) ||
-    (tipo === 'instituicao' && oferta.instituicao_id);
+    (tipo === 'doador' && vinculoDe(profile, 'doador')?.id
+      && oferta.doador_id === vinculoDe(profile, 'doador').id) ||
+    (tipo === 'instituicao' && vinculoDe(profile, 'instituicao')?.id
+      && oferta.instituicao_id === vinculoDe(profile, 'instituicao').id);
   if (podeCancelar && !ESTADOS_FINAIS.includes(oferta.status)) {
     botoes.push(`<button class="btn btn-ghost" onclick="cancelarOferta()">
       🚫 Cancelar oferta

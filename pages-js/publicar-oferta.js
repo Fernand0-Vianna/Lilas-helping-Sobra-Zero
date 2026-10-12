@@ -12,7 +12,7 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated } from './supabase.js';
+import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated, papelEfetivo, vinculoDe, renderPapelSwitcher } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- Proteção de rota ---
@@ -22,14 +22,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- Carrega o perfil do doador logado ---
   const profile = await getUserProfile();
 
-  // Só doadores podem publicar
-  if (profile?.user_type !== 'doador') {
-    mostrarPopup('warn', 'Acesso restrito', 'Apenas doadores podem publicar ofertas.');
+  // --- Switcher de papel (só renderiza para admin) ---
+  renderPapelSwitcher(profile);
+
+  // Só doadores podem publicar (admin: papel ativo doador + vínculo)
+  const doador = vinculoDe(profile, 'doador'); // { cadastro_sanitario_validade, ... }
+  if (papelEfetivo(profile) !== 'doador' || !doador) {
+    mostrarPopup('warn', 'Acesso restrito',
+      'Apenas doadores podem publicar ofertas. Admin: ative o papel Doador no switcher.');
     window.location.href = 'ofertas.html';
     return;
   }
-
-  const doador = profile.detalhe; // { cadastro_sanitario_validade, ... }
 
   // RN-05: pré-verificação no front-end
   const sanitarioVencido =

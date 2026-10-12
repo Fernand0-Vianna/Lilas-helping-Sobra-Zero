@@ -10,7 +10,7 @@
 
 | # | Arquivo | Descrição | RNs envolvidas |
 |---|---------|-----------|----------------|
-|-| [`migrations/`](./migrations) | As 4 migrations SQL (já criadas pelo plano anterior) | Todas |
+|-| [`migrations/`](./migrations) | As migrations SQL (4 base + reparos + admin) | Todas |
 | 1 | [`01-supabase-setup.md`](./01-supabase-setup.md) | Guia passo-a-passo para configurar o projeto Supabase do zero |-|
 | 2 | [`02-database-schema.md`](./02-database-schema.md) | Explicação completa do schema: ENUMs, tabelas, views e relacionamentos | Todas |
 | 3 | [`03-supabase-js.md`](./03-supabase-js.md) | Como incluir `supabase-js` via CDN, cliente centralizado e helpers |-|
@@ -44,6 +44,7 @@
 | RN-06 | Feed prioriza a instituição que recebeu menos kg em 30 dias | `vw_equidade_instituicoes` · `vw_ofertas_feed` |
 | RN-07 | Entrega só conclui com confirmação da instituição | `pode_confirmar()` · `confirmar_recebimento()` · `recebimentos` |
 | RN-08 | Congelado não é preparado: prazo de 48h | `fn_prazo_padrao()` (branch `congelado`) |
+| ADMIN | Admin flutua entre papéis via vínculos nas 3 tabelas; RNs valem igual | `sou_admin()` · switcher `papelEfetivo()` · `20260106000001_admin.sql` |
 
 ## 🔁 Ciclo de vida da oferta
 
@@ -63,7 +64,10 @@ plano/
 │   ├── 20260101000000_init.sql           # ENUMs + funções utilitárias
 │   ├── 20260102000000_profiles.sql       # profiles + doadores/instituicoes/voluntarios
 │   ├── 20260103000000_ofertas.sql        # ofertas + historico + views
-│   └── 20260104000000_functions.sql      # RPCs, triggers, policies, pg_cron
+│   ├── 20260104000000_functions.sql      # RPCs, triggers, policies, pg_cron
+│   ├── 20260105000000_fix_touch_updated_at.sql  # reparo atualizado_em
+│   ├── 20260106000000_admin_enum.sql            # valor admin no enum
+│   └── 20260106000001_admin.sql                 # sou_admin + travas anti auto-promoção
 ├── pages-js/
 │   ├── supabase.js                       # cliente + helpers
 │   ├── login.js

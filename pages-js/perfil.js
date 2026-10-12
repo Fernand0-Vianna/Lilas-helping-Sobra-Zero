@@ -12,9 +12,10 @@ import supabase, {
   mostrarPopup,
 } from './supabase.js';
 
-const LABEL_TIPO = { doador: 'Doador', instituicao: 'Instituição', voluntario: 'Voluntário' };
+const LABEL_TIPO = { doador: 'Doador', instituicao: 'Instituição', voluntario: 'Voluntário', admin: 'Admin' };
 
 let profileAtual = null;
+let vinculoAdmin = 'doador'; // admin edita um vínculo por vez
 
 document.addEventListener('DOMContentLoaded', async () => {
   await redirectIfNotAuthenticated();
@@ -44,10 +45,29 @@ function preencher(p) {
   document.getElementById('p-email').value = p.email ?? '';
 
   const box = document.getElementById('perfil-detalhe');
-  const d = p.detalhe ?? {};
+  const tipoEfetivo = p.user_type === 'admin' ? vinculoAdmin : p.user_type;
+  const d = p.user_type === 'admin' ? (p.detalhes?.[tipoEfetivo] ?? {}) : (p.detalhe ?? {});
 
-  if (p.user_type === 'doador') {
+  if (p.user_type === 'admin') {
     box.innerHTML = `
+      <div class="field"><label for="vinc-sel">Vínculo em edição (admin flutua entre papéis)</label>
+        <select id="vinc-sel">
+          <option value="doador" ${vinculoAdmin === 'doador' ? 'selected' : ''}>Doador</option>
+          <option value="instituicao" ${vinculoAdmin === 'instituicao' ? 'selected' : ''}>Instituição</option>
+          <option value="voluntario" ${vinculoAdmin === 'voluntario' ? 'selected' : ''}>Voluntário</option>
+        </select></div>
+      <div id="vinc-bloco"></div>`;
+    document.getElementById('vinc-sel').addEventListener('change', (e) => {
+      vinculoAdmin = e.target.value;
+      preencher(profileAtual);
+    });
+  }
+
+  const alvo = p.user_type === 'admin'
+    ? document.getElementById('vinc-bloco') : box;
+
+  if (tipoEfetivo === 'doador') {
+    alvo.innerHTML = `
       <div class="field"><label for="d-estab">Nome do estabelecimento</label>
         <input id="d-estab" type="text" value="${esc(d.nome_estabelecimento)}" required></div>
       <div class="field"><label for="d-resp">Responsável</label>
@@ -60,8 +80,8 @@ function preencher(p) {
         <div class="field"><label for="d-bairro">Bairro</label>
           <input id="d-bairro" type="text" value="${esc(d.bairro)}"></div>
       </div>`;
-  } else if (p.user_type === 'instituicao') {
-    box.innerHTML = `
+  } else if (tipoEfetivo === 'instituicao') {
+    alvo.innerHTML = `
       <div class="field"><label for="i-razao">Razão social</label>
         <input id="i-razao" type="text" value="${esc(d.razao_social)}" required></div>
       <div class="field"><label for="i-resp">Responsável legal</label>
@@ -81,7 +101,7 @@ function preencher(p) {
       <div class="field"><label for="i-bairro">Bairro</label>
         <input id="i-bairro" type="text" value="${esc(d.bairro)}"></div>`;
   } else {
-    box.innerHTML = `
+    alvo.innerHTML = `
       <div class="field"><label for="v-nome">Nome completo</label>
         <input id="v-nome" type="text" value="${esc(d.nome_completo)}" required></div>
       <div class="field"><label for="v-caixa">Caixa térmica <span class="hint">RN-04</span></label>
@@ -129,7 +149,9 @@ async function salvar(e) {
     if (eProf) throw new Error(`Perfil: ${eProf.message}`);
 
     // 2. Atualiza tabela de detalhe conforme o tipo
-    const t = profileAtual.user_type;
+    // (admin edita o vínculo selecionado; a linha pode ainda não existir)
+    const ehAdmin = profileAtual.user_type === 'admin';
+    const t = ehAdmin ? vinculoAdmin : profileAtual.user_type;
     let tabela, payload;
     if (t === 'doador') {
       tabela = 'doadores';
@@ -166,10 +188,16 @@ async function salvar(e) {
       };
     }
 
-    const { error: eDet } = await supabase
-      .from(tabela)
-      .update(payload)
-      .eq('profile_id', profileAtual.id);
+    let q;
+    if (ehAdmin) {
+      // upsert: cria o vínculo se o admin ainda não tiver linha neste papel
+      q = supabase.from(tabela).upsert({ profile_id: profileAtual.id, ...payload }, {
+        onConflict: 'profile_id',
+      });
+    } else {
+      q = supabase.from(tabela).update(payload).eq('profile_id', profileAtual.id);
+    }
+    const { error: eDet } = await q;
     if (eDet) throw new Error(`Dados de ${LABEL_TIPO[t]}: ${eDet.message}`);
 
     mostrarPopup('info', 'Perfil atualizado', 'Suas alterações foram salvas com sucesso.');

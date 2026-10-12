@@ -192,6 +192,7 @@ revoke update, delete on public.recebimentos from anon, authenticated;
 
 | Função | Permissão | Uso no front-end |
 |--------|-----------|------------------|
+| `sou_admin()` | `authenticated` | Leitura total em ofertas/historico/recebimentos (nunca bypass de RN) |
 | `meu_doador_id()` | `authenticated` | Identifica o doador logado dentro de policies |
 | `minha_instituicao_id()` | `authenticated` | Identifica a instituição logada |
 | `meu_voluntario_id()` | `authenticated` | Identifica o voluntário logado |
@@ -214,7 +215,12 @@ to authenticated;
 
 ## 🚫 Funções bloqueadas (só para triggers)
 
-```sql
+> **Admin:** signup só cria os 3 perfis normais (`fn_handle_new_user` fixa
+> qualquer outro valor em `doador`) e `UPDATE profiles` é restrito por
+> coluna a `(nome, telefone, avatar_url)` — `user_type` só muda via
+> SQL/service_role. Migration `20260106000001_admin.sql`.
+>
+> ```sql
 revoke execute on function
   public.fn_touch_updated_at(),
   public.fn_oferta_setar_prazos(),

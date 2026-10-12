@@ -66,6 +66,26 @@ export async function getUserProfile() {
 
   // 2. Busca a tabela de detalhe baseada no user_type
   let detalhe = null;
+  let detalhes = null; // admin: vínculo em cada papel (flutua entre os 3)
+
+  if (profile.user_type === 'admin') {
+    detalhes = {};
+    for (const [papel, tabela] of [
+      ['doador', 'doadores'],
+      ['instituicao', 'instituicoes'],
+      ['voluntario', 'voluntarios'],
+    ]) {
+      const { data, error } = await supabase
+        .from(tabela)
+        .select('*')
+        .eq('profile_id', profile.id)
+        .single();
+      if (!error) detalhes[papel] = data;
+    }
+    detalhe = detalhes[papelEfetivo(profile)] || detalhes.doador
+      || detalhes.instituicao || detalhes.voluntario || null;
+    return { ...profile, detalhe, detalhes };
+  }
 
   switch (profile.user_type) {
     case 'doador': {
@@ -239,4 +259,74 @@ export function fecharPopup() {
 export function limparAlerta(id = 'erro') {
   const el = document.getElementById(id);
   if (el) el.style.display = 'none';
+}
+
+// ====================================================================
+// PERFIL ADMIN — flutua entre os 3 papéis
+// ====================================================================
+
+const PAPEL_KEY = 'sz_papel_ativo';
+const PAPEIS = ['doador', 'instituicao', 'voluntario'];
+
+/**
+ * Papel efetivo para gating de ações: usuário normal usa o próprio
+ * user_type; admin usa o papel ativo no switcher (guardado na sessão).
+ */
+export function papelEfetivo(profile) {
+  if (!profile || profile.user_type !== 'admin') return profile?.user_type || null;
+  const salvo = sessionStorage.getItem(PAPEL_KEY);
+  return PAPEIS.includes(salvo) ? salvo : 'doador';
+}
+
+/**
+ * Troca o papel ativo do admin (flutuar entre doador/instituicao/voluntario).
+ */
+export function setPapelAtivo(papel) {
+  if (!PAPEIS.includes(papel)) return;
+  sessionStorage.setItem(PAPEL_KEY, papel);
+}
+
+/**
+ * Retorna a linha de vínculo do papel efetivo:
+ * admin usa profile.detalhes[papel]; demais usam profile.detalhe.
+ */
+export function vinculoDe(profile, papel = papelEfetivo(profile)) {
+  if (!profile) return null;
+  if (profile.user_type === 'admin') return profile.detalhes?.[papel] || null;
+  return profile.user_type === papel ? profile.detalhe : null;
+}
+
+const ROTULO_PAPEL = { doador: 'Doador', instituicao: 'Instituição', voluntario: 'Voluntário' };
+
+/**
+ * Renderiza o switcher de papel do admin. Chame no topo de páginas com
+ * ações por papel (ofertas, oferta, publicar-oferta). Para não-admin,
+ * não renderiza nada. Recarrega a página ao trocar para reavaliar as ações.
+ *
+ * @param {string} mountId - id do container (criado se não existir)
+ */
+export function renderPapelSwitcher(profile, mountId = 'papel-switcher') {
+  if (!profile || profile.user_type !== 'admin') return;
+  let mount = document.getElementById(mountId);
+  if (!mount) {
+    mount = document.createElement('div');
+    mount.id = mountId;
+    const main = document.querySelector('main') || document.body;
+    main.insertBefore(mount, main.firstChild);
+  }
+  const ativo = papelEfetivo(profile);
+  mount.innerHTML =
+    '<div class="alert alert-info" style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">'
+    + '<span><strong>Admin</strong> atuando como:</span>'
+    + PAPEIS.map((p) =>
+      `<button type="button" data-papel="${p}" class="btn ${p === ativo ? 'btn-primary' : 'btn-ghost'}" style="padding:.4rem .9rem">`
+      + `${ROTULO_PAPEL[p]}</button>`
+    ).join('')
+    + '</div>';
+  mount.querySelectorAll('button[data-papel]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      setPapelAtivo(btn.dataset.papel);
+      window.location.reload();
+    });
+  });
 }

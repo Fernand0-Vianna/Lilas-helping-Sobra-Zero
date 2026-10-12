@@ -12,7 +12,7 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, fecharPopup } from './supabase.js';
+import { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, fecharPopup, renderPapelSwitcher, vinculoDe } from './supabase.js';
 
 // Perfil logado (para saber quais ofertas são minhas)
 let perfilLogado = null;
@@ -32,6 +32,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- Carrega perfil para contexto de perfil ---
   const profile = await getUserProfile();
   perfilLogado = profile;
+
+  // --- Switcher de papel (só renderiza para admin) ---
+  renderPapelSwitcher(profile);
 
   // --- Renderiza o feed ---
   await renderizarFeed();
@@ -226,10 +229,9 @@ function criarCardOferta(o) {
        </div>`
     : '';
 
-  // Botão de edição: só o doador dono da oferta vê
-  const souDono = perfilLogado?.user_type === 'doador'
-    && perfilLogado?.detalhe?.id
-    && o.doador_id === perfilLogado.detalhe.id;
+  // Botão de edição: só o doador dono da oferta vê (admin: vínculo doador)
+  const vincDoador = vinculoDe(perfilLogado, 'doador');
+  const souDono = vincDoador?.id && o.doador_id === vincDoador.id;
   const botaoEditar = souDono
     ? `<button class="btn btn-ghost" style="flex:1" onclick="event.stopPropagation();abrirEdicao('${o.id}')">
          Editar
