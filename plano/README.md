@@ -6,6 +6,32 @@
 
 ---
 
+## ✅ Status do plano (atualizado em 22/10/2026)
+
+**Concluído:**
+- Migrations 01 a 04 aplicadas; reparos `fix_touch_updated_at`, `admin_enum`/`admin` e
+  `fix_timeline_duplicada` (20260107) criados — **falta rodar `supabase db push`
+  para aplicar o 20260107 no banco remoto**.
+- Migração das páginas HTML para o Supabase JS (todas integradas, com sessão e
+  `redirectIfNotAuthenticated`).
+- Popup de erro padrão em todas as telas; perfil editável; admin flutuante com switcher.
+- Validação da sprint: 3 bugs corrigidos (cadastro de instituição com refrigeração,
+  JSON de exemplo inválido com credencial, timeline duplicada) — commit `da809e0`.
+
+**Pendências abertas (próximos passos):**
+| # | Pendência | Tipo |
+|---|-----------|------|
+| 1 | **RN-06 sem efeito real no feed** — ofertas sem instituição recebem todas `kg_recebidos_30d_prioridade = 99999`, então a ordenação por equidade não diferencia nada. Precisa de decisão de produto (ordenar na visão da instituição? limitar aceites por equidade?) | Design/produto |
+| 2 | **KPIs do relatório são parciais** — `vw_kpis_gerais` usa `security_invoker`, então cada usuário vê contagens filtradas pelo próprio RLS. Decidir: agregação `security definer` (KPIs globais) ou restringir a tela 12 a admin | Design/segurança |
+| 3 | **Política morta** — `ofertas_insert_doador` existe, mas o `revoke insert ... from authenticated` anula o privilégio (quem insere é a RPC `criar_oferta`). Remover para não confundir | Limpeza |
+| 4 | **Senha demo hardcoded** — `login.js` fixa `sobrazero123` nos chips de demonstração; ok para aula, remover antes de qualquer exposição pública | Segurança |
+
+> A implementação real do front-end vive em [`../pages-js/`](../pages-js) na raiz
+> do projeto — a cópia que existia em `plano/pages-js/` foi removida por estar
+> desatualizada (esta pasta é referência do planejamento, não de execução).
+
+---
+
 ## 📁 Índice navegável
 
 | # | Arquivo | Descrição | RNs envolvidas |
@@ -18,17 +44,9 @@
 | 5 | [`05-jobs-functions.md`](./05-jobs-functions.md) | Funções de negócio, triggers, `pg_cron` e view de equidade | RN-01, RN-02, RN-06 |
 | 6 | [`06-migrating-from-static.md`](./06-migrating-from-static.md) | Passo a passo para migrar as páginas HTML existentes |-|
 
-### Arquivos JavaScript (`pages-js/`)
-
-| # | Arquivo | Função | RNs destacadas |
-|---|---------|--------|----------------|
-| 7 | [`pages-js/supabase.js`](./pages-js/supabase.js) | Cliente centralizado + helpers de auth |-|
-| 8 | [`pages-js/login.js`](./pages-js/login.js) | Login com `signInWithPassword` + redirecionamento por perfil |-|
-| 9 | [`pages-js/cadastro.js`](./pages-js/cadastro.js) | Cadastro com `signUp` + insert na tabela correta | RN-03, RN-04, RN-05 |
-| 10 | [`pages-js/publicar-oferta.js`](./pages-js/publicar-oferta.js) | Publicar oferta validando RN-05, cálculo de prazos | RN-01, RN-05, RN-08 |
-| 11 | [`pages-js/ofertas.js`](./pages-js/ofertas.js) | Feed de ofertas ordenado por equidade (RN-06) | RN-02, RN-03, RN-04, RN-06 |
-| 12 | [`pages-js/oferta.js`](./pages-js/oferta.js) | Timeline de status + avançar ciclo | RN-01 a RN-07 |
-| 13 | [`pages-js/relatorio.js`](./pages-js/relatorio.js) | KPIs agregados via `vw_kpis_gerais` | RN-02, RN-06, RN-07 |
+> **JavaScript:** os arquivos de execução estão em [`../pages-js/`](../pages-js)
+> na raiz (login, cadastro, publicar-oferta, ofertas, oferta, relatorio, perfil,
+> supabase). O guia de como construí-los é o [`03-supabase-js.md`](./03-supabase-js.md).
 
 ---
 
@@ -69,14 +87,6 @@ plano/
 │   ├── 20260106000000_admin_enum.sql            # valor admin no enum
 │   ├── 20260106000001_admin.sql                 # sou_admin + travas anti auto-promoção
 │   └── 20260107000000_fix_timeline_duplicada.sql # reparo timeline sem duplicatas
-├── pages-js/
-│   ├── supabase.js                       # cliente + helpers
-│   ├── login.js
-│   ├── cadastro.js
-│   ├── publicar-oferta.js
-│   ├── ofertas.js
-│   ├── oferta.js
-│   └── relatorio.js
 ├── 01-supabase-setup.md
 ├── 02-database-schema.md
 ├── 03-supabase-js.md

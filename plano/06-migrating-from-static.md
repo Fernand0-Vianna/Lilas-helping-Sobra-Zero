@@ -63,8 +63,9 @@ Lilas_Helpig/
 <script type="module" src="../pages-js/supabase.js"></script>
 ```
 
-> Copie a versão da raiz (`plano/pages-js/supabase.js`) para `../pages-js/`
-> na pasta principal do projeto.
+> O cliente Supabase real já existe em `pages-js/supabase.js` (raiz do projeto).
+> Os exemplos deste guia são o roteiro de construção — a implementação
+> versionada é a fonte da verdade.
 
 ### Passo 2-Substituir o JS estático
 
@@ -312,14 +313,20 @@ const { data: ofertas, error } = await supabase
 
 ## 7️⃣ Checklist final de migração
 
-- [ ] `pages-js/supabase.js` copiado para a raiz do projeto (fora de `plano/`)
-- [ ] Todas as URLs de `import` apontam para `../pages-js/*.js`
-- [ ] `.env.local` configurado com URL + anon key reais
-- [ ] Redirects em `login.js` usam `user_type` do profile
-- [ ] `cadastro.js` faz `signUp` + insert na tabela de detalhe correta
-- [ ] `publicar-oferta.js` chama `criar_oferta` via RPC
-- [ ] `ofertas.js` ordena por `kg_recebidos_30d_prioridade ASC` (RN-06)
-- [ ] `oferta.js` usa `avancar_status` / `confirmar_recebimento`
-- [ ] Todas as páginas têm `redirectIfNotAuthenticated()`
-- [ ] Chips de demonstração atualizados com e-mails reais (ou mantenha como mock)
-- [ ] CSS existente (`.btn`, `.card`, `.chip`, `.alert`, `.auth`, `.tabs`) reaproveitado
+> **Status: concluído** (verificado na validação da sprint, 22/10/2026).
+
+- [x] `pages-js/supabase.js` copiado para a raiz do projeto (fora de `plano/`)
+- [x] Todas as URLs de `import` apontam para `../pages-js/*.js`
+- [x] `.env.local` configurado com URL + anon key reais
+- [x] Redirects em `login.js` usam `user_type` do profile
+- [x] `cadastro.js` faz `signUp` + insert na tabela de detalhe correta
+- [x] `publicar-oferta.js` chama `criar_oferta` via RPC
+- [x] `ofertas.js` ordena por `kg_recebidos_30d_prioridade ASC` (RN-06)*
+- [x] `oferta.js` usa `avancar_status` / `confirmar_recebimento`
+- [x] Todas as páginas têm `redirectIfNotAuthenticated()`
+- [x] Chips de demonstração atualizados com e-mails reais (ou mantenha como mock)
+- [x] CSS existente (`.btn`, `.card`, `.chip`, `.alert`, `.auth`, `.tabs`) reaproveitado
+
+> \* A ordenação está implementada, mas a RN-06 não surte efeito prático no feed
+> enquanto as ofertas públicas não tiverem instituição atribuída (ver pendência 1
+> no [`README.md`](./README.md)).
