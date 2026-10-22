@@ -122,7 +122,7 @@ async function renderizarFeed() {
       <div class="card" style="text-align:center; padding:3rem">
         <p style="color:var(--muted)">Nenhuma oferta disponível no momento.</p>
         <p style="font-size:.85rem; color:var(--muted)">
-          Novas ofertas aparecem automaticamente conforme odoantes publicam.
+          Novas ofertas aparecem automaticamente conforme os doadores publicam.
         </p>
       </div>
     `;

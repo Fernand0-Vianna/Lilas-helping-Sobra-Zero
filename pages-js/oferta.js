@@ -178,8 +178,8 @@ function renderizarAcoes(oferta, profile) {
   const tipo = papelEfetivo(profile);
   const exigeFrio = oferta.exige_frio;
 
-  // --- RN-07: Instituição que aceitou pode avançar a "coletada" ---
-  // (normalmente o voluntário faz, mas a instituição também pode avançar)
+  // --- RN-03: Instituição aceita a oferta publicada ---
+  // (usa a RPC aceitar_oferta, que valida refrigeração no banco)
   if (oferta.status === 'publicada' && tipo === 'instituicao') {
     // RN-03: verifica refrigeração (sem vínculo: orienta a completar o perfil)
     const instituicao = vinculoDe(profile, 'instituicao');

@@ -72,8 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
       detalhe.cnpj = document.getElementById('i-cnpj').value.replace(/\D/g, '');
       const temRefri = document.getElementById('i-frio').value === 'sim';
       detalhe.tem_refrigeracao = temRefri;
-      // Se tem refrigeração, pede capacidade; se não, null
-      detalhe.capacidade_refrigeracao_kg = temRefri ? 0 : null;
+      // A constraint do banco exige capacidade > 0 quando tem_refrigeracao = true.
+      // O formulário não pede capacidade ainda, então enviamos null (sempre válido).
+      detalhe.capacidade_refrigeracao_kg = null;
       detalhe.necessidade_semanal = 'ate_20kg';
       detalhe.aceita_congelado = false;
       detalhe.endereco = '';

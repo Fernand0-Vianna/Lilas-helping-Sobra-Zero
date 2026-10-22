@@ -67,7 +67,8 @@ plano/
 │   ├── 20260104000000_functions.sql      # RPCs, triggers, policies, pg_cron
 │   ├── 20260105000000_fix_touch_updated_at.sql  # reparo atualizado_em
 │   ├── 20260106000000_admin_enum.sql            # valor admin no enum
-│   └── 20260106000001_admin.sql                 # sou_admin + travas anti auto-promoção
+│   ├── 20260106000001_admin.sql                 # sou_admin + travas anti auto-promoção
+│   └── 20260107000000_fix_timeline_duplicada.sql # reparo timeline sem duplicatas
 ├── pages-js/
 │   ├── supabase.js                       # cliente + helpers
 │   ├── login.js

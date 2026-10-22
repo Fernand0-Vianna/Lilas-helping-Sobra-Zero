@@ -477,10 +477,17 @@ begin
        where id = p_oferta_id;
   end case;
 
-  -- Comentario opcional vira uma nota na timeline.
+  -- Comentario opcional: anexa a linha que o trigger acabou de gravar,
+  -- em vez de inserir uma segunda linha (duplicava o evento na timeline).
   if p_comentario is not null and p_destino not in ('expirada','descartada') then
-    insert into public.oferta_historico (oferta_id, status_novo, ator_id, ator_tipo, comentario)
-    values (p_oferta_id, p_destino, auth.uid(), public.meu_user_type(), p_comentario);
+    update public.oferta_historico
+       set comentario = p_comentario
+     where id = (
+       select id from public.oferta_historico
+       where oferta_id = p_oferta_id and status_novo = p_destino
+       order by id desc
+       limit 1
+     );
   end if;
 
   select * into v_oferta from public.ofertas where id = p_oferta_id;
@@ -558,11 +565,18 @@ begin
     returning id
   loop
     qtd := qtd + 1;
-    -- O trigger fn_registrar_historico ja grava a linha do historico,
-    -- mas registramos tambem o motivo do descarte para o relatorio (tela 12).
-    insert into public.oferta_historico (oferta_id, status_novo, comentario)
-    values (r.id, 'expirada'::public.status_oferta,
-            'Oferta expirada automaticamente pelo agendador (RN-02).');
+    -- O trigger trg_ofertas_historico ja grava a linha do historico;
+    -- apenas anexamos o motivo automatico a ELA, em vez de inserir uma
+    -- segunda linha (o que duplicava o evento na timeline).
+    update public.oferta_historico
+       set comentario = 'Oferta expirada automaticamente pelo agendador (RN-02).'
+     where id = (
+       select id from public.oferta_historico
+       where oferta_id = r.id
+         and status_novo = 'expirada'::public.status_oferta
+       order by id desc
+       limit 1
+     );
   end loop;
 
   return qtd;
