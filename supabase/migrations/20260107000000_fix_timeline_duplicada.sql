@@ -25,31 +25,46 @@
 --    statement: assim o DELETE enxerga o estado original do grupo via
 --    o snapshot compartilhado dos CTEs.
 -- ---------------------------------------------------------------------
-with duplicatas as (
-  select min(id) as keep_id,
-         max(id) as drop_id,
-         max(comentario) filter (where comentario is not null) as melhor_comentario,
-         max(ator_id)    filter (where ator_id   is not null)  as algum_ator,
-         max(ator_tipo)  filter (where ator_tipo is not null)  as algum_ator_tipo
-  from public.oferta_historico
-  group by oferta_id, status_novo, date_trunc('second', criado_em)
-  having count(*) > 1
-     and bool_or(comentario is not null)
-     and bool_or(comentario is null)
+-- Nota: max(uuid) e max(enum) nao existem no Postgres; por isso usamos
+-- janelas (first_value) em vez de agregacoes para transplatar comentario
+-- e ator da linha irma para a linha mantida.
+with janela as (
+  select h.*,
+         min(id)                 over w as keep_id,
+         first_value(comentario) over (w order by (comentario is null) asc, id asc) as bom_comentario,
+         first_value(ator_id)    over (w order by (ator_id is null) asc, id asc)     as bom_ator,
+         first_value(ator_tipo)  over (w order by (ator_tipo is null) asc, id asc)   as bom_ator_tipo,
+         count(*)                over w as qtd,
+         bool_or(comentario is not null) over w as tem_comentario,
+         bool_or(comentario is null)     over w as tem_vazio
+  from public.oferta_historico h
+  window w as (partition by oferta_id, status_novo, date_trunc('second', criado_em))
+),
+alvo as (
+  select distinct on (keep_id)
+         keep_id, bom_comentario, bom_ator, bom_ator_tipo,
+         oferta_id, status_novo, criado_em
+  from janela
+  where qtd > 1
+    and tem_comentario
+    and tem_vazio
 ),
 transplante as (
   update public.oferta_historico h
-     set comentario = coalesce(h.comentario, d.melhor_comentario),
-         ator_id    = coalesce(h.ator_id,    d.algum_ator),
-         ator_tipo  = coalesce(h.ator_tipo,  d.algum_ator_tipo)
-    from duplicatas d
-   where h.id = d.keep_id
+     set comentario = coalesce(h.comentario, a.bom_comentario),
+         ator_id    = coalesce(h.ator_id,    a.bom_ator),
+         ator_tipo  = coalesce(h.ator_tipo,  a.bom_ator_tipo)
+    from alvo a
+   where h.id = a.keep_id
   returning h.id
 ),
 remocao as (
   delete from public.oferta_historico h
-  using duplicatas d
-  where h.id = d.drop_id
+   using alvo a
+   where h.id <> a.keep_id
+     and h.oferta_id     = a.oferta_id
+     and h.status_novo   = a.status_novo
+     and date_trunc('second', h.criado_em) = date_trunc('second', a.criado_em)
   returning h.id
 )
 select (select count(*) from transplante) as corrigidas,
