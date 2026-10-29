@@ -6,17 +6,20 @@
 
 ---
 
-## ✅ Status do plano (atualizado em 22/10/2026)
+## ✅ Status do plano (atualizado em 29/10/2026)
 
 **Concluído:**
 - Migrations 01 a 04 aplicadas; reparos `fix_touch_updated_at`, `admin_enum`/`admin` e
-  `fix_timeline_duplicada` (20260107) criados — **falta rodar `supabase db push`
-  para aplicar o 20260107 no banco remoto**.
+  `fix_timeline_duplicada` (20260107) — o 20260107 foi **aplicado no banco remoto em
+  29/10** (5 duplicatas removidas, `fn_expirar_ofertas` e `avancar_status` corrigidos;
+  a migration ainda foi corrigida para não usar `max(uuid)`, que não existe no Postgres).
 - Migração das páginas HTML para o Supabase JS (todas integradas, com sessão e
   `redirectIfNotAuthenticated`).
 - Popup de erro padrão em todas as telas; perfil editável; admin flutuante com switcher.
 - Validação da sprint: 3 bugs corrigidos (cadastro de instituição com refrigeração,
   JSON de exemplo inválido com credencial, timeline duplicada) — commit `da809e0`.
+- Deploy do Vercel atualizado em 29/10 (o JS antigo usava colunas erradas e quebrava
+  o cadastro de todos os perfis).
 
 **Pendências abertas (próximos passos):**
 | # | Pendência | Tipo |
