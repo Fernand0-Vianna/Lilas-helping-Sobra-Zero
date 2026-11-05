@@ -195,6 +195,11 @@ p { margin: 0 0 1em; }
   padding: .55rem .4rem;
 }
 .header-actions .login:hover { color: #fff; }
+.header-actions #usuario-nome {
+  color: rgba(255, 255, 255, .78);
+  font-size: .85rem;
+  white-space: nowrap;
+}
 
 .burger {
   display: none;

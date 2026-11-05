@@ -32,6 +32,18 @@ const CICLO_STATUS = [
 // Estados finais (não avançam mais)
 const ESTADOS_FINAIS = ['confirmada', 'expirada', 'descartada', 'cancelada'];
 
+// Rótulos de todos os status (inclusive os fora do ciclo)
+const ROTULO_STATUS = {
+  publicada: 'Publicada',
+  aceita: 'Aceita',
+  coletada: 'Coletada',
+  entregue: 'Entregue',
+  confirmada: 'Confirmada',
+  expirada: 'Expirada',
+  descartada: 'Descartada',
+  cancelada: 'Cancelada',
+};
+
 let ofertaId = null;
 let profile = null;     // perfil do usuário logado
 let oferta = null;      // a oferta completa carregada
@@ -256,7 +268,7 @@ function renderizarTimeline(historico, oferta) {
       <div class="evento-timeline">
         <span class="avatar">${icone(avatar)}</span>
         <div class="evento-detalhe">
-          <strong>${escaparHtml(etapa?.label || h.status_novo)}</strong>
+          <strong>${escaparHtml(etapa?.label || ROTULO_STATUS[h.status_novo] || h.status_novo)}</strong>
           <span class="data">${dataHora}</span>
           ${comentario}
         </div>
