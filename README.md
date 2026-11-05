@@ -54,7 +54,21 @@ Objetivos específicos:
 **Identidade:** roxo `#7C5CE0` / `#5B3FC4`, fundo `#F5F4FA`, tinta `#111827`;
 fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 
-### Telas-desktop 1440
+### Telas do app (prints atuais)
+
+| | |
+|:---:|:---:|
+| <img src="prints/novo-01-ofertas.jpg" width="420" alt="Ofertas disponíveis"> | <img src="prints/novo-02-oferta-detalhe.jpg" width="420" alt="Detalhe da oferta"> |
+| **Feed · Ofertas disponíveis** | **Detalhe da doação** |
+| <img src="prints/novo-03-publicar.jpg" width="420" alt="Publicar oferta"> | <img src="prints/novo-04-perfil.jpg" width="420" alt="Meu perfil"> |
+| **Publicar oferta** | **Meu perfil** |
+| <img src="prints/novo-05-relatorio.jpg" width="420" alt="Relatório de doações"> | |
+| **Relatório de doações** | |
+
+### Mockups do design system
+
+<details open>
+<summary>Telas-desktop 1440</summary>
 
 | | |
 |:---:|:---:|
@@ -62,6 +76,8 @@ fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 | **04 · Publicar oferta** | **05 · Ofertas disponíveis** |
 | <img src="design/desktop/06-acompanhar-aceita.png" width="420" alt="Acompanhar Aceita"> | <img src="design/desktop/12-relatorio-doacoes.png" width="420" alt="Relatório"> |
 | **06 · Acompanhar-Aceita** | **12 · Relatório de doações** |
+
+</details>
 
 <details>
 <summary>Outras telas desktop (07–11)</summary>
