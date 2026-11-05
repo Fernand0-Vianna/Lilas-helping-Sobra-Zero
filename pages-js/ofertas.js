@@ -13,6 +13,7 @@
 
 import supabase from './supabase.js';
 import { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, fecharPopup, renderPapelSwitcher, vinculoDe } from './supabase.js';
+import { icone } from './icons.js';
 
 // Perfil logado (para saber quais ofertas são minhas)
 let perfilLogado = null;
@@ -120,6 +121,7 @@ async function renderizarFeed() {
   if (!ofertas || ofertas.length === 0) {
     container.innerHTML = `
       <div class="card feed-empty">
+        <div class="feed-empty-icon">${icone('leaf', { tamanho: 28 })}</div>
         <p>Nenhuma oferta disponível no momento.</p>
         <p>Novas ofertas aparecem automaticamente conforme os doadores publicam.</p>
       </div>
@@ -127,20 +129,21 @@ async function renderizarFeed() {
     return;
   }
 
-  container.innerHTML = ofertas.map(oferta => criarCardOferta(oferta)).join('');
+  container.innerHTML = ofertas.map((oferta, i) => criarCardOferta(oferta, i)).join('');
 }
 
 /**
  * Cria o HTML de um card de oferta seguindo o guia de estilo
  * (design/desktop/guia_de_estilo.html §7 Card, §5 Chips, §3 Botões, §6 Alertas).
  *
- * Estrutura: card-top (chip de status + prazo) → h3 → meta → tags →
- * box de detalhes → alerta de frio (RN-03/RN-04) → botões.
+ * Estrutura: card-rail (índice + chip de status + prazo) → h3 → meta → tags →
+ * rota coleta → entrega → fatos → alerta de frio (RN-03/RN-04) → botões.
  *
  * @param {object} o - oferta do vw_ofertas_feed
+ * @param {number} [indice] - posição no feed (usada no índice do card)
  * @returns {string} HTML do card
  */
-function criarCardOferta(o) {
+function criarCardOferta(o, indice = 0) {
   const rotuloTipo = {
     preparado: 'Preparado',
     nao_perecivel: 'Não perecível',
@@ -171,6 +174,17 @@ function criarCardOferta(o) {
     cancelada: 'chip-cancelada',
   }[o.status] || '';
 
+  const statusIcone = {
+    publicada: 'megaphone',
+    aceita: 'circle-check',
+    coletada: 'truck',
+    entregue: 'house',
+    confirmada: 'check-check',
+    expirada: 'clock',
+    descartada: 'alert-triangle',
+    cancelada: 'ban',
+  }[o.status] || 'info';
+
   // Prazo restante no padrão do guia ("Expira em 2h15")
   const agora = new Date();
   const expira = new Date(o.expira_em);
@@ -185,45 +199,58 @@ function criarCardOferta(o) {
   }
 
   // Linha meta no padrão do guia ("Tatuapé · 8 kg · preparado às 11:30")
-  const metaPartes = [
-    o.bairro_coleta || o.doador_bairro || null,
-    `${formatarKg(o.quantidade_kg)} kg`,
-    `${rotuloTipo.toLowerCase()} às ${formatarHora(o.data_preparo)}`,
-  ].filter(Boolean);
+  const metaPartes = [];
+  const bairro = o.bairro_coleta || o.doador_bairro;
+  if (bairro) metaPartes.push({ nome: 'map-pin', texto: bairro });
+  metaPartes.push({ nome: 'weight', texto: `${formatarKg(o.quantidade_kg)} kg` });
+  if (o.data_preparo) {
+    metaPartes.push({ nome: 'clock', texto: `${rotuloTipo.toLowerCase()} às ${formatarHora(o.data_preparo)}` });
+  }
 
   // Tags (§7: card-tags)
   const tags = [`<span class="tag">${escaparHtml(rotuloTipo)}</span>`];
-  if (o.exige_frio) tags.push('<span class="tag">Exige frio</span>');
-  if (o.tipo_alimento === 'congelado') tags.push('<span class="tag">Prazo 48h</span>');
-  if (o.porcoes) tags.push(`<span class="tag">${o.porcoes} porções</span>`);
+  if (o.exige_frio) tags.push(`<span class="tag">${icone('snowflake')} Exige frio</span>`);
+  if (o.tipo_alimento === 'congelado') tags.push(`<span class="tag">${icone('clock')} Prazo 48h</span>`);
+  if (o.porcoes) tags.push(`<span class="tag">${icone('utensils')} ${o.porcoes} porções</span>`);
 
-  // Box de detalhes (descrição + coleta + prazos)
-  const detalheLinhas = [];
-  if (o.descricao) {
-    detalheLinhas.push(
-      `<div class="detalhe-linha"><span>Descrição</span><p>${escaparHtml(o.descricao)}</p></div>`
-    );
-  }
-  detalheLinhas.push(
-    `<div class="detalhe-linha"><span>Coleta</span><p>${escaparHtml(o.endereco_coleta || '—')}</p></div>` +
-    `<div class="detalhe-linha"><span>Coletar até</span><p>${formatarDataHora(o.prazo_coleta)}</p></div>` +
-    `<div class="detalhe-linha"><span>Entregar até</span><p>${formatarDataHora(o.prazo_entrega)}</p></div>`
-  );
-  if (o.doador_nome) {
-    detalheLinhas.push(
-      `<div class="detalhe-linha"><span>Doador</span><p>${escaparHtml(o.doador_nome)}</p></div>`
-    );
-  }
-  const boxDetalhes = `
-    <div class="detalhe-box">
-      ${detalheLinhas.join('')}
+  // Rota coleta → entrega (prazos do ciclo)
+  const rota = `
+    <div class="card-route">
+      <div class="route-stop">
+        <span class="route-dot"></span>
+        <div>
+          <span class="route-k">Coletar até</span>
+          <strong>${formatarHora(o.prazo_coleta)}</strong>
+        </div>
+      </div>
+      <span class="route-track"></span>
+      <div class="route-stop">
+        <span class="route-dot"></span>
+        <div>
+          <span class="route-k">Entregar até</span>
+          <strong>${formatarHora(o.prazo_entrega)}</strong>
+        </div>
+      </div>
     </div>`;
 
-  // Alerta de cadeia de frio, padrão §6 (sem emoji)
+  // Fatos compactos: endereço, doador e descrição
+  const fatos = [];
+  if (o.endereco_coleta) fatos.push(['Coleta', o.endereco_coleta, false]);
+  if (o.doador_nome) fatos.push(['Doador', o.doador_nome, false]);
+  if (o.descricao) fatos.push(['Descrição', o.descricao, true]);
+  const fatosHtml = fatos.length
+    ? `<div class="card-facts">${fatos.map(([rotulo, valor, clamp]) => `
+         <div class="fact">
+           <span>${escaparHtml(rotulo)}</span>
+           <p class="${clamp ? 'is-clamp' : ''}"${clamp ? ` title="${escaparHtml(valor)}"` : ''}>${escaparHtml(valor)}</p>
+         </div>`).join('')}</div>`
+    : '';
+
+  // Nota compacta de cadeia de frio (RN-03/RN-04)
   const alertaFrio = o.exige_frio
-    ? `<div class="alert alert-rn02">
-         <strong>Cadeia de frio</strong>
-         <p>Este alimento exige refrigeração na instituição (RN-03) e caixa térmica no transporte (RN-04).</p>
+    ? `<div class="card-note">
+         ${icone('snowflake')}
+         <p><strong>Cadeia de frio</strong> · refrigeração na instituição (RN-03) e caixa térmica no transporte (RN-04).</p>
        </div>`
     : '';
 
@@ -232,25 +259,31 @@ function criarCardOferta(o) {
   const souDono = vincDoador?.id && o.doador_id === vincDoador.id;
   const botaoEditar = souDono
     ? `<button class="btn btn-ghost" type="button" onclick="event.stopPropagation();abrirEdicao('${o.id}')">
-         Editar
+         ${icone('pencil')} Editar
        </button>`
     : '';
 
+  const numero = String(indice + 1).padStart(2, '0');
+
   return `
-    <article class="card card-oferta" data-id="${o.id}">
-      <div class="card-top">
-        <span class="chip ${statusClasse}">${escaparHtml(rotuloStatus)}</span>
-        <span class="card-exp">${prazo}</span>
+    <article class="card card-oferta" data-id="${o.id}" data-status="${escaparHtml(o.status)}">
+      <div class="card-rail">
+        <span class="card-index">${numero}</span>
+        <span class="chip ${statusClasse}">${icone(statusIcone)} ${escaparHtml(rotuloStatus)}</span>
+        <span class="card-exp">${icone('clock')} ${escaparHtml(prazo)}</span>
       </div>
-      <h3>${escaparHtml(o.titulo)}</h3>
-      <div class="meta">${metaPartes.map(escaparHtml).join(' · ')}</div>
-      <div class="card-tags">${tags.join('')}</div>
-      ${boxDetalhes}
-      ${alertaFrio}
+      <div class="card-main">
+        <h3>${escaparHtml(o.titulo)}</h3>
+        <div class="meta">${metaPartes.map((m) => `<span>${icone(m.nome)} ${escaparHtml(m.texto)}</span>`).join('')}</div>
+        <div class="card-tags">${tags.join('')}</div>
+        ${rota}
+        ${fatosHtml}
+        ${alertaFrio}
+      </div>
       <div class="card-actions">
         <button class="btn btn-secondary" type="button"
                 onclick="window.location.href='oferta.html?id=${o.id}'">
-          Ver detalhes
+          ${icone('arrow-right')} Ver detalhes
         </button>
         ${botaoEditar}
       </div>

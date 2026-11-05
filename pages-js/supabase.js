@@ -9,6 +9,7 @@
 
 // Importa createClient diretamente da CDN (ESM nativo do browser)
 import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
+import { icone } from './icons.js';
 
 // --- Configurações (projeto Sobra Zero) ---
 const SUPABASE_URL = 'https://oyhynvksczzxgkpvsbxv.supabase.co';
@@ -168,7 +169,8 @@ export function mostrarAlerta(tipo, texto) {
 
   const el = document.createElement('div');
   el.className = mapaClasses[tipo] || 'alert alert-info';
-  el.innerHTML = `<span>${tipo === 'info' ? 'ℹ️' : tipo === 'warn' ? '⚠️' : '❌'}</span><div>${texto}</div>`;
+  const nomeIcone = tipo === 'info' ? 'info' : tipo === 'warn' ? 'alert-triangle' : 'circle-x';
+  el.innerHTML = `${icone(nomeIcone)}<div>${texto}</div>`;
   el.style.display = 'flex';
 
   // Insere no topo do main ou body

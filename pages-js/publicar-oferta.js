@@ -13,6 +13,7 @@
 
 import supabase from './supabase.js';
 import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated, papelEfetivo, vinculoDe, renderPapelSwitcher } from './supabase.js';
+import { icone } from './icons.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- Proteção de rota ---
@@ -187,7 +188,7 @@ class SanitarioAlert {
     div.className = 'alert alert-warn';
     div.id = 'alerta-sanitario';
     div.style.display = 'none';
-    div.innerHTML = '<span>⚠️</span><div></div>';
+    div.innerHTML = `${icone('alert-triangle')}<div></div>`;
     return div;
   }
 

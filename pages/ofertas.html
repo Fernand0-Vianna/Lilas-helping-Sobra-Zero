@@ -53,8 +53,12 @@
         </select>
       </div>
       <div class="filters-actions">
-        <button class="btn btn-ghost" id="limpar-filtros" type="button">Limpar filtros</button>
-        <a class="btn btn-primary" href="publicar-oferta.html">+ Publicar oferta</a>
+        <button class="btn btn-ghost" id="limpar-filtros" type="button">
+          <span data-icon="filter" data-size="16"></span> Limpar filtros
+        </button>
+        <a class="btn btn-primary" href="publicar-oferta.html">
+          <span data-icon="plus" data-size="16"></span> Publicar oferta
+        </a>
       </div>
     </form>
 
@@ -65,6 +69,7 @@
     import { logout } from '../pages-js/supabase.js';
     document.getElementById('btn-sair')?.addEventListener('click', logout);
   </script>
+  <script type="module" src="../pages-js/icons.js"></script>
   <script type="module" src="../pages-js/ofertas.js"></script>
 </body>
 </html>

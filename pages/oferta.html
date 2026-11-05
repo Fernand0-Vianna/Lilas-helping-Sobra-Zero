@@ -27,7 +27,9 @@
   </header>
 
   <main class="container page-shell page-shell--narrow">
-    <a href="ofertas.html" class="back-link">← Voltar ao feed</a>
+    <a href="ofertas.html" class="back-link">
+      <span data-icon="arrow-left" data-size="16"></span> Voltar ao feed
+    </a>
     <div class="page-head">
       <span class="kicker">Telas 06/07/08 · Ciclo: publicada → aceita → coletada → entregue → confirmada</span>
     </div>
@@ -39,14 +41,18 @@
     </div>
 
     <section class="card" style="margin-top:1rem" aria-labelledby="titulo-timeline">
-      <h3 id="titulo-timeline">Linha do tempo</h3>
+      <h3 id="titulo-timeline" class="card-section-title">
+        <span data-icon="route" data-size="18"></span> Linha do tempo
+      </h3>
       <div id="timeline-oferta">
         <p style="color:var(--muted); margin:0">Carregando timeline...</p>
       </div>
     </section>
 
     <section class="card" style="margin-top:1rem" aria-labelledby="titulo-acoes">
-      <h3 id="titulo-acoes">Ações</h3>
+      <h3 id="titulo-acoes" class="card-section-title">
+        <span data-icon="circle-check" data-size="18"></span> Ações
+      </h3>
       <div id="acoes-oferta" class="acoes-oferta">
         <p style="color:var(--muted); margin:0">Carregando ações...</p>
       </div>
@@ -57,6 +63,7 @@
     import { logout } from '../pages-js/supabase.js';
     document.getElementById('btn-sair')?.addEventListener('click', logout);
   </script>
+  <script type="module" src="../pages-js/icons.js"></script>
   <script type="module" src="../pages-js/oferta.js"></script>
 </body>
 </html>

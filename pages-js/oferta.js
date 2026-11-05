@@ -18,14 +18,15 @@
  */
 
 import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, papelEfetivo, vinculoDe, renderPapelSwitcher } from './supabase.js';
+import { icone } from './icons.js';
 
 // Estados do ciclo em ordem (para timeline visual)
 const CICLO_STATUS = [
-  { status: 'publicada', label: 'Publicada', icon: '📢', cor: '#7C5CE0' },
-  { status: 'aceita', label: 'Aceita', icon: '✅', cor: '#3B82F6' },
-  { status: 'coletada', label: 'Coletada', icon: '🚚', cor: '#F59E0B' },
-  { status: 'entregue', label: 'Entregue', icon: '🏠', cor: '#10B981' },
-  { status: 'confirmada', label: 'Confirmada', icon: '✓✓', cor: '#16A34A' },
+  { status: 'publicada', label: 'Publicada', icon: 'megaphone' },
+  { status: 'aceita', label: 'Aceita', icon: 'circle-check' },
+  { status: 'coletada', label: 'Coletada', icon: 'truck' },
+  { status: 'entregue', label: 'Entregue', icon: 'house' },
+  { status: 'confirmada', label: 'Confirmada', icon: 'check-check' },
 ];
 
 // Estados finais (não avançam mais)
@@ -135,11 +136,24 @@ function renderizarResumo(oferta) {
     cancelada: 'chip-cancelada',
   }[oferta.status] || '';
 
-  const metaPartes = [
-    oferta.bairro_coleta || oferta.doador_bairro || null,
-    `${formatarKg(oferta.quantidade_kg)} kg`,
-    oferta.data_preparo ? `${rotuloTipo.toLowerCase()} às ${formatarHora(oferta.data_preparo)}` : null,
-  ].filter(Boolean);
+  const statusIcone = {
+    publicada: 'megaphone',
+    aceita: 'circle-check',
+    coletada: 'truck',
+    entregue: 'house',
+    confirmada: 'check-check',
+    expirada: 'clock',
+    descartada: 'alert-triangle',
+    cancelada: 'ban',
+  }[oferta.status] || 'info';
+
+  const metaPartes = [];
+  const bairro = oferta.bairro_coleta || oferta.doador_bairro;
+  if (bairro) metaPartes.push({ nome: 'map-pin', texto: bairro });
+  metaPartes.push({ nome: 'weight', texto: `${formatarKg(oferta.quantidade_kg)} kg` });
+  if (oferta.data_preparo) {
+    metaPartes.push({ nome: 'clock', texto: `${rotuloTipo.toLowerCase()} às ${formatarHora(oferta.data_preparo)}` });
+  }
 
   const tags = [`<span class="tag">${escaparHtml(rotuloTipo)}</span>`];
   if (oferta.exige_frio) tags.push('<span class="tag">Exige frio</span>');
@@ -147,17 +161,17 @@ function renderizarResumo(oferta) {
   if (oferta.porcoes) tags.push(`<span class="tag">${oferta.porcoes} porções</span>`);
 
   const itens = [
-    ['Quantidade', `${formatarKg(oferta.quantidade_kg)} kg`],
-    ['Coletar até', formatarDataHora(oferta.prazo_coleta)],
-    ['Entregar até', formatarDataHora(oferta.prazo_entrega)],
-    ['Doador', oferta.doador_nome],
-    ['Instituição', oferta.instituicao_nome],
-    ['Voluntário', oferta.voluntario_nome],
-  ].filter(([, valor]) => valor);
+    ['Quantidade', 'weight', `${formatarKg(oferta.quantidade_kg)} kg`],
+    ['Coletar até', 'clock', formatarDataHora(oferta.prazo_coleta)],
+    ['Entregar até', 'route', formatarDataHora(oferta.prazo_entrega)],
+    ['Doador', 'chef-hat', oferta.doador_nome],
+    ['Instituição', 'building-2', oferta.instituicao_nome],
+    ['Voluntário', 'truck', oferta.voluntario_nome],
+  ].filter(([, , valor]) => valor);
 
-  const detalhes = itens.map(([rotulo, valor]) => `
+  const detalhes = itens.map(([rotulo, nomeIcone, valor]) => `
     <div class="detail-item">
-      <span>${escaparHtml(rotulo)}</span>
+      <span>${icone(nomeIcone)} ${escaparHtml(rotulo)}</span>
       <strong>${escaparHtml(valor)}</strong>
     </div>
   `).join('');
@@ -171,33 +185,35 @@ function renderizarResumo(oferta) {
 
   const motivo = oferta.motivo_descarte
     ? `<div class="alert alert-rn02" style="margin-top:1rem">
-         <strong>Motivo do encerramento</strong>
+         <strong>${icone('alert-triangle')} Motivo do encerramento</strong>
          <p>${escaparHtml(oferta.motivo_descarte)}</p>
        </div>`
     : '';
 
   const alertaFrio = oferta.exige_frio
     ? `<div class="alert alert-rn02" style="margin-top:1rem">
-         <strong>Cadeia de frio</strong>
+         <strong>${icone('snowflake')} Cadeia de frio</strong>
          <p>Este alimento exige refrigeração na instituição (RN-03) e caixa térmica no transporte (RN-04).</p>
        </div>`
     : '';
 
   container.innerHTML = `
-    <article class="card">
-      <div class="card-top">
-        <span class="chip ${statusClasse}">${escaparHtml(rotuloStatus)}</span>
-        <span class="card-exp">${escaparHtml(descreverPrazo(oferta))}</span>
+    <article class="card card-detalhe" data-status="${escaparHtml(oferta.status)}">
+      <div class="card-rail">
+        <span class="chip ${statusClasse}">${icone(statusIcone)} ${escaparHtml(rotuloStatus)}</span>
+        <span class="card-exp">${icone('clock')} ${escaparHtml(descreverPrazo(oferta))}</span>
       </div>
-      <h1 id="oferta-titulo">${escaparHtml(oferta.titulo)}</h1>
-      <div class="meta">${metaPartes.map(escaparHtml).join(' · ')}</div>
-      <div class="card-tags">${tags.join('')}</div>
-      <div class="detail-grid">${detalhes}</div>
-      ${blocoTexto('Endereço de coleta', oferta.endereco_coleta)}
-      ${blocoTexto('Descrição', oferta.descricao)}
-      ${blocoTexto('Observações', oferta.observacoes)}
-      ${motivo}
-      ${alertaFrio}
+      <div class="card-main">
+        <h1 id="oferta-titulo">${escaparHtml(oferta.titulo)}</h1>
+        <div class="meta">${metaPartes.map((m) => `<span>${icone(m.nome)} ${escaparHtml(m.texto)}</span>`).join('')}</div>
+        <div class="card-tags">${tags.join('')}</div>
+        <div class="detail-grid">${detalhes}</div>
+        ${blocoTexto('Endereço de coleta', oferta.endereco_coleta)}
+        ${blocoTexto('Descrição', oferta.descricao)}
+        ${blocoTexto('Observações', oferta.observacoes)}
+        ${motivo}
+        ${alertaFrio}
+      </div>
     </article>
   `;
 }
@@ -218,7 +234,7 @@ function renderizarTimeline(historico, oferta) {
     const ativo = idx <= statusAtualIndex;
     return `
       <div class="chip chip-${etapa.status} ${ativo ? '' : 'is-futuro'}">
-        <span aria-hidden="true">${etapa.icon}</span> ${etapa.label}
+        ${icone(etapa.icon)} ${etapa.label}
       </div>
     `;
   }).join('');
@@ -226,9 +242,11 @@ function renderizarTimeline(historico, oferta) {
   // Linha do tempo dos eventos do histórico
   const eventosHtml = historico.map(h => {
     const etapa = CICLO_STATUS.find(s => s.status === h.status_novo);
-    const avatar = h.ator_tipo === 'doador' ? '🍳' :
-                   h.ator_tipo === 'instituicao' ? '🏢' :
-                   h.ator_tipo === 'voluntario' ? '🚚' : '🤖';
+    const avatar = {
+      doador: 'chef-hat',
+      instituicao: 'building-2',
+      voluntario: 'truck',
+    }[h.ator_tipo] || 'bot';
     const dataHora = formatarDateTime(h.criado_em);
     const comentario = h.comentario
       ? `<div class="comentario">${escaparHtml(h.comentario)}</div>`
@@ -236,7 +254,7 @@ function renderizarTimeline(historico, oferta) {
 
     return `
       <div class="evento-timeline">
-        <span class="avatar" aria-hidden="true">${avatar}</span>
+        <span class="avatar">${icone(avatar)}</span>
         <div class="evento-detalhe">
           <strong>${escaparHtml(etapa?.label || h.status_novo)}</strong>
           <span class="data">${dataHora}</span>
@@ -267,14 +285,27 @@ function renderizarAcoes(oferta, profile) {
   // Se for estado final, não mostra ações
   if (ESTADOS_FINAIS.includes(oferta.status)) {
     let msg = '';
+    let nomeIcone = 'info';
+    let classe = 'alert-info';
     if (oferta.status === 'confirmada') {
-      msg = '✅ Doação confirmada e concluída. Obrigado!';
+      msg = 'Doação confirmada e concluída. Obrigado!';
+      nomeIcone = 'circle-check';
+      classe = 'alert-success';
     } else if (oferta.status === 'expirada') {
-      msg = `⏰ Oferta expirada. Motivo: ${oferta.motivo_descarte || 'Prazo ultrapassado.'}`;
+      msg = `Oferta expirada. Motivo: ${oferta.motivo_descarte || 'Prazo ultrapassado.'}`;
+      nomeIcone = 'clock';
+      classe = 'alert-warn';
+    } else if (oferta.status === 'descartada') {
+      msg = `Oferta descartada. Motivo: ${oferta.motivo_descarte || 'Não informado.'}`;
+      nomeIcone = 'alert-triangle';
+      classe = 'alert-danger';
     } else if (oferta.status === 'cancelada') {
-      msg = '🚫 Oferta cancelada.';
+      msg = 'Oferta cancelada.';
+      nomeIcone = 'ban';
+      classe = 'alert-danger';
     }
-    container.innerHTML = `<div class="alert alert-info" style="margin:0"><span>ℹ️</span><div>${msg}</div></div>`;
+    container.innerHTML =
+      `<div class="alert ${classe}" style="margin:0">${icone(nomeIcone)}<div>${escaparHtml(msg)}</div></div>`;
     return;
   }
 
@@ -288,16 +319,16 @@ function renderizarAcoes(oferta, profile) {
     // RN-03: verifica refrigeração (sem vínculo: orienta a completar o perfil)
     const instituicao = vinculoDe(profile, 'instituicao');
     if (!instituicao) {
-      botoes.push(`<button class="btn btn-disabled" disabled>
-        Complete seu vínculo de instituição no perfil para aceitar ofertas.
+      botoes.push(`<button class="btn btn-disabled" type="button" disabled>
+        ${icone('user-round')} Complete seu vínculo de instituição no perfil para aceitar ofertas.
       </button>`);
     } else if (exigeFrio && !instituicao.tem_refrigeracao) {
-      botoes.push(`<button class="btn btn-disabled" disabled>
-        ❌ Você não tem refrigeração-não pode aceitar ofertas de frio (RN-03)
+      botoes.push(`<button class="btn btn-disabled" type="button" disabled>
+        ${icone('circle-x')} Você não tem refrigeração-não pode aceitar ofertas de frio (RN-03)
       </button>`);
     } else {
-      botoes.push(`<button class="btn btn-primary" onclick="aceitarOferta()">
-        ✅ Aceitar oferta
+      botoes.push(`<button class="btn btn-primary" type="button" onclick="aceitarOferta()">
+        ${icone('circle-check')} Aceitar oferta
       </button>`);
     }
   }
@@ -306,16 +337,16 @@ function renderizarAcoes(oferta, profile) {
   if (oferta.status === 'publicada' && tipo === 'voluntario') {
     const voluntario = vinculoDe(profile, 'voluntario');
     if (!voluntario) {
-      botoes.push(`<button class="btn btn-disabled" disabled>
-        Complete seu vínculo de voluntário no perfil para assumir transportes.
+      botoes.push(`<button class="btn btn-disabled" type="button" disabled>
+        ${icone('user-round')} Complete seu vínculo de voluntário no perfil para assumir transportes.
       </button>`);
     } else if (exigeFrio && !voluntario.tem_caixa_termica) {
-      botoes.push(`<button class="btn btn-disabled" disabled>
-        ❌ Você não tem caixa térmica-não pode transportar alimentos de frio (RN-04)
+      botoes.push(`<button class="btn btn-disabled" type="button" disabled>
+        ${icone('circle-x')} Você não tem caixa térmica-não pode transportar alimentos de frio (RN-04)
       </button>`);
     } else {
-      botoes.push(`<button class="btn btn-primary" onclick="assumirTransporte()">
-        🚚 Assumir transporte
+      botoes.push(`<button class="btn btn-primary" type="button" onclick="assumirTransporte()">
+        ${icone('truck')} Assumir transporte
       </button>`);
     }
   }
@@ -324,16 +355,16 @@ function renderizarAcoes(oferta, profile) {
   const vincVol = vinculoDe(profile, 'voluntario');
   if (oferta.status === 'aceita' && tipo === 'voluntario' &&
       vincVol?.id && oferta.voluntario_id === vincVol.id) {
-    botoes.push(`<button class="btn btn-primary" onclick="avancarColetada()">
-      📦 Registrar coleta
+    botoes.push(`<button class="btn btn-primary" type="button" onclick="avancarColetada()">
+      ${icone('package')} Registrar coleta
     </button>`);
   }
 
   // --- Entregue (voluntário que assumiu) ---
   if (oferta.status === 'coletada' && tipo === 'voluntario' &&
       vincVol?.id && oferta.voluntario_id === vincVol.id) {
-    botoes.push(`<button class="btn btn-primary" onclick="avancarEntregue()">
-      🏠 Registrar entrega
+    botoes.push(`<button class="btn btn-primary" type="button" onclick="avancarEntregue()">
+      ${icone('house')} Registrar entrega
     </button>`);
   }
 
@@ -341,8 +372,8 @@ function renderizarAcoes(oferta, profile) {
   const vincInst = vinculoDe(profile, 'instituicao');
   if (oferta.status === 'entregue' && tipo === 'instituicao'
       && vincInst?.id && oferta.instituicao_id === vincInst.id) {
-    botoes.push(`<button class="btn btn-primary" onclick="abrirConfirmar()">
-      ✓✓ Confirmar recebimento
+    botoes.push(`<button class="btn btn-primary" type="button" onclick="abrirConfirmar()">
+      ${icone('check-check')} Confirmar recebimento
     </button>`);
   }
 
@@ -353,14 +384,14 @@ function renderizarAcoes(oferta, profile) {
     (tipo === 'instituicao' && vinculoDe(profile, 'instituicao')?.id
       && oferta.instituicao_id === vinculoDe(profile, 'instituicao').id);
   if (podeCancelar && !ESTADOS_FINAIS.includes(oferta.status)) {
-    botoes.push(`<button class="btn btn-ghost" onclick="cancelarOferta()">
-      🚫 Cancelar oferta
+    botoes.push(`<button class="btn btn-ghost" type="button" onclick="cancelarOferta()">
+      ${icone('ban')} Cancelar oferta
     </button>`);
   }
 
   if (botoes.length === 0) {
     botoes.push(`<div class="alert alert-info" style="margin:0">
-      <span>ℹ️</span><div>${tipo === 'voluntario' ? 'Aguardando instituição aceitar esta oferta.' :
+      ${icone('info')}<div>${tipo === 'voluntario' ? 'Aguardando instituição aceitar esta oferta.' :
         'Aguardando um voluntário assumir o transporte.'}</div>
     </div>`);
   }

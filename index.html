@@ -143,7 +143,7 @@
       </div>
 
       <div class="cycle-note reveal">
-        <span>⚠️</span>
+        <span data-icon="alert-triangle" data-size="20"></span>
         <p style="margin:0">
           <b>RN-02:</b> oferta que ultrapassa o prazo expira sozinha e vira
           <em>descarte registrado</em>-nada de alimento órfão no feed.
@@ -342,5 +342,6 @@
     }, { threshold: .12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   </script>
+  <script type="module" src="pages-js/icons.js"></script>
 </body>
 </html>
