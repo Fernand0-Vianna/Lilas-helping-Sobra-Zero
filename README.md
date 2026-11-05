@@ -8,6 +8,20 @@
   Projeto de faculdade-Cruzeiro do Sul
 </p>
 
+<p align="center">
+  <img alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white">
+  <img alt="CSS3" src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white">
+  <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black">
+  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white">
+  <img alt="Vercel" src="https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white">
+</p>
+
+<p align="center">
+  <a href="https://lilas-helping-sobra-zero.vercel.app"><b>▶ App demo</b></a>
+  ·
+  <a href="https://github.com/Fernand0-Vianna/Lilas-helping-Sobra-Zero">Repositório</a>
+</p>
+
 ---
 
 ## Proposta do projeto
@@ -54,20 +68,27 @@ Objetivos específicos:
 **Identidade:** roxo `#7C5CE0` / `#5B3FC4`, fundo `#F5F4FA`, tinta `#111827`;
 fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 
-### Telas do app (prints atuais)
+## O produto, tela por tela
 
-| | |
+Prints do app rodando com dados reais no Supabase.
+
+<img src="prints/novo-01-ofertas.jpg" width="100%" alt="Feed de ofertas disponíveis">
+
+<p align="center"><b>Feed de ofertas</b> · Tela 05 / M2</p>
+
+| Detalhe da doação | Publicar oferta |
 |:---:|:---:|
-| <img src="prints/novo-01-ofertas.jpg" width="420" alt="Ofertas disponíveis"> | <img src="prints/novo-02-oferta-detalhe.jpg" width="420" alt="Detalhe da oferta"> |
-| **Feed · Ofertas disponíveis** | **Detalhe da doação** |
-| <img src="prints/novo-03-publicar.jpg" width="420" alt="Publicar oferta"> | <img src="prints/novo-04-perfil.jpg" width="420" alt="Meu perfil"> |
-| **Publicar oferta** | **Meu perfil** |
-| <img src="prints/novo-05-relatorio.jpg" width="420" alt="Relatório de doações"> | |
-| **Relatório de doações** | |
+| <img src="prints/novo-02-oferta-detalhe.jpg" width="100%" alt="Detalhe da oferta"> | <img src="prints/novo-03-publicar.jpg" width="100%" alt="Publicar oferta"> |
+| **Detalhe** · Telas 06 / 07 / 08 | **Publicar** · Tela 04 / M1 |
 
-### Mockups do design system
+| Meu perfil | Relatório de doações |
+|:---:|:---:|
+| <img src="prints/novo-04-perfil.jpg" width="100%" alt="Meu perfil"> | <img src="prints/novo-05-relatorio.jpg" width="100%" alt="Relatório de doações"> |
+| **Perfil** · Tela 09 / M4 | **Relatório** · Tela 12 / M7 |
 
-<details open>
+## Mockups do design
+
+<details>
 <summary>Telas-desktop 1440</summary>
 
 | | |
@@ -125,28 +146,23 @@ fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 > **Estado atual:** backend Supabase ativo. Login, cadastro, feed, publicação,
 > ciclo, perfil e relatório falam com o banco real via `pages-js/` + RLS + RPCs.
 
-## Design system e componentes
+## Destaques
 
-O CSS (`css/stily.css`) concentra tokens e componentes reutilizáveis:
+- **UI completa:** landing, login, cadastro, feed, publicação, acompanhamento, perfil e relatório
+- **Design system próprio** em `css/stily.css`: tokens, formulários, cards, KPIs, tabelas e timeline
+- **Biblioteca de ícones** local em `pages-js/icons.js` (SVGs no estilo Lucide, sem emojis)
+- **Backend Supabase** real: auth, RLS, RPCs e views
+- **Sem build:** HTML + CSS + ES modules, direto no navegador
 
-- **Tokens:** cores da marca, neutros, estados, tipografia (Phudu + IBM Plex) e medidas
-- **Navegação:** header fixo, nav, drawer mobile e foco visível
-- **Formulários:** campos, selects, textareas, hints, estados de erro/disabled e medidor de senha
-- **Feed e cards:** `card-oferta` com rail de status, rota coleta→entrega, fatos compactos e ações
-- **Detalhe da oferta:** `card-detalhe`, grid de informações, timeline vertical e alertas de RN
-- **Relatório:** `kpi-grid`, `kpi-card`, `data-table`, barras e badges de aproveitamento
-- **Ícones:** biblioteca local em `pages-js/icons.js` (SVGs no estilo Lucide, herdam `currentColor`)
+## Componentes do design system
 
-Os prints atualizados do app ficam em `prints/` (feed, detalhe, publicar, perfil e relatório).
-
-## Últimas atualizações
-
-- **Feed de ofertas:** cards redesenhados com rail de status, rota coleta→entrega, fatos compactos e ações alinhadas
-- **Detalhe da oferta:** resumo completo da doação, timeline vertical e alertas de RN
-- **Páginas internas:** publicar oferta, perfil e relatório com o mesmo layout (`page-shell`, seções e ações)
-- **Relatório:** KPIs em grade 4×2 e tabelas com barras de aproveitamento
-- **Ícones:** emojis substituídos por SVGs locais (`pages-js/icons.js`)
-- **Prints:** capturas atualizadas em `prints/` e no deck QPR
+| Grupo | Classes principais |
+|---|---|
+| Layout | `page-shell`, `page-head`, `section`, `card` |
+| Feed | `card-oferta`, `card-rail`, `card-route`, `card-facts` |
+| Detalhe | `card-detalhe`, `detail-grid`, `timeline-eventos` |
+| Relatório | `kpi-grid`, `kpi-card`, `data-table` |
+| Base | `btn`, `chip`, `tag`, `alert`, `field`, `icon` |
 
 ## Estrutura da pasta
 
