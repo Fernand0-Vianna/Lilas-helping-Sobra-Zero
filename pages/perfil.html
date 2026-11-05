@@ -26,42 +26,69 @@
     </div>
   </header>
 
-  <main class="container" style="padding:2rem 1rem 4rem; max-width:720px">
-    <span class="kicker">Conta · dados do cadastro</span>
-    <h1>Meu perfil</h1>
-    <p class="sub" id="perfil-resumo">Carregando seus dados…</p>
+  <main class="container page-shell page-shell--narrow">
+    <div class="page-head">
+      <span class="kicker">Conta · dados do cadastro</span>
+      <h1>Meu perfil</h1>
+      <p class="sub" id="perfil-resumo">Carregando seus dados…</p>
+    </div>
 
-    <div class="card" style="margin-top:1.5rem; padding:1.5rem">
+    <div class="card">
       <form id="form-perfil" class="form-grid" novalidate>
-        <div class="field">
-          <label for="p-tipo">Tipo de conta</label>
-          <input id="p-tipo" type="text" disabled value="—">
-        </div>
 
-        <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
-          <div class="field">
-            <label for="p-nome">Nome de exibição</label>
-            <input id="p-nome" type="text" minlength="2" required placeholder="Seu nome">
+        <section class="form-section">
+          <div class="form-section-head">
+            <span data-icon="user-round" data-size="18"></span>
+            <div>
+              <h3>Conta</h3>
+              <p>Dados básicos de identificação e contato.</p>
+            </div>
           </div>
+
           <div class="field">
-            <label for="p-tel">Telefone</label>
-            <input id="p-tel" type="tel" placeholder="(11) 90000-0000">
+            <label for="p-tipo">Tipo de conta</label>
+            <input id="p-tipo" type="text" disabled value="—">
           </div>
-        </div>
 
-        <div class="field">
-          <label for="p-email">E-mail (somente leitura)</label>
-          <input id="p-email" type="email" disabled value="—">
-        </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="p-nome">Nome de exibição</label>
+              <input id="p-nome" type="text" minlength="2" required placeholder="Seu nome">
+            </div>
+            <div class="field">
+              <label for="p-tel">Telefone</label>
+              <input id="p-tel" type="tel" placeholder="(11) 90000-0000">
+            </div>
+          </div>
 
-        <!-- Seção específica por perfil, preenchida via JS -->
-        <div id="perfil-detalhe" class="form-grid" style="gap:1.15rem"></div>
+          <div class="field">
+            <label for="p-email">E-mail (somente leitura)</label>
+            <input id="p-email" type="email" disabled value="—">
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="form-section-head">
+            <span data-icon="building-2" data-size="18"></span>
+            <div>
+              <h3>Dados do vínculo</h3>
+              <p>Informações específicas do seu papel na plataforma.</p>
+            </div>
+          </div>
+
+          <!-- Seção específica por perfil, preenchida via JS -->
+          <div id="perfil-detalhe" class="form-grid"></div>
+        </section>
 
         <p id="perfil-erro" class="alert alert-warn" style="display:none; margin:0"></p>
 
-        <div style="display:flex; gap:.75rem; flex-wrap:wrap">
-          <button class="btn btn-primary" id="btn-salvar" type="submit">Salvar alterações</button>
-          <button class="btn btn-ghost" id="btn-recarregar" type="button">Recarregar</button>
+        <div class="form-actions">
+          <button class="btn btn-ghost" id="btn-recarregar" type="button">
+            <span data-icon="clock" data-size="16"></span> Recarregar
+          </button>
+          <button class="btn btn-primary" id="btn-salvar" type="submit">
+            <span data-icon="check-check" data-size="16"></span> Salvar alterações
+          </button>
         </div>
       </form>
     </div>
@@ -71,6 +98,7 @@
     import { logout } from '../pages-js/supabase.js';
     document.getElementById('btn-sair')?.addEventListener('click', logout);
   </script>
+  <script type="module" src="../pages-js/icons.js"></script>
   <script type="module" src="../pages-js/perfil.js"></script>
 </body>
 </html>

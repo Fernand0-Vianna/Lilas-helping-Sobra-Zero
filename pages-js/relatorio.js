@@ -124,53 +124,44 @@ async function carregarTabelaDoadores() {
 
   // Tabela com barras de progresso
   container.innerHTML = `
-    <table class="relatorio-tabela" style="width:100%; border-collapse:collapse">
-      <thead>
-        <tr style="border-bottom:2px solid var(--border)">
-          <th style="text-align:left; padding:.75rem">Doador</th>
-          <th style="text-align:right; padding:.75rem">Doações</th>
-          <th style="text-align:right; padding:.75rem">kg doados</th>
-          <th style="text-align:right; padding:.75rem">Descartes</th>
-          <th style="text-align:right; padding:.75rem">Aproveitamento</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${doadores.map(d => {
-          const total = (d.ofertas_total || 0);
-          const confirmadas = (d.ofertas_confirmadas || 0);
-          const aproveitamento = total > 0 ? ((confirmadas / total) * 100).toFixed(0) : 0;
-          const maxKg = Math.max(...doadores.map(x => x.kg_doados || 0));
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Doador</th>
+            <th class="num">Doações</th>
+            <th class="num">kg doados</th>
+            <th class="num">Descartes</th>
+            <th class="num">Aproveitamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${doadores.map(d => {
+            const total = (d.ofertas_total || 0);
+            const confirmadas = (d.ofertas_confirmadas || 0);
+            const aproveitamento = total > 0 ? ((confirmadas / total) * 100).toFixed(0) : 0;
+            const maxKg = Math.max(...doadores.map(x => x.kg_doados || 0));
+            const larguraBarra = Math.max((d.kg_doados / maxKg) * 80, 4);
+            const classeRate = aproveitamento >= 70 ? 'is-good' : aproveitamento >= 40 ? 'is-mid' : 'is-low';
 
-          return `
-            <tr style="border-bottom:1px solid var(--border)">
-              <td style="padding:.75rem">
-                <div style="display:flex; align-items:center; gap:.5rem">
-                  <div class="barra" style="
-                    width:40px; height:8px; background:var(--purple);
-                    border-radius:4px;
-                    width:${Math.max((d.kg_doados / maxKg) * 100, 2)}%;
-                    max-width:120px
-                  "></div>
-                  ${d.doador}
-                </div>
-              </td>
-              <td style="text-align:right; padding:.75rem">${confirmadas}/${total}</td>
-              <td style="text-align:right; padding:.75rem">${formatarKg(d.kg_doados || 0)}</td>
-              <td style="text-align:right; padding:.75rem">${d.descartes || 0}</td>
-              <td style="text-align:right; padding:.75rem">
-                <span style="
-                  background:${aproveitamento >= 70 ? 'var(--success-bg)' :
-                              aproveitamento >= 40 ? 'var(--warning-bg)' : 'var(--danger-bg)'};
-                  color:${aproveitamento >= 70 ? 'var(--success-text)' :
-                          aproveitamento >= 40 ? 'var(--warning-text)' : '#991B1B'};
-                  padding:.15rem .5rem; border-radius:999px; font-size:.8rem
-                ">${aproveitamento}%</span>
-              </td>
-            </tr>
-          `;
-        }).join('')}
-      </tbody>
-    </table>
+            return `
+              <tr>
+                <td>
+                  <div class="doador-cell">
+                    <span class="bar" style="width:${larguraBarra}px"></span>
+                    ${d.doador}
+                  </div>
+                </td>
+                <td class="num">${confirmadas}/${total}</td>
+                <td class="num">${formatarKg(d.kg_doados || 0)}</td>
+                <td class="num">${d.descartes || 0}</td>
+                <td class="num"><span class="rate ${classeRate}">${aproveitamento}%</span></td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
   `;
 }
 
@@ -203,42 +194,38 @@ async function carregarTabelaDescartes() {
 
   // Tabela de descartes
   container.innerHTML = `
-    <table class="relatorio-tabela" style="width:100%; border-collapse:collapse">
-      <thead>
-        <tr style="border-bottom:2px solid var(--border)">
-          <th style="text-align:left; padding:.5rem">Oferta</th>
-          <th style="text-align:left; padding:.5rem">Doador</th>
-          <th style="text-align:center; padding:.5rem">Tipo</th>
-          <th style="text-align:right; padding:.5rem">kg</th>
-          <th style="text-align:center; padding:.5rem">Status</th>
-          <th style="text-align:left; padding:.5rem">Motivo</th>
-          <th style="text-align:right; padding:.5rem">Data</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${descartes.map(d => `
-          <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:.5rem">${d.titulo}</td>
-            <td style="padding:.5rem">${d.doador}</td>
-            <td style="padding:.5rem; text-align:center">
-              <span class="tag">${d.tipo_alimento}</span>
-            </td>
-            <td style="padding:.5rem; text-align:right">${formatarKg(d.quantidade_kg)}</td>
-            <td style="padding:.5rem; text-align:center">
-              <span class="chip ${d.status_final === 'expirada' ? 'chip-expirada' : 'chip-cancelada'}">
-                ${d.status_final}
-              </span>
-            </td>
-            <td style="padding:.5rem; font-size:.85rem; color:var(--muted)">
-              ${d.motivo_descarte || '<span style="color:var(--muted)">—</span>'}
-            </td>
-            <td style="padding:.5rem; text-align:right; font-size:.8rem; color:var(--muted)">
-              ${formatarData(d.registrado_em)}
-            </td>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Oferta</th>
+            <th>Doador</th>
+            <th class="center">Tipo</th>
+            <th class="num">kg</th>
+            <th class="center">Status</th>
+            <th>Motivo</th>
+            <th class="num">Data</th>
           </tr>
-        `).join('')}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          ${descartes.map(d => `
+            <tr>
+              <td>${d.titulo}</td>
+              <td>${d.doador}</td>
+              <td class="center"><span class="tag">${d.tipo_alimento}</span></td>
+              <td class="num">${formatarKg(d.quantidade_kg)}</td>
+              <td class="center">
+                <span class="chip ${d.status_final === 'expirada' ? 'chip-expirada' : 'chip-cancelada'}">
+                  ${d.status_final}
+                </span>
+              </td>
+              <td class="muted">${d.motivo_descarte || '—'}</td>
+              <td class="num muted">${formatarData(d.registrado_em)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
   `;
 }
 

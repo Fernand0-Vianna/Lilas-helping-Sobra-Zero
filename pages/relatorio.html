@@ -17,7 +17,7 @@
       <nav class="nav">
         <a href="ofertas.html">Ofertas</a>
         <a href="publicar-oferta.html">Publicar</a>
-        <a href="relatorio.html">Relatório</a>
+        <a href="relatorio.html" aria-current="page">Relatório</a>
         <a href="perfil.html">Perfil</a>
       </nav>
       <div class="header-actions">
@@ -27,36 +27,88 @@
     </div>
   </header>
 
-  <main class="container" style="padding:2rem 1rem 4rem; max-width:1100px">
-    <span class="kicker">Tela 12 / M7 · KPIs + equidade (RN-06) + descartes (RN-02)</span>
-    <h1>Relatório de doações</h1>
-
-    <div style="display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); margin:1.5rem 0">
-      <div class="card"><small>kg distribuídos</small><h2 id="kpi-kg-doados">—</h2></div>
-      <div class="card"><small>Doações concluídas</small><h2 id="kpi-doacoes-concluidas">—</h2></div>
-      <div class="card"><small>Instituições atendidas</small><h2 id="kpi-instituicoes-atendidas">—</h2></div>
-      <div class="card"><small>Descartes (RN-02)</small><h2 id="kpi-descartes">—</h2></div>
-      <div class="card"><small>Total de ofertas</small><h2 id="kpi-total-ofertas">—</h2></div>
-      <div class="card"><small>Doadores ativos</small><h2 id="kpi-doadores-ativos">—</h2></div>
-      <div class="card"><small>Voluntários ativos</small><h2 id="kpi-voluntarios-ativos">—</h2></div>
-      <div class="card"><small>Taxa de aproveitamento</small><h2 id="kpi-taxa-aproveitamento">—</h2></div>
+  <main class="container page-shell">
+    <div class="page-head">
+      <span class="kicker">Tela 12 / M7 · KPIs + equidade (RN-06) + descartes (RN-02)</span>
+      <h1>Relatório de doações</h1>
+      <p class="sub">Quilos por doador, por instituição e descartes por motivo.</p>
     </div>
 
-    <div class="card" style="margin-top:1rem">
-      <h3 style="margin-top:0">Por doador (kg doados × descartes)</h3>
-      <div id="tabela-doadores"><p style="color:var(--muted)">Carregando...</p></div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-icon" data-icon="weight" data-size="17"></span>
+        <span class="kpi-label">kg distribuídos</span>
+        <strong class="kpi-value" id="kpi-kg-doados">—</strong>
+        <span class="kpi-hint">recebidos e confirmados</span>
+      </div>
+      <div class="kpi-card is-success">
+        <span class="kpi-icon" data-icon="check-check" data-size="17"></span>
+        <span class="kpi-label">Doações concluídas</span>
+        <strong class="kpi-value" id="kpi-doacoes-concluidas">—</strong>
+        <span class="kpi-hint">status confirmada</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon" data-icon="building-2" data-size="17"></span>
+        <span class="kpi-label">Instituições atendidas</span>
+        <strong class="kpi-value" id="kpi-instituicoes-atendidas">—</strong>
+        <span class="kpi-hint">cadastradas na rede</span>
+      </div>
+      <div class="kpi-card is-danger">
+        <span class="kpi-icon" data-icon="alert-triangle" data-size="17"></span>
+        <span class="kpi-label">Descartes (RN-02)</span>
+        <strong class="kpi-value" id="kpi-descartes">—</strong>
+        <span class="kpi-hint">expiradas ou descartadas</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon" data-icon="package" data-size="17"></span>
+        <span class="kpi-label">Total de ofertas</span>
+        <strong class="kpi-value" id="kpi-total-ofertas">—</strong>
+        <span class="kpi-hint">publicadas na plataforma</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon" data-icon="chef-hat" data-size="17"></span>
+        <span class="kpi-label">Doadores ativos</span>
+        <strong class="kpi-value" id="kpi-doadores-ativos">—</strong>
+        <span class="kpi-hint">com cadastro válido</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon" data-icon="truck" data-size="17"></span>
+        <span class="kpi-label">Voluntários ativos</span>
+        <strong class="kpi-value" id="kpi-voluntarios-ativos">—</strong>
+        <span class="kpi-hint">disponíveis para coleta</span>
+      </div>
+      <div class="kpi-card is-warning">
+        <span class="kpi-icon" data-icon="leaf" data-size="17"></span>
+        <span class="kpi-label">Taxa de aproveitamento</span>
+        <strong class="kpi-value" id="kpi-taxa-aproveitamento">—</strong>
+        <span class="kpi-hint">confirmadas sobre o total</span>
+      </div>
     </div>
 
-    <div class="card" style="margin-top:1rem">
-      <h3 style="margin-top:0">Descartes registrados (RN-02)</h3>
-      <div id="tabela-descartes" style="overflow-x:auto"><p style="color:var(--muted)">Carregando...</p></div>
-    </div>
+    <section class="card" aria-labelledby="titulo-doadores">
+      <h3 id="titulo-doadores" class="card-section-title">
+        <span data-icon="chef-hat" data-size="18"></span> Por doador (kg doados × descartes)
+      </h3>
+      <div id="tabela-doadores">
+        <p style="color:var(--muted); margin:0">Carregando...</p>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:1rem" aria-labelledby="titulo-descartes">
+      <h3 id="titulo-descartes" class="card-section-title">
+        <span data-icon="alert-triangle" data-size="18"></span> Descartes registrados (RN-02)
+      </h3>
+      <div id="tabela-descartes">
+        <p style="color:var(--muted); margin:0">Carregando...</p>
+      </div>
+    </section>
   </main>
 
   <script type="module">
     import { logout } from '../pages-js/supabase.js';
     document.getElementById('btn-sair')?.addEventListener('click', logout);
   </script>
+  <script type="module" src="../pages-js/icons.js"></script>
   <script type="module" src="../pages-js/relatorio.js"></script>
 </body>
 </html>

@@ -74,7 +74,7 @@ function preencher(p) {
         <input id="d-resp" type="text" value="${esc(d.responsavel)}" required></div>
       <div class="field"><label for="d-sanit">Validade do cadastro sanitário <span class="hint">RN-05</span></label>
         <input id="d-sanit" type="date" value="${esc(d.cadastro_sanitario_validade ?? '')}" required></div>
-      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div class="form-row">
         <div class="field"><label for="d-end">Endereço</label>
           <input id="d-end" type="text" value="${esc(d.endereco)}"></div>
         <div class="field"><label for="d-bairro">Bairro</label>
@@ -109,7 +109,7 @@ function preencher(p) {
           <option value="sim" ${d.tem_caixa_termica ? 'selected' : ''}>Sim, tenho</option>
           <option value="nao" ${!d.tem_caixa_termica ? 'selected' : ''}>Não tenho</option>
         </select></div>
-      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div class="form-row">
         <div class="field"><label for="v-cap">Capacidade (kg)</label>
           <input id="v-cap" type="number" min="0" step="0.1" value="${esc(d.capacidade_kg ?? '')}"></div>
         <div class="field"><label for="v-raio">Raio de atuação (km)</label>
