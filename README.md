@@ -45,16 +45,15 @@ recebe confirma-nada de alimento órfão, dado falso ou entrega nunca concluída
 
 ## Objetivo
 
-> Construir a interface completa (UI) da plataforma Sobra Zero, em **desktop (1440)**
-> e **mobile (390)**, cobrindo as 7 telas essenciais do produto, menus navegáveis,
-> protótipo clicável e a landing de apresentação-pronta para a etapa de
-> desenvolvimento (código) do semestre.
+> Construir a interface completa (UI) da plataforma Sobra Zero, em **desktop (1440)**,
+> cobrindo as telas essenciais do produto, menus navegáveis, protótipo clicável e a
+> landing de apresentação-pronta para a etapa de desenvolvimento (código) do semestre.
 
 Objetivos específicos:
 
 - [x] Design system próprio (cores, tipografia, componentes)
-- [x] 9 telas desktop + 7 telas mobile + menu lateral (drawer)
-- [x] Protótipo navegável nos dois breakpoints (fluxos de entrada por breakpoint)
+- [x] 9 telas desktop + menu lateral (drawer)
+- [x] Protótipo navegável
 - [x] 8 regras de negócio (RN-01 → RN-08) refletidas na interface
 - [x] Landing com hero + páginas de login, criação de usuário e termos de uso
 - [x] Exportação da estrutura (SVG + PNG + `structure.json`) para a pasta do projeto
@@ -113,23 +112,6 @@ Prints do app rodando com dados reais no Supabase.
 | **11 · Cadastro voluntários** | |
 
 </details>
-
-### Telas-mobile 390
-
-<table>
-  <tr>
-    <td align="center"><img src="design/mobile/m1-publicar-oferta.png" width="180" alt="M1"><br><b>M1</b> Publicar</td>
-    <td align="center"><img src="design/mobile/m2-ofertas-disponiveis.png" width="180" alt="M2"><br><b>M2</b> Ofertas</td>
-    <td align="center"><img src="design/mobile/m3-acompanhar-aceita.png" width="180" alt="M3"><br><b>M3</b> Acompanhar</td>
-    <td align="center"><img src="design/mobile/menu-drawer.png" width="140" alt="Menu"><br><b>Menu</b> Drawer</td>
-  </tr>
-  <tr>
-    <td align="center"><img src="design/mobile/m4-cadastro-doador.png" width="180" alt="M4"><br><b>M4</b> Doador</td>
-    <td align="center"><img src="design/mobile/m5-cadastro-instituicao.png" width="180" alt="M5"><br><b>M5</b> Instituição</td>
-    <td align="center"><img src="design/mobile/m6-cadastro-voluntario.png" width="180" alt="M6"><br><b>M6</b> Voluntário</td>
-    <td align="center"><img src="design/mobile/m7-relatorio-doacoes.png" width="180" alt="M7"><br><b>M7</b> Relatório</td>
-  </tr>
-</table>
 
 ### Landing, acesso e app
 
@@ -202,7 +184,6 @@ Lilas_Helpig/
 ├── design/
 │   ├── Logo/               # logo (SVG e WebP)
 │   ├── desktop/            # 9 telas × SVG + PNG @2x
-│   ├── mobile/             # 7 telas + drawer × SVG + PNG @2x
 │   └── structure.json      # tokens, telas, fluxos e mapa de interações
 ├── .env.example            # modelo de variáveis
 └── .env.local              # URL + keys reais (NÃO commitar)
