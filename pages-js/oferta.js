@@ -92,8 +92,114 @@ async function carregarOferta() {
 
   document.title = `Oferta: ${oferta.titulo}-Sobra Zero`;
 
+  renderizarResumo(oferta);
   renderizarTimeline(historico || [], oferta);
   renderizarAcoes(oferta, profile);
+}
+
+/**
+ * Renderiza o resumo/detalhes da oferta publicada.
+ * Mostra status, prazo, tipo, quantidade, prazos, doador e endereço.
+ */
+function renderizarResumo(oferta) {
+  const container = document.getElementById('oferta-resumo');
+  if (!container) return;
+
+  const tipo = oferta.tipo_alimento;
+  const rotuloTipo = {
+    preparado: 'Preparado',
+    nao_perecivel: 'Não perecível',
+    frio: 'Frio',
+    congelado: 'Congelado',
+  }[tipo] || tipo;
+
+  const rotuloStatus = {
+    publicada: 'Publicada',
+    aceita: 'Aceita',
+    coletada: 'Coletada',
+    entregue: 'Entregue',
+    confirmada: 'Confirmada',
+    expirada: 'Expirada',
+    descartada: 'Descartada',
+    cancelada: 'Cancelada',
+  }[oferta.status] || oferta.status;
+
+  const statusClasse = {
+    publicada: 'chip-publicada',
+    aceita: 'chip-aceita',
+    coletada: 'chip-coletada',
+    entregue: 'chip-entregue',
+    confirmada: 'chip-confirmada',
+    expirada: 'chip-expirada',
+    descartada: 'chip-cancelada',
+    cancelada: 'chip-cancelada',
+  }[oferta.status] || '';
+
+  const metaPartes = [
+    oferta.bairro_coleta || oferta.doador_bairro || null,
+    `${formatarKg(oferta.quantidade_kg)} kg`,
+    oferta.data_preparo ? `${rotuloTipo.toLowerCase()} às ${formatarHora(oferta.data_preparo)}` : null,
+  ].filter(Boolean);
+
+  const tags = [`<span class="tag">${escaparHtml(rotuloTipo)}</span>`];
+  if (oferta.exige_frio) tags.push('<span class="tag">Exige frio</span>');
+  if (tipo === 'congelado') tags.push('<span class="tag">Prazo 48h</span>');
+  if (oferta.porcoes) tags.push(`<span class="tag">${oferta.porcoes} porções</span>`);
+
+  const itens = [
+    ['Quantidade', `${formatarKg(oferta.quantidade_kg)} kg`],
+    ['Coletar até', formatarDataHora(oferta.prazo_coleta)],
+    ['Entregar até', formatarDataHora(oferta.prazo_entrega)],
+    ['Doador', oferta.doador_nome],
+    ['Instituição', oferta.instituicao_nome],
+    ['Voluntário', oferta.voluntario_nome],
+  ].filter(([, valor]) => valor);
+
+  const detalhes = itens.map(([rotulo, valor]) => `
+    <div class="detail-item">
+      <span>${escaparHtml(rotulo)}</span>
+      <strong>${escaparHtml(valor)}</strong>
+    </div>
+  `).join('');
+
+  const blocoTexto = (rotulo, valor) => valor
+    ? `<div class="detail-block">
+         <span>${escaparHtml(rotulo)}</span>
+         <p>${escaparHtml(valor)}</p>
+       </div>`
+    : '';
+
+  const motivo = oferta.motivo_descarte
+    ? `<div class="alert alert-rn02" style="margin-top:1rem">
+         <strong>Motivo do encerramento</strong>
+         <p>${escaparHtml(oferta.motivo_descarte)}</p>
+       </div>`
+    : '';
+
+  const alertaFrio = oferta.exige_frio
+    ? `<div class="alert alert-rn02" style="margin-top:1rem">
+         <strong>Cadeia de frio</strong>
+         <p>Este alimento exige refrigeração na instituição (RN-03) e caixa térmica no transporte (RN-04).</p>
+       </div>`
+    : '';
+
+  container.innerHTML = `
+    <article class="card">
+      <div class="card-top">
+        <span class="chip ${statusClasse}">${escaparHtml(rotuloStatus)}</span>
+        <span class="card-exp">${escaparHtml(descreverPrazo(oferta))}</span>
+      </div>
+      <h1 id="oferta-titulo">${escaparHtml(oferta.titulo)}</h1>
+      <div class="meta">${metaPartes.map(escaparHtml).join(' · ')}</div>
+      <div class="card-tags">${tags.join('')}</div>
+      <div class="detail-grid">${detalhes}</div>
+      ${blocoTexto('Endereço de coleta', oferta.endereco_coleta)}
+      ${blocoTexto('Descrição', oferta.descricao)}
+      ${blocoTexto('Observações', oferta.observacoes)}
+      ${motivo}
+      ${alertaFrio}
+    </article>
+  `;
 }
 
 /**
@@ -110,13 +216,9 @@ function renderizarTimeline(historico, oferta) {
   // Header: chips com os estágios
   const chipsHtml = CICLO_STATUS.map((etapa, idx) => {
     const ativo = idx <= statusAtualIndex;
-    const cor = etapa.cor;
-    const isFinal = oferta.status && ESTADOS_FINAIS.includes(oferta.status);
     return `
-      <div class="chip ${ativo ? 'chip-ativo' : ''}" style="
-        ${ativo ? `background:${cor}20; color:${cor}; border-color:${cor}80` : ''}
-      ">
-        <span style="font-size:1rem">${etapa.icon}</span> ${etapa.label}
+      <div class="chip chip-${etapa.status} ${ativo ? '' : 'is-futuro'}">
+        <span aria-hidden="true">${etapa.icon}</span> ${etapa.label}
       </div>
     `;
   }).join('');
@@ -128,13 +230,15 @@ function renderizarTimeline(historico, oferta) {
                    h.ator_tipo === 'instituicao' ? '🏢' :
                    h.ator_tipo === 'voluntario' ? '🚚' : '🤖';
     const dataHora = formatarDateTime(h.criado_em);
-    const comentario = h.comentario ? `<div class="comentario">${h.comentario}</div>` : '';
+    const comentario = h.comentario
+      ? `<div class="comentario">${escaparHtml(h.comentario)}</div>`
+      : '';
 
     return `
       <div class="evento-timeline">
-        <span class="avatar">${avatar}</span>
+        <span class="avatar" aria-hidden="true">${avatar}</span>
         <div class="evento-detalhe">
-          <strong>${etapa?.label || h.status_novo}</strong>
+          <strong>${escaparHtml(etapa?.label || h.status_novo)}</strong>
           <span class="data">${dataHora}</span>
           ${comentario}
         </div>
@@ -420,6 +524,46 @@ window.cancelarOferta = async function () {
 // ====================================================================
 // UTILITÁRIOS
 // ====================================================================
+
+function escaparHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+function formatarKg(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    minimumFractionDigits: 0, maximumFractionDigits: 2,
+  });
+}
+
+function formatarHora(iso) {
+  if (!iso) return '--';
+  return new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatarDataHora(iso) {
+  if (!iso) return '--';
+  return new Date(iso).toLocaleString('pt-BR', {
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
+  });
+}
+
+/**
+ * Descreve o prazo restante da oferta no padrão do feed ("Expira em 2h15").
+ */
+function descreverPrazo(oferta) {
+  if (ESTADOS_FINAIS.includes(oferta.status)) {
+    return oferta.status === 'confirmada' ? 'Doação concluída' : 'Prazo encerrado';
+  }
+  const expira = new Date(oferta.expira_em);
+  const diffMs = expira - new Date();
+  if (Number.isNaN(diffMs) || diffMs <= 0) return 'Prazo encerrado';
+
+  const h = Math.floor(diffMs / (1000 * 60 * 60));
+  const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  return h > 0 ? `Expira em ${h}h${String(m).padStart(2, '0')}` : `Expira em ${m}min`;
+}
 
 /**
  * Formata datetime para exibição brasileira.

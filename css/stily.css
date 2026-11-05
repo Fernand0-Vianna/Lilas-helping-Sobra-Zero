@@ -898,6 +898,317 @@ p { margin: 0 0 1em; }
   margin-top: 1rem;
 }
 
+/* ============================================================
+   COMPONENTES DO PRODUTO - feed, card de oferta, chips, timeline
+   Base: design/desktop/guia_de_estilo.html (§3, §5, §6, §7)
+   ============================================================ */
+
+/* ---- cabeçalho de página interna ---- */
+.page-shell { padding: clamp(2rem, 4vw, 3rem) 0 clamp(3.5rem, 7vw, 5rem); }
+.page-shell--narrow { max-width: 820px; }
+.page-head { margin-bottom: 1.8rem; }
+.page-head h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 800; }
+.page-head .sub { color: var(--muted); font-size: .98rem; margin: 0; max-width: 62ch; }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--purple-dark);
+  text-decoration: none;
+  margin-bottom: 1.2rem;
+}
+.back-link:hover { text-decoration: underline; }
+
+/* ---- card base ---- */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.35rem;
+  box-shadow: var(--shadow-soft);
+}
+.card h3 { margin-top: 0; }
+.card > :last-child { margin-bottom: 0; }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-bottom: .9rem;
+}
+.card-exp {
+  font-family: var(--mono);
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #92400E;
+}
+
+/* ---- chips de status (§5) ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .76rem;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: .38rem .8rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.chip-publicada { background: #EDE9FE; color: var(--purple-dark); border-color: #DDD6FE; }
+.chip-aceita { background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE; }
+.chip-transporte { background: #CCFBF1; color: #0F766E; border-color: #99F6E4; }
+.chip-coletada { background: var(--warning-bg); color: #92400E; border-color: #FDE68A; }
+.chip-entregue { background: var(--success-bg); color: #166534; border-color: #BBF7D0; }
+.chip-confirmada { background: #DCFCE7; color: #047857; border-color: #6EE7B7; }
+.chip-expirada { background: #F3F4F6; color: #4B5563; border-color: var(--border); }
+.chip-cancelada { background: var(--danger-bg); color: #991B1B; border-color: #FECACA; }
+.chip-ativo { background: var(--tint); color: var(--purple-dark); border-color: var(--tint-2); }
+
+/* ---- tags (§7) ---- */
+.card-tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1rem; }
+.tag {
+  font-size: .72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  color: #374151;
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ---- botões complementares (§3) ---- */
+.btn-secondary {
+  background: var(--white);
+  color: var(--purple-dark);
+  border-color: var(--purple);
+}
+.btn-secondary:hover { background: var(--tint); transform: translateY(-2px); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: #B91C1C; transform: translateY(-2px); }
+.btn-disabled,
+.btn:disabled {
+  background: #E5E7EB;
+  color: #6B7280;
+  border-color: #E5E7EB;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+  white-space: normal;
+  text-align: left;
+}
+.btn-disabled:hover,
+.btn:disabled:hover { background: #E5E7EB; color: #6B7280; transform: none; }
+
+/* ---- barra de filtros do feed ---- */
+.filters-bar {
+  display: flex;
+  gap: .9rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin: 1.6rem 0;
+}
+.filters-bar .field { min-width: 190px; }
+.filters-bar .btn { flex: 0 0 auto; }
+.filters-bar .filters-actions { margin-left: auto; display: flex; gap: .6rem; flex-wrap: wrap; }
+
+/* ---- feed de ofertas ---- */
+.feed-container {
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-items: stretch;
+}
+.feed-empty { text-align: center; padding: 3rem 1.5rem; grid-column: 1 / -1; }
+.feed-empty p { color: var(--muted); margin: 0 0 .4rem; }
+.feed-empty p:last-child { font-size: .85rem; margin: 0; }
+
+.card-oferta {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.card-oferta:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--tint-2);
+}
+.card-oferta h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: .35rem; }
+.card-oferta .meta { font-size: .84rem; color: var(--muted); margin-bottom: .9rem; }
+.card-oferta .card-actions { display: flex; gap: .6rem; margin-top: auto; padding-top: .25rem; }
+.card-oferta .card-actions .btn { padding: .75rem 1rem; font-size: .88rem; }
+.card-oferta .card-actions .btn:first-child { flex: 2; }
+.card-oferta .card-actions .btn + .btn { flex: 1; }
+
+/* ---- box de detalhes dentro do card ---- */
+.detalhe-box {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .2rem .9rem;
+  margin-bottom: 1rem;
+  background: #FCFCFE;
+}
+.detalhe-linha {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: .75rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+}
+.detalhe-linha:last-child { border-bottom: 0; }
+.detalhe-linha span {
+  font-family: var(--mono);
+  font-size: .63rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.detalhe-linha p { margin: 0; font-size: .85rem; color: var(--ink); overflow-wrap: anywhere; }
+
+/* ---- alertas de regra de negócio (§6) ---- */
+.alert-rn01 { border-left: 4px solid var(--purple); background: var(--tint); }
+.alert-rn05 { border-left: 4px solid var(--danger); background: #FEF2F2; }
+.alert-rn06 { border-left: 4px solid var(--success); background: #F0FDF4; }
+.alert.alert-rn02 {
+  display: block;
+  border-radius: var(--radius-sm);
+  padding: .9rem 1rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--warning);
+  background: #FFFBEB;
+}
+.alert.alert-rn02 strong { display: block; font-size: .82rem; margin-bottom: .2rem; color: #92400E; }
+.alert.alert-rn02 p { font-size: .82rem; color: var(--muted); margin: 0; }
+
+/* ---- página de detalhe da oferta ---- */
+.oferta-resumo { margin-top: 0; }
+.oferta-resumo > .card { position: relative; overflow: hidden; }
+.oferta-resumo > .card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple), var(--tint-2));
+}
+.oferta-resumo h1 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: .4rem; }
+.oferta-resumo .meta { font-size: .9rem; color: var(--muted); margin-bottom: 1rem; }
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: .75rem;
+  margin: 1.1rem 0;
+}
+.detail-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #FCFCFE;
+  padding: .75rem .9rem;
+}
+.detail-item span {
+  display: block;
+  font-family: var(--mono);
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .3rem;
+}
+.detail-item strong { display: block; font-size: .95rem; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.detail-block {
+  border-top: 1px solid var(--border);
+  padding-top: .9rem;
+  margin-top: .9rem;
+}
+.detail-block span {
+  display: block;
+  font-family: var(--mono);
+  font-size: .63rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .35rem;
+}
+.detail-block p { margin: 0; font-size: .9rem; color: #374151; }
+
+/* ---- timeline do ciclo (tela 06/07/08) ---- */
+.chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1.4rem; }
+.chips .chip { font-size: .73rem; padding: .4rem .7rem; }
+.chips .chip.is-futuro {
+  background: var(--white);
+  color: var(--muted);
+  border-color: var(--border);
+  opacity: .55;
+}
+
+.timeline-eventos { position: relative; display: grid; gap: 0; }
+.timeline-eventos::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--border);
+}
+.evento-timeline {
+  position: relative;
+  display: flex;
+  gap: .9rem;
+  align-items: flex-start;
+  padding: .55rem 0;
+}
+.evento-timeline .avatar {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  background: var(--tint);
+  border: 2px solid var(--white);
+  box-shadow: 0 0 0 1px var(--border);
+  font-size: .95rem;
+}
+.evento-timeline .evento-detalhe { flex: 1; min-width: 0; padding-top: .15rem; }
+.evento-timeline .evento-detalhe strong { display: block; font-size: .92rem; font-weight: 700; }
+.evento-timeline .evento-detalhe .data {
+  display: block;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .04em;
+  color: var(--muted);
+  margin-top: .1rem;
+}
+.evento-timeline .comentario {
+  margin-top: .35rem;
+  font-size: .85rem;
+  color: #374151;
+  background: var(--paper);
+  border-radius: var(--radius-sm);
+  padding: .5rem .7rem;
+}
+
+/* ---- ações da oferta ---- */
+.acoes-oferta { display: grid; gap: .7rem; }
+.acoes-oferta .btn { width: 100%; }
+
 /* ---------------- animações ---------------- */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes floatIn { from { opacity: 0; transform: translateY(28px) rotate(1deg); } to { opacity: 1; transform: none; } }
@@ -965,4 +1276,18 @@ p { margin: 0 0 1em; }
   .hero-ctas .btn { width: 100%; }
   .tabs { flex-direction: column; border-radius: var(--radius); }
   .tabs button { border-radius: var(--radius-sm); }
+
+  .feed-container { grid-template-columns: 1fr; }
+  .filters-bar { flex-direction: column; align-items: stretch; }
+  .filters-bar .field { min-width: 0; }
+  .filters-bar .filters-actions { margin-left: 0; }
+  .filters-bar .filters-actions .btn { flex: 1; }
+  .card-oferta .card-actions { flex-wrap: wrap; }
+  .detalhe-linha { grid-template-columns: 1fr; gap: .15rem; }
+  .detail-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 420px) {
+  .detail-grid { grid-template-columns: 1fr; }
+  .chips .chip { flex: 1 1 auto; justify-content: center; }
 }

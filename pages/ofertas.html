@@ -6,37 +6,6 @@
   <meta name="description" content="Ofertas disponíveis-Sobra Zero">
   <title>Ofertas disponíveis-Sobra Zero</title>
   <link rel="stylesheet" href="../css/stily.css">
-  <style>
-    /* Box de detalhes do card-guia de estilo §7 (tokens §1) */
-    .detalhe-box {
-      border: 1px solid #E5E7EB;
-      border-radius: 12px;
-      padding: 6px 16px;
-      margin-bottom: 16px;
-      background: #fff;
-    }
-    .detalhe-linha {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      gap: 8px;
-      padding: 8px 0;
-      border-bottom: 1px solid #E5E7EB;
-      align-items: baseline;
-    }
-    .detalhe-linha:last-child { border-bottom: 0; }
-    .detalhe-linha span { font-size: 12px; font-weight: 600; color: #6B7280; }
-    .detalhe-linha p { font-size: 14px; margin: 0; color: #111827; }
-    /* Alerta de cadeia de frio-guia §6 (alert-rn02) */
-    .alert-rn02 {
-      border-radius: 12px;
-      padding: 16px;
-      border: 1px solid #E5E7EB;
-      border-left: 4px solid #D97706;
-      background: #FFFBEB;
-    }
-    .alert-rn02 strong { display: block; font-size: 14px; margin-bottom: 6px; color: #92400E; }
-    .alert-rn02 p { font-size: 14px; color: #6B7280; margin: 0; }
-  </style>
 </head>
 <body>
   <header class="site-header" id="header">
@@ -57,13 +26,15 @@
     </div>
   </header>
 
-  <main class="container" style="padding:2rem 1rem 4rem; max-width:1100px">
-    <span class="kicker">Tela 05 / M2 · Feed com equidade (RN-06)</span>
-    <h1>Ofertas disponíveis</h1>
-    <p class="sub">Ordenadas por equidade: quem recebeu menos kg nos últimos 30 dias aparece primeiro.</p>
+  <main class="container page-shell">
+    <div class="page-head">
+      <span class="kicker">Tela 05 / M2 · Feed com equidade (RN-06)</span>
+      <h1>Ofertas disponíveis</h1>
+      <p class="sub">Ordenadas por equidade: quem recebeu menos kg nos últimos 30 dias aparece primeiro.</p>
+    </div>
 
-    <div class="card" style="display:flex; gap:.75rem; flex-wrap:wrap; align-items:end; margin:1.5rem 0">
-      <div class="field" style="min-width:200px">
+    <form class="card filters-bar" onsubmit="return false">
+      <div class="field">
         <label for="filtro-tipo">Tipo de alimento</label>
         <select id="filtro-tipo">
           <option value="">Todos</option>
@@ -73,7 +44,7 @@
           <option value="congelado">Congelado (RN-08 · 48h)</option>
         </select>
       </div>
-      <div class="field" style="min-width:180px">
+      <div class="field">
         <label for="filtro-frio">Cadeia de frio</label>
         <select id="filtro-frio">
           <option value="">Todos</option>
@@ -81,11 +52,13 @@
           <option value="false">Não exige frio</option>
         </select>
       </div>
-      <button class="btn btn-ghost" id="limpar-filtros" type="button">Limpar filtros</button>
-      <a class="btn btn-primary" href="publicar-oferta.html" style="margin-left:auto">+ Publicar oferta</a>
-    </div>
+      <div class="filters-actions">
+        <button class="btn btn-ghost" id="limpar-filtros" type="button">Limpar filtros</button>
+        <a class="btn btn-primary" href="publicar-oferta.html">+ Publicar oferta</a>
+      </div>
+    </form>
 
-    <div id="feed-ofertas" class="feed-container" style="display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(280px,1fr))"></div>
+    <div id="feed-ofertas" class="feed-container" aria-live="polite"></div>
   </main>
 
   <script type="module">

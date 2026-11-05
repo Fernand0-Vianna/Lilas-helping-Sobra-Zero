@@ -119,11 +119,9 @@ async function renderizarFeed() {
 
   if (!ofertas || ofertas.length === 0) {
     container.innerHTML = `
-      <div class="card" style="text-align:center; padding:3rem">
-        <p style="color:var(--muted)">Nenhuma oferta disponível no momento.</p>
-        <p style="font-size:.85rem; color:var(--muted)">
-          Novas ofertas aparecem automaticamente conforme os doadores publicam.
-        </p>
+      <div class="card feed-empty">
+        <p>Nenhuma oferta disponível no momento.</p>
+        <p>Novas ofertas aparecem automaticamente conforme os doadores publicam.</p>
       </div>
     `;
     return;
@@ -223,7 +221,7 @@ function criarCardOferta(o) {
 
   // Alerta de cadeia de frio, padrão §6 (sem emoji)
   const alertaFrio = o.exige_frio
-    ? `<div class="alert alert-rn02" style="margin:0 0 1rem">
+    ? `<div class="alert alert-rn02">
          <strong>Cadeia de frio</strong>
          <p>Este alimento exige refrigeração na instituição (RN-03) e caixa térmica no transporte (RN-04).</p>
        </div>`
@@ -233,13 +231,13 @@ function criarCardOferta(o) {
   const vincDoador = vinculoDe(perfilLogado, 'doador');
   const souDono = vincDoador?.id && o.doador_id === vincDoador.id;
   const botaoEditar = souDono
-    ? `<button class="btn btn-ghost" style="flex:1" onclick="event.stopPropagation();abrirEdicao('${o.id}')">
+    ? `<button class="btn btn-ghost" type="button" onclick="event.stopPropagation();abrirEdicao('${o.id}')">
          Editar
        </button>`
     : '';
 
   return `
-    <div class="card" data-id="${o.id}">
+    <article class="card card-oferta" data-id="${o.id}">
       <div class="card-top">
         <span class="chip ${statusClasse}">${escaparHtml(rotuloStatus)}</span>
         <span class="card-exp">${prazo}</span>
@@ -249,14 +247,14 @@ function criarCardOferta(o) {
       <div class="card-tags">${tags.join('')}</div>
       ${boxDetalhes}
       ${alertaFrio}
-      <div style="display:flex; gap:.6rem">
-        <button class="btn btn-secondary" style="flex:2"
+      <div class="card-actions">
+        <button class="btn btn-secondary" type="button"
                 onclick="window.location.href='oferta.html?id=${o.id}'">
           Ver detalhes
         </button>
         ${botaoEditar}
       </div>
-    </div>
+    </article>
   `;
 }
 
