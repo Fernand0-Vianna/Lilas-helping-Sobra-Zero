@@ -104,9 +104,33 @@ fontes **Phudu** (logo/títulos) e **IBM Plex Sans** (interface).
 - `pages/publicar-oferta.html`-formulário doador → RPC `criar_oferta` (RN-01/05/08)
 - `pages/oferta.html?id=...`-timeline (`oferta_historico`) + ações do ciclo (RN-01 a RN-07)
 - `pages/relatorio.html`-KPIs via `vw_kpis_gerais` + tabelas de doadores e descartes
+- `pages/perfil.html`-dados da conta + vínculo do perfil (doador, instituição ou voluntário)
 
 > **Estado atual:** backend Supabase ativo. Login, cadastro, feed, publicação,
-> ciclo e relatório falam com o banco real via `pages-js/` + RLS + RPCs.
+> ciclo, perfil e relatório falam com o banco real via `pages-js/` + RLS + RPCs.
+
+## Design system e componentes
+
+O CSS (`css/stily.css`) concentra tokens e componentes reutilizáveis:
+
+- **Tokens:** cores da marca, neutros, estados, tipografia (Phudu + IBM Plex) e medidas
+- **Navegação:** header fixo, nav, drawer mobile e foco visível
+- **Formulários:** campos, selects, textareas, hints, estados de erro/disabled e medidor de senha
+- **Feed e cards:** `card-oferta` com rail de status, rota coleta→entrega, fatos compactos e ações
+- **Detalhe da oferta:** `card-detalhe`, grid de informações, timeline vertical e alertas de RN
+- **Relatório:** `kpi-grid`, `kpi-card`, `data-table`, barras e badges de aproveitamento
+- **Ícones:** biblioteca local em `pages-js/icons.js` (SVGs no estilo Lucide, herdam `currentColor`)
+
+Os prints atualizados do app ficam em `prints/` (feed, detalhe, publicar, perfil e relatório).
+
+## Últimas atualizações
+
+- **Feed de ofertas:** cards redesenhados com rail de status, rota coleta→entrega, fatos compactos e ações alinhadas
+- **Detalhe da oferta:** resumo completo da doação, timeline vertical e alertas de RN
+- **Páginas internas:** publicar oferta, perfil e relatório com o mesmo layout (`page-shell`, seções e ações)
+- **Relatório:** KPIs em grade 4×2 e tabelas com barras de aproveitamento
+- **Ícones:** emojis substituídos por SVGs locais (`pages-js/icons.js`)
+- **Prints:** capturas atualizadas em `prints/` e no deck QPR
 
 ## Estrutura da pasta
 
@@ -122,24 +146,27 @@ Lilas_Helpig/
 │   ├── ofertas.html        # feed (tela 05 / M2)
 │   ├── publicar-oferta.html# publicar (tela 04 / M1)
 │   ├── oferta.html         # acompanhar (telas 06/07/08)
+│   ├── perfil.html         # conta + vínculo do perfil
 │   └── relatorio.html      # relatório (tela 12 / M7)
 ├── pages-js/               # frontend JS (ES modules, sem build)
 │   ├── supabase.js         # cliente centralizado + helpers de auth/UI
+│   ├── icons.js            # biblioteca local de ícones SVG
 │   ├── login.js            # signInWithPassword + redirect por perfil
 │   ├── cadastro.js         # signUp + insert na tabela de detalhe
 │   ├── publicar-oferta.js  # RPC criar_oferta (RN-01/05/08)
 │   ├── ofertas.js          # feed ordenado por equidade (RN-06)
 │   ├── oferta.js           # timeline + avançar ciclo (RN-01 a RN-07)
+│   ├── perfil.js           # leitura/edição do perfil e vínculo
 │   └── relatorio.js        # KPIs + tabelas (RN-02/06/07)
+├── prints/                 # prints atualizados do app (feed, detalhe, etc.)
 ├── supabase/
 │   ├── config.toml         # config local da CLI
 │   ├── functions/          # Edge Functions (vazio por enquanto)
-│   └── migrations/         # 4 migrations SQL (espelho de plano/migrations/)
+│   └── migrations/         # 8 migrations SQL (espelho de plano/migrations/)
 ├── plano/                  # documentação do plano de implementação
 │   ├── README.md           # índice navegável + mapa de RNs
 │   ├── 01-supabase-setup.md … 06-migrating-from-static.md
-│   ├── migrations/         # fonte das migrations
-│   └── pages-js/           # fonte dos JS
+│   └── migrations/         # fonte das migrations
 ├── design/
 │   ├── Logo/               # logo (SVG e WebP)
 │   ├── desktop/            # 9 telas × SVG + PNG @2x
@@ -349,10 +376,10 @@ nunca exponha a `SECRET_KEY` no frontend.
 npm install -g supabase
 supabase login
 supabase link --project-ref SEU_REF   # prefixo da URL https://SEU_REF.supabase.co
-supabase db push                      # aplica as 4 migrations de supabase/migrations/
+supabase db push                      # aplica as 8 migrations de supabase/migrations/
 ```
 
-Sem CLI, rode os 4 arquivos de `supabase/migrations/` na ordem no SQL Editor
+Sem CLI, rode os 8 arquivos de `supabase/migrations/` na ordem no SQL Editor
 e habilite `pg_cron` em Database → Extensions (expiração RN-02).
 
 Variáveis: copie `.env.example` para `.env.local` e preencha
