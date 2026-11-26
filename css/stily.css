@@ -70,7 +70,7 @@ p { margin: 0 0 1em; }
   font-size: .74rem;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--purple);
+  color: var(--purple-dark);
   display: inline-flex;
   align-items: center;
   gap: .6rem;

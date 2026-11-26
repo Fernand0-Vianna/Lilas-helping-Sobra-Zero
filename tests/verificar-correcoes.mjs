@@ -212,9 +212,14 @@ checar('landing: foco preso com setas',
   /ArrowDown/.test(landing) && /ArrowUp/.test(landing));
 checar('landing: lock de scroll', /document\.body\.style\.overflow = 'hidden'/.test(landing));
 checar('landing: CTA com copy novo', /Comece em dois minutos/.test(landing));
+checar('landing: CTA sem erro de caixa', !/ etapa até a confirmação da instituição\. cadastro/.test(landing));
+checar('landing: focus trap no drawer', /e\.key === 'Tab'/.test(landing) && /e\.shiftKey/.test(landing));
+checar('landing: decoding async nos PNGs', (landing.match(/decoding="async"/g) || []).length >= 13);
 const cssLanding = ler('css/stily.css');
 checar('landing css: .hero-photo', /\.hero-photo\s*\{/.test(cssLanding));
 checar('landing css: overlay lilas', /linear-gradient\(180deg[\s\S]{0,120}?rgba\(30, 16, 65/.test(cssLanding));
+checar('landing css: kicker com contraste forte',
+  /\.kicker\s*\{[\s\S]{0,220}?color:\s*var\(--purple-dark\)/.test(cssLanding));
 
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
