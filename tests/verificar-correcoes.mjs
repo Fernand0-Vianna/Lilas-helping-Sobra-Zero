@@ -237,6 +237,8 @@ checar('hero css: .hero-shade absolute', /\.hero-shade\s*\{[\s\S]{0,220}?inset:\
 checar('hero css: .hero-card', /\.hero-card\s*\{/.test(cssLanding));
 checar('hero css: .hero-cards', /\.hero-cards\s*\{/.test(cssLanding));
 checar('hero css: empilhamento no mobile', /@media[\s\S]{0,200}?max-width:\s*860px[\s\S]{0,1200}?\.hero-card/.test(cssLanding));
+checar('hero css: overlay central reforcado', /rgba\(10, 14, 26, \.82\)/.test(cssLanding));
+checar('hero css: sem zoom com reduced-motion', /prefers-reduced-motion[\s\S]{0,260}?\.hero-bg-img\s*\{\s*animation:\s*none/.test(cssLanding));
 
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {

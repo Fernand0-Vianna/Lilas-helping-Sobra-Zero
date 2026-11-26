@@ -266,7 +266,7 @@ p { margin: 0 0 1em; }
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(10, 14, 26, .9) 0%, rgba(10, 14, 26, .72) 45%, rgba(10, 14, 26, .97) 100%),
+    linear-gradient(180deg, rgba(10, 14, 26, .9) 0%, rgba(10, 14, 26, .82) 45%, rgba(10, 14, 26, .97) 100%),
     radial-gradient(circle at 75% 15%, rgba(124, 92, 224, .45) 0%, rgba(124, 92, 224, 0) 55%);
   pointer-events: none;
 }
@@ -1628,6 +1628,7 @@ p { margin: 0 0 1em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   html { scroll-behavior: auto; }
+  .hero-bg-img { animation: none; }
 }
 
 /* ---------------- responsivo ---------------- */
