@@ -182,6 +182,18 @@ checar('cadastro.html: CNPJ valido no chip', htmlCadastro.includes("'11444777000
 checar('cadastro.html: sem gravacao automatica nos chips',
   !/qchip\[data-preencher\][\s\S]{0,1200}?signUp|signUp[\s\S]{0,1200}?qchip\[data-preencher\]/.test(htmlCadastro));
 
+console.log('\n[14] Seed de demonstracao no banco');
+const seedPath = 'supabase/migrations/20260111000000_seed_demo.sql';
+let seedSql = '';
+try { seedSql = ler(seedPath); } catch { /* falta */ }
+checar('seed_demo existe', !!seedSql);
+checar('seed: 3 ofertas marcadas [TESTE]',
+  (seedSql.match(/\[TESTE\]/g) || []).length >= 5);
+checar('seed: nao insere exige_frio (coluna gerada)',
+  !/\bexige_frio\b[\s\S]{0,40}?select|\(\s*doador_id[\s\S]{0,200}?exige_frio/.test(seedSql));
+checar('seed: nao cria auth.users', !/auth\.users/.test(seedSql.replace(/--[\s\S]*?(?=\n)/g, '')));
+checar('seed: protege titulos repetidos', /not exists/.test(seedSql));
+
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
   console.log(falhas.map((f) => ' - ' + f).join('\n'));
