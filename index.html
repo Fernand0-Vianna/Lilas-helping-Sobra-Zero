@@ -41,43 +41,56 @@
 
   <!-- ================= HERO ================= -->
   <section class="hero">
+    <div class="hero-bg">
+      <img
+        class="hero-bg-img"
+        src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=80"
+        srcset="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=75 800w,
+                https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80 1200w,
+                https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=80 1600w,
+                https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=2000&q=80 2000w"
+        sizes="100vw"
+        width="2000" height="1500" fetchpriority="high"
+        alt="Refeição pronta em prato, ilustrando o alimento que pode ser resgatado pelo Sobra Zero">
+    </div>
+    <div class="hero-shade" aria-hidden="true"></div>
+
     <div class="container">
       <div class="hero-grid">
-        <div>
-          <span class="kicker">Projeto de faculdade · Squad Lilás</span>
-          <h1>A sobra de hoje é a <span class="accent">refeição</span> de alguém amanhã.</h1>
-          <p class="lead">
-            Todo dia comida boa vai para o lixo-enquanto muita gente passa fome.
-            O <strong>Sobra Zero</strong> conecta restaurantes, cantinas e mercados com excedente
-            a instituições sociais e voluntários de transporte, com rastro, prazo e
-            responsabilidade do prato à mesa.
-          </p>
+        <span class="kicker">Projeto de faculdade · Squad Lilás</span>
+        <h1>A sobra de hoje é a <span class="accent">refeição</span> de alguém amanhã.</h1>
+        <p class="lead">
+          Todo dia comida boa vai para o lixo-enquanto muita gente passa fome.
+          O <strong>Sobra Zero</strong> conecta restaurantes, cantinas e mercados com excedente
+          a instituições sociais e voluntários de transporte, com rastro, prazo e
+          responsabilidade do prato à mesa.
+        </p>
 
-          <div class="hero-ctas">
-            <a class="btn btn-primary btn-lg" href="pages/cadastro.html">Criar conta grátis</a>
-            <a class="btn btn-ghost-light btn-lg" href="#telas">Ver o protótipo</a>
-          </div>
-
-          <div class="hero-meta">
-            <span>7 telas essenciais</span>
-            <span>Desktop 1440 + Mobile 390</span>
-            <span>8 regras de negócio</span>
-          </div>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="pages/cadastro.html">Criar conta grátis</a>
+          <a class="btn btn-ghost-light btn-lg" href="#telas">Ver o protótipo</a>
         </div>
 
-        <div class="hero-visual">
-          <figure class="hero-photo">
-            <img
-              src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80"
-              srcset="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=75 800w,
-                      https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80 1200w,
-                      https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=80 1600w"
-              sizes="(max-width: 860px) 92vw, 40vw"
-              width="1200" height="1500" fetchpriority="high"
-              alt="Refeição pronta em prato, ilustrando o alimento que pode ser resgatado pelo Sobra Zero">
-            <figcaption>Da sobra da cozinha à mesa de quem precisa.</figcaption>
+        <div class="hero-cards">
+          <figure class="hero-card">
+            <span data-icon="chef-hat" data-size="22"></span>
+            <figcaption><b>Doador</b><small>quem tem sobra</small></figcaption>
           </figure>
-          <span class="badge">Protótipo navegável</span>
+          <figure class="hero-card">
+            <span data-icon="building-2" data-size="22"></span>
+            <figcaption><b>Instituição</b><small>quem recebe</small></figcaption>
+          </figure>
+          <figure class="hero-card">
+            <span data-icon="truck" data-size="22"></span>
+            <figcaption><b>Voluntário</b><small>quem transporta</small></figcaption>
+          </figure>
+        </div>
+
+        <div class="hero-meta">
+          <span>7 telas essenciais</span>
+          <span>Desktop 1440 + Mobile 390</span>
+          <span>8 regras de negócio</span>
+          <span>Protótipo navegável</span>
         </div>
       </div>
     </div>

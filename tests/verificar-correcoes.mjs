@@ -200,7 +200,7 @@ checar('landing: foto real no hero via Unsplash',
   /images\.unsplash\.com\/photo-/.test(landing));
 checar('landing: srcset no hero', /srcset=/.test(landing) && /\d+w,/.test(landing));
 checar('landing: width/height no img do hero',
-  /width="1200"\s+height="1500"/.test(landing));
+  /class="hero-bg-img"[\s\S]{0,600}?width="\d+"\s+height="\d+"/.test(landing));
 checar('landing: sem metrica 141 kg', !/141\s*kg/.test(landing));
 checar('landing: badge prototipo navegavel', /Prot[oó]tipo naveg[aá]vel/.test(landing));
 checar('landing: aba Mobile na galeria', /data-panel="mob"/.test(landing));
@@ -216,10 +216,27 @@ checar('landing: CTA sem erro de caixa', !/ etapa até a confirmação da instit
 checar('landing: focus trap no drawer', /e\.key === 'Tab'/.test(landing) && /e\.shiftKey/.test(landing));
 checar('landing: decoding async nos PNGs', (landing.match(/decoding="async"/g) || []).length >= 13);
 const cssLanding = ler('css/stily.css');
-checar('landing css: .hero-photo', /\.hero-photo\s*\{/.test(cssLanding));
-checar('landing css: overlay lilas', /linear-gradient\(180deg[\s\S]{0,120}?rgba\(30, 16, 65/.test(cssLanding));
+checar('landing css: foto de fundo no hero', /\.hero-bg-img\s*\{/.test(cssLanding));
+checar('landing css: overlay lilas', /\.hero-shade\s*\{[\s\S]{0,400}?rgba\(124, 92, 224/.test(cssLanding));
 checar('landing css: kicker com contraste forte',
   /\.kicker\s*\{[\s\S]{0,220}?color:\s*var\(--purple-dark\)/.test(cssLanding));
+
+console.log('\n[16] Hero full-bleed com cartoes de perfis');
+checar('hero: camada de fundo', /class="hero-bg"/.test(landing));
+checar('hero: img de fundo com Unsplash', /class="hero-bg-img"[^>]*images\.unsplash\.com/.test(landing));
+checar('hero: srcset 800/1200/1600/2000',
+  /800w[\s\S]{0,400}?1200w[\s\S]{0,400}?1600w[\s\S]{0,400}?2000w/.test(landing));
+checar('hero: fetchpriority high', /fetchpriority="high"/.test(landing));
+checar('hero: overlay de contraste', /class="hero-shade"/.test(landing));
+checar('hero: 3 cartoes de perfil', (landing.match(/class="hero-card"/g) || []).length === 3);
+checar('hero: icone chef-hat', /data-icon="chef-hat"/.test(landing));
+checar('hero: icone building-2', /data-icon="building-2"/.test(landing));
+checar('hero: icone truck', /data-icon="truck"/.test(landing));
+checar('hero css: .hero-bg absolute', /\.hero-bg\s*\{[\s\S]{0,220}?position:\s*absolute/.test(cssLanding));
+checar('hero css: .hero-shade absolute', /\.hero-shade\s*\{[\s\S]{0,220}?inset:\s*0/.test(cssLanding));
+checar('hero css: .hero-card', /\.hero-card\s*\{/.test(cssLanding));
+checar('hero css: .hero-cards', /\.hero-cards\s*\{/.test(cssLanding));
+checar('hero css: empilhamento no mobile', /@media[\s\S]{0,200}?max-width:\s*860px[\s\S]{0,1200}?\.hero-card/.test(cssLanding));
 
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
