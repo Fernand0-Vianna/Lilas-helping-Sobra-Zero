@@ -1,4 +1,4 @@
-/**
+﻿/**
  * supabase.js-Cliente centralizado do Supabase
  * ====================================================================
  * Importado por todas as páginas JS. Via CDN, ES modules nativos.
@@ -242,7 +242,7 @@ export function mostrarPopup(tipo, titulo, texto) {
 /**
  * Escapa HTML para exibir mensagens com segurança no popup.
  */
-function escaparHtml(s) {
+export function escaparHtml(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
   }[c]));

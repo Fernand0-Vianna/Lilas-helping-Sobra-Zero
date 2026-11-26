@@ -118,7 +118,7 @@ Prints do app rodando com dados reais no Supabase.
 - `index.html`-hero do projeto, ciclo em 6 etapas, personas, galeria das telas e as 8 RNs
 - `pages/login.html`-entrada real via `supabase.auth.signInWithPassword` + redirect por `user_type`
 - `pages/cadastro.html`-`signUp` + insert em doadores/instituições/voluntários (abas de perfil)
-- `pages/termos.html`-termos de uso em 9 cláusulas (conteúdo fixo)
+- `pages/termos.html`-termos de uso em 10 cláusulas (conteúdo fixo)
 - `pages/ofertas.html`-feed via `vw_ofertas_feed`, ordenado por equidade RN-06
 - `pages/publicar-oferta.html`-formulário doador → RPC `criar_oferta` (RN-01/05/08)
 - `pages/oferta.html?id=...`-timeline (`oferta_historico`) + ações do ciclo (RN-01 a RN-07)

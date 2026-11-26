@@ -75,7 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // A constraint do banco exige capacidade > 0 quando tem_refrigeracao = true.
       // O formulário não pede capacidade ainda, então enviamos null (sempre válido).
       detalhe.capacidade_refrigeracao_kg = null;
-      detalhe.necessidade_semanal = 'ate_20kg';
+      const faixa = document.getElementById('i-neces').value;
+      const mapaFaixa = {
+        'Até 20 kg': 'ate_20kg',
+        '21 a 60 kg': 'de_21_a_60kg',
+        '61 a 150 kg': 'de_61_a_150kg',
+        'Mais de 150 kg': 'mais_de_150kg',
+      };
+      detalhe.necessidade_semanal = mapaFaixa[faixa] || 'ate_20kg';
       detalhe.aceita_congelado = false;
       detalhe.endereco = '';
       detalhe.bairro = '';
@@ -95,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 1. Cria a conta no Auth (com metadata para trigger) ---
-    const { data: { user }, error: signUpError } = await supabase.auth.signUp({
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email: email,
       password: senha,
       options: {
@@ -112,8 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (!user) {
-      mostrarPopup('warn', 'Confirme seu e-mail', 'Enviamos um link de confirmação. Clique nele antes de entrar.');
+    const user = signUpData?.user;
+    // Com confirmação de e-mail ligada o Supabase devolve o user, mas sem
+    // sessão. Nesse caso os INSERTs abaixo seriam bloqueados pela RLS e a
+    // conta ficaria sem perfil. Avisa e encerra aqui; o vínculo é criado
+    // pelo trigger fn_handle_new_user() quando o e-mail é confirmado.
+    if (!user || !signUpData.session) {
+      mostrarPopup('success', 'Confirme seu e-mail',
+        'Enviamos um link de confirmação. Clique nele e entre para concluir seu cadastro.');
       return;
     }
 

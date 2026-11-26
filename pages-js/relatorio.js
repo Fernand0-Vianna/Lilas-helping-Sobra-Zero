@@ -1,4 +1,4 @@
-/**
+﻿/**
  * relatorio.js-Tela de relatório e KPIs
  * ====================================================================
  * Popula os cards de KPIs gerais e as tabelas de resumo usando as views
@@ -12,7 +12,7 @@
  *   RN-07-doações concluídas (status confirmada)
  */
 
-import supabase, { getUserProfile, redirectIfNotAuthenticated } from './supabase.js';
+import supabase, { getUserProfile, redirectIfNotAuthenticated, escaparHtml } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- Proteção de rota ---
@@ -149,7 +149,7 @@ async function carregarTabelaDoadores() {
                 <td>
                   <div class="doador-cell">
                     <span class="bar" style="width:${larguraBarra}px"></span>
-                    ${d.doador}
+                    ${escaparHtml(d.doador)}
                   </div>
                 </td>
                 <td class="num">${confirmadas}/${total}</td>
@@ -210,16 +210,16 @@ async function carregarTabelaDescartes() {
         <tbody>
           ${descartes.map(d => `
             <tr>
-              <td>${d.titulo}</td>
-              <td>${d.doador}</td>
+              <td>${escaparHtml(d.titulo)}</td>
+              <td>${escaparHtml(d.doador)}</td>
               <td class="center"><span class="tag">${d.tipo_alimento}</span></td>
               <td class="num">${formatarKg(d.quantidade_kg)}</td>
               <td class="center">
                 <span class="chip ${d.status_final === 'expirada' ? 'chip-expirada' : 'chip-cancelada'}">
-                  ${d.status_final}
+                  ${escaparHtml(d.status_final)}
                 </span>
               </td>
-              <td class="muted">${d.motivo_descarte || '—'}</td>
+              <td class="muted">${escaparHtml(d.motivo_descarte || '—')}</td>
               <td class="num muted">${formatarData(d.registrado_em)}</td>
             </tr>
           `).join('')}

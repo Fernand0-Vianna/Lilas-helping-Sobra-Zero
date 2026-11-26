@@ -23,6 +23,10 @@
       <div class="header-actions">
         <button class="btn btn-ghost" id="btn-sair" type="button">Sair</button>
       </div>
+
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+      </button>
     </div>
   </header>
 
@@ -61,9 +65,18 @@
 
   <script type="module">
     import { logout } from '../pages-js/supabase.js';
-    document.getElementById('btn-sair')?.addEventListener('click', logout);
+    document.getElementById('btn-sair')?.addEventListener('click', () => logout('../pages/login.html'));
   </script>
   <script type="module" src="../pages-js/icons.js"></script>
   <script type="module" src="../pages-js/oferta.js"></script>
+  <script>
+    // menu mobile
+    const header = document.getElementById('header');
+    document.getElementById('burger')?.addEventListener('click', function () {
+      const open = header.classList.toggle('is-open');
+      this.setAttribute('aria-expanded', open);
+      this.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    });
+  </script>
 </body>
 </html>

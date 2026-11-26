@@ -12,7 +12,7 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated, papelEfetivo, vinculoDe, renderPapelSwitcher } from './supabase.js';
+import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated, papelEfetivo, vinculoDe, renderPapelSwitcher, escaparHtml } from './supabase.js';
 import { icone } from './icons.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -195,7 +195,7 @@ class SanitarioAlert {
   mostrar(mensagem, tipo = 'warn') {
     if (!this.el) return;
     this.el.className = tipo === 'info' ? 'alert alert-info' : 'alert alert-warn';
-    this.el.querySelector('div').innerHTML = `<b>${this.vencido ? 'RN-05' : 'Atenção'}</b>${mensagem}`;
+    this.el.querySelector('div').innerHTML = `<b>${this.vencido ? 'RN-05' : 'Atenção'}</b>${escaparHtml(mensagem)}`;
     this.el.style.display = 'flex';
   }
 
