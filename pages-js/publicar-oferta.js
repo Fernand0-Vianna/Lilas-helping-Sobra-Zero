@@ -12,7 +12,7 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated, papelEfetivo, vinculoDe, renderPapelSwitcher, escaparHtml } from './supabase.js';
+import { getUserProfile, mostrarPopup, redirectIfNotAuthenticated, papelEfetivo, vinculoDe, renderPapelSwitcher, escaparHtml, preencherNomeTopBar } from './supabase.js';
 import { icone } from './icons.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- Carrega o perfil do doador logado ---
   const profile = await getUserProfile();
+  preencherNomeTopBar(profile);
 
   // --- Switcher de papel (só renderiza para admin) ---
   renderPapelSwitcher(profile);

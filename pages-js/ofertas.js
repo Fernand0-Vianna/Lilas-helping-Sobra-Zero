@@ -12,7 +12,7 @@
  */
 
 import supabase from './supabase.js';
-import { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, fecharPopup, renderPapelSwitcher, vinculoDe } from './supabase.js';
+import { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, fecharPopup, renderPapelSwitcher, vinculoDe, preencherNomeTopBar } from './supabase.js';
 import { icone } from './icons.js';
 
 // Perfil logado (para saber quais ofertas são minhas)
@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- Carrega perfil para contexto de perfil ---
   const profile = await getUserProfile();
+  preencherNomeTopBar(profile);
   perfilLogado = profile;
 
   // --- Switcher de papel (só renderiza para admin) ---

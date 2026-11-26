@@ -1,4 +1,4 @@
-﻿/**
+/**
  * relatorio.js-Tela de relatório e KPIs
  * ====================================================================
  * Popula os cards de KPIs gerais e as tabelas de resumo usando as views
@@ -12,7 +12,7 @@
  *   RN-07-doações concluídas (status confirmada)
  */
 
-import supabase, { getUserProfile, redirectIfNotAuthenticated, escaparHtml } from './supabase.js';
+import supabase, { getUserProfile, redirectIfNotAuthenticated, escaparHtml, preencherNomeTopBar } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- Proteção de rota ---
@@ -21,10 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- Carrega perfil (apenas para mostrar nome do usuário logado) ---
   const profile = await getUserProfile();
-  if (profile?.nome) {
-    const nomeEl = document.getElementById('usuario-nome');
-    if (nomeEl) nomeEl.textContent = profile.nome;
-  }
+  preencherNomeTopBar(profile);
 
   // --- Carrega todos os dados do relatório ---
   // Executa as 3 queries em paralelo para melhor performance

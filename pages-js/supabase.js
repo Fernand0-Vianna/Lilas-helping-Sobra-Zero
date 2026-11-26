@@ -263,6 +263,15 @@ export function limparAlerta(id = 'erro') {
   if (el) el.style.display = 'none';
 }
 
+/**
+ * Escreve o nome do usuario no top bar. Recebe o perfil ja carregado
+ * pela pagina para nao repetir queries. Nunca usa innerHTML.
+ */
+export function preencherNomeTopBar(profile) {
+  const el = document.getElementById('usuario-nome');
+  if (el && profile && profile.nome) el.textContent = profile.nome;
+}
+
 // ====================================================================
 // PERFIL ADMIN — flutua entre os 3 papéis
 // ====================================================================

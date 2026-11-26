@@ -133,6 +133,22 @@ checar('cadastro.js: valida CNPJ antes do signUp',
   /cnpjValido\(detalhe\.cnpj\)/.test(cadastro));
 checar('cadastro.js: funcao cnpjValido exportada', /export function cnpjValido/.test(cadastro));
 
+console.log('\n[11] Nome no top bar e destaque de Ofertas');
+const supModulo = ler('pages-js/supabase.js');
+checar('supabase.js: exporta preencherNomeTopBar', /export function preencherNomeTopBar/.test(supModulo));
+checar('supabase.js: usa textContent', /textContent\s*=\s*profile\.nome/.test(supModulo));
+const cssNav = ler('css/stily.css');
+checar('stily.css: .nav a.is-current', /\.nav a\.is-current\s*\{/.test(cssNav));
+for (const pagina of paginasApp) {
+  const html = ler(pagina);
+  checar(`${pagina}: #usuario-nome no top bar`, /id=["']usuario-nome["']/.test(html));
+  checar(`${pagina}: Ofertas com is-current`, /class=["'][^"']*is-current[^"']*["'][^>]*>\s*<span data-icon="package"/.test(html));
+}
+checar('ofertas.html: aria-current so na pagina corrente',
+  /class="is-current" aria-current="page"/.test(ler('pages/ofertas.html')));
+checar('relatorio.html: sem aria-current duplo',
+  !/href="ofertas\.html"[^>]*aria-current/.test(ler('pages/relatorio.html')));
+
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
   console.log(falhas.map((f) => ' - ' + f).join('\n'));

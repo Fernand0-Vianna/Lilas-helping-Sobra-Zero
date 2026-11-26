@@ -17,7 +17,7 @@
  * Ciclo: publicada → aceita → coletada → entregue → confirmada
  */
 
-import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, papelEfetivo, vinculoDe, renderPapelSwitcher } from './supabase.js';
+import supabase, { getUserProfile, redirectIfNotAuthenticated, mostrarPopup, papelEfetivo, vinculoDe, renderPapelSwitcher, preencherNomeTopBar } from './supabase.js';
 import { icone } from './icons.js';
 
 // Estados do ciclo em ordem (para timeline visual)
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- Carrega perfil do usuário ---
   profile = await getUserProfile();
+  preencherNomeTopBar(profile);
   if (!profile) {
     window.location.href = 'login.html';
     return;

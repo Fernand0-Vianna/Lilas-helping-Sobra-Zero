@@ -10,6 +10,7 @@ import supabase, {
   getUserProfile,
   redirectIfNotAuthenticated,
   mostrarPopup,
+  preencherNomeTopBar,
 } from './supabase.js';
 
 const LABEL_TIPO = { doador: 'Doador', instituicao: 'Instituição', voluntario: 'Voluntário', admin: 'Admin' };
@@ -31,6 +32,7 @@ async function carregar() {
   if (resumo) resumo.textContent = 'Carregando seus dados…';
 
   profileAtual = await getUserProfile();
+  preencherNomeTopBar(profileAtual);
   if (!profileAtual) {
     setErro('Não foi possível carregar seu perfil. Tente entrar novamente.');
     return;
