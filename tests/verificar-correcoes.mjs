@@ -173,6 +173,15 @@ const loginJs = ler('pages-js/login.js');
 checar('login: instituicao -> instituicao.html', /instituicao:\s*'instituicao\.html'/.test(loginJs));
 checar('login: voluntario -> voluntario.html', /voluntario:\s*'voluntario\.html'/.test(loginJs));
 
+console.log('\n[13] Chips de demonstracao no cadastro');
+const htmlCadastro = ler('pages/cadastro.html');
+for (const papel of ['doador', 'instituicao', 'voluntario']) {
+  checar(`cadastro.html: chip ${papel}`, htmlCadastro.includes(`data-preencher="${papel}"`));
+}
+checar('cadastro.html: CNPJ valido no chip', htmlCadastro.includes("'11444777000161'"));
+checar('cadastro.html: sem gravacao automatica nos chips',
+  !/qchip\[data-preencher\][\s\S]{0,1200}?signUp|signUp[\s\S]{0,1200}?qchip\[data-preencher\]/.test(htmlCadastro));
+
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
   console.log(falhas.map((f) => ' - ' + f).join('\n'));

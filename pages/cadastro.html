@@ -51,6 +51,13 @@
 
         <form id="form-cadastro" novalidate>
 
+          <div class="demo-chips" role="group" aria-label="Preencher dados de demonstração">
+            <span class="demo-chips-label">Teste rápido:</span>
+            <button type="button" class="qchip" data-preencher="doador">Doador</button>
+            <button type="button" class="qchip" data-preencher="instituicao">Instituição</button>
+            <button type="button" class="qchip" data-preencher="voluntario">Voluntário</button>
+          </div>
+
           <!-- ---------- DOADOR ---------- -->
           <div class="tab-panel is-active form-grid" id="tab-doador" role="tabpanel">
             <div class="field">
@@ -211,6 +218,47 @@
         btn.classList.add('is-active');
         btn.setAttribute('aria-selected', 'true');
         document.getElementById('tab-' + btn.dataset.tab).classList.add('is-active');
+      });
+    });
+
+    // chips de demonstração: preenchem a aba ativa, sem gravar nada
+    const exemplos = {
+      doador: {
+        'd-nome': 'Cantina Demonstração [TESTE]',
+        'd-resp': 'Responsável de Teste',
+        'd-tel': '(11) 90000-0000',
+        'd-email': 'doador.teste@example.com',
+        'd-sanitario': '2027-12-31',
+      },
+      instituicao: {
+        'i-nome': 'Instituição Demonstração [TESTE]',
+        'i-cnpj': '11444777000161',
+        'i-resp': 'Responsável Legal de Teste',
+        'i-email': 'instituicao.teste@example.com',
+        'i-frio': 'nao',
+        'i-neces': 'Até 20 kg',
+      },
+      voluntario: {
+        'v-nome': 'Voluntário Demonstração [TESTE]',
+        'v-tel': '(11) 90000-0000',
+        'v-email': 'voluntario.teste@example.com',
+        'v-termica': 'sim',
+        'v-veic': 'Carro',
+      },
+    };
+    document.querySelectorAll('.qchip[data-preencher]').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        const aba = chip.dataset.preencher;
+        const btn = document.querySelector('.tabs button[data-tab="' + aba + '"]');
+        if (btn) btn.click();
+        Object.entries(exemplos[aba] || {}).forEach(function ([id, valor]) {
+          const campo = document.getElementById(id);
+          if (campo) campo.value = valor;
+        });
+        const senhaCampo = document.getElementById('senha');
+        const senha2Campo = document.getElementById('senha2');
+        if (senhaCampo && !senhaCampo.value) senhaCampo.value = 'sobrazero123';
+        if (senha2Campo && !senha2Campo.value) senha2Campo.value = 'sobrazero123';
       });
     });
 

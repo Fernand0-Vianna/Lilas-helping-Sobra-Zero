@@ -799,6 +799,21 @@ p { margin: 0 0 1em; }
 .alert-danger { background: #FEF2F2; border-left: 4px solid var(--danger); color: #991B1B; }
 .alert b { display: block; margin-bottom: .15rem; }
 
+/* chips de demonstração no cadastro */
+.demo-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin: -.4rem 0 1.2rem;
+}
+.demo-chips-label {
+  font: 600 .78rem/1 var(--body);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
 /* tabs de perfil (espelha o design M4/M5/M6 e 09/10/11) */
 .tabs {
   display: flex;
