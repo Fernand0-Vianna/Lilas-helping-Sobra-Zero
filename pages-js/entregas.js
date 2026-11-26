@@ -17,7 +17,7 @@ const ETAPAS = [
   { status: 'aceita', label: 'Coleta confirmada', icon: 'circle-check' },
   { status: 'coletada', label: 'A caminho', icon: 'truck' },
   { status: 'entregue', label: 'Entregue na instituição', icon: 'house' },
-  { status: 'confirmada', label: 'Confirmado!', icon: 'check-check' },
+  { status: 'confirmada', label: 'Confirmado', icon: 'check-check' },
 ];
 
 const INDICE = Object.fromEntries(ETAPAS.map((e, i) => [e.status, i]));
@@ -45,15 +45,16 @@ function mensagemProgresso(status) {
   }
 }
 
-function renderizarProgresso(oferta, historico) {
+function renderizarProgresso(oferta, historico, indice = 0) {
   const atual = INDICE[oferta.status] ?? -1;
   const etapasHtml = ETAPAS.map((etapa, idx) => {
     const concluida = idx <= atual;
     const atualEtapa = idx === atual;
     return `
-      <div class="progress-step ${concluida ? 'is-done' : ''} ${atualEtapa ? 'is-current' : ''}">
+      <div class="progress-step ${concluida ? 'is-done' : ''} ${atualEtapa ? 'is-current' : ''}"
+           role="listitem" ${atualEtapa ? 'aria-current="step"' : ''}>
         <span class="progress-dot">${concluida ? icone('check') : icone(etapa.icon)}</span>
-        <span class="progress-label">${escaparHtml(etapa.label)}</span>
+        <span class="progress-label">${idx + 1}. ${escaparHtml(etapa.label)}</span>
       </div>
     `;
   }).join('');
@@ -104,8 +105,8 @@ function renderizarProgresso(oferta, historico) {
         <div><span>Quantidade</span><strong>${oferta.quantidade_kg} kg · ${oferta.porcoes ?? '-'} porções</strong></div>
       </div>
 
-      <details class="entrega-historico">
-        <summary>Ver histórico da entrega</summary>
+      <details class="entrega-historico" ${indice === 0 ? 'open' : ''}>
+        <summary>${indice === 0 ? 'Histórico da entrega' : 'Ver histórico da entrega'}</summary>
         <ul class="entrega-eventos">
           ${eventosHtml || '<li>Nenhum evento registrado.</li>'}
         </ul>
@@ -152,7 +153,7 @@ async function carregarEntregas() {
   }));
 
   container.innerHTML = ofertas
-    .map((oferta, i) => renderizarProgresso(oferta, historicos[i]))
+    .map((oferta, i) => renderizarProgresso(oferta, historicos[i], i))
     .join('');
 }
 

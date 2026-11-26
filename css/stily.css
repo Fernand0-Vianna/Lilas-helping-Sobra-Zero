@@ -1546,7 +1546,10 @@ p { margin: 0 0 1em; }
 }
 .progress-dot .icon { width: 18px; height: 18px; }
 .progress-step.is-done .progress-dot { background: var(--purple); border-color: var(--purple); color: #fff; }
-.progress-step.is-current .progress-dot { box-shadow: 0 0 0 4px var(--tint-2); }
+.progress-step.is-current .progress-dot {
+  box-shadow: 0 0 0 4px var(--tint-2), 0 0 0 7px rgba(124, 92, 224, .25);
+  transform: scale(1.08);
+}
 .progress-label { font-size: .78rem; font-weight: 600; color: var(--muted); line-height: 1.3; }
 .progress-step.is-done .progress-label { color: var(--purple-dark); }
 
