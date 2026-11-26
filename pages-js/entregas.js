@@ -124,6 +124,7 @@ async function carregarEntregas() {
     .from('vw_ofertas_feed')
     .select('*')
     .not('voluntario_id', 'is', null)
+    .in('status', ['aceita', 'coletada', 'entregue', 'confirmada'])
     .order('criado_em', { ascending: false });
 
   if (error) {
