@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mapeia user_type → página inicial (admin flutua: começa no feed)
     const redirecionar = {
       doador: 'publicar-oferta.html',
-      instituicao: 'ofertas.html',
-      voluntario: 'ofertas.html',
+      instituicao: 'instituicao.html',
+      voluntario: 'voluntario.html',
       admin: 'ofertas.html',
     };
 

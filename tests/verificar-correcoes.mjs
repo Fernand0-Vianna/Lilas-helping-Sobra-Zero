@@ -149,6 +149,30 @@ checar('ofertas.html: aria-current so na pagina corrente',
 checar('relatorio.html: sem aria-current duplo',
   !/href="ofertas\.html"[^>]*aria-current/.test(ler('pages/relatorio.html')));
 
+console.log('\n[12] Homes propias por perfil');
+for (const [pagina, iconePerfil, modo] of [
+  ['pages/instituicao.html', 'building-2', 'instituicao'],
+  ['pages/voluntario.html', 'truck', 'voluntario'],
+]) {
+  let html = '';
+  try { html = ler(pagina); } catch { /* falta */ }
+  checar(`${pagina}: existe`, !!html);
+  checar(`${pagina}: icone ${iconePerfil}`, html.includes(`data-icon="${iconePerfil}"`));
+  checar(`${pagina}: feed-ofertas`, html.includes('id="feed-ofertas"'));
+  checar(`${pagina}: top bar com nome`, html.includes('id="usuario-nome"'));
+  checar(`${pagina}: Publicar marcado para doador`, html.includes('data-so-doador'));
+  const modulo = ler(`pages-js/${modo}.js`);
+  checar(`pages-js/${modo}.js: chama renderizarFeed(${modo})`,
+    new RegExp(`renderizarFeed\\('${modo}'\\)`).test(modulo));
+}
+checar('ofertas.js: renderizarFeed aceita modo',
+  /export async function renderizarFeed\(modo = 'doador'\)/.test(ler('pages-js/ofertas.js')));
+checar('ofertas.js: esconde acoes de doador',
+  /data-so-doador/.test(ler('pages-js/ofertas.js')));
+const loginJs = ler('pages-js/login.js');
+checar('login: instituicao -> instituicao.html', /instituicao:\s*'instituicao\.html'/.test(loginJs));
+checar('login: voluntario -> voluntario.html', /voluntario:\s*'voluntario\.html'/.test(loginJs));
+
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
   console.log(falhas.map((f) => ' - ' + f).join('\n'));

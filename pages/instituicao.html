@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Área da instituição - Sobra Zero">
+  <title>Instituição-Sobra Zero</title>
+  <link rel="stylesheet" href="../css/stily.css">
+</head>
+<body>
+  <header class="site-header" id="header">
+    <div class="container">
+      <a class="brand" href="../index.html">
+        <img src="../design/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span><strong>Sobra Zero</strong><small>Squad Lilás</small></span>
+      </a>
+      <nav class="nav">
+        <a href="ofertas.html" class="is-current"><span data-icon="package" data-size="15"></span> Ofertas</a>
+        <a href="publicar-oferta.html" data-so-doador>Publicar</a>
+        <a href="relatorio.html">Relatório</a>
+        <a href="perfil.html" aria-current="page"><span data-icon="building-2" data-size="15"></span> Instituição</a>
+      </nav>
+      <div class="header-actions">
+        <span id="usuario-nome"></span>
+        <button class="btn btn-ghost" id="btn-sair" type="button">Sair</button>
+      </div>
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container page-shell">
+    <div class="page-head">
+      <span class="kicker">Área da instituição · RN-06 · RN-03</span>
+      <h1><span data-icon="building-2" data-size="28"></span> Ofertas que você pode aceitar</h1>
+      <p class="sub">Quem recebeu menos quilos nos últimos 30 dias aparece primeiro. Sem refrigeração, ofertas que exigem frio não podem ser aceitas.</p>
+    </div>
+
+    <div class="alert alert-info" style="margin-bottom:1.5rem">
+      <span data-icon="info"></span>
+      <div><b>RN-06 · Equidade</b>Você tem prioridade nesta fila conforme o volume recebido recentemente. A confirmação do recebimento (RN-07) é sua, nunca do voluntário.</div>
+    </div>
+
+    <form class="card filters-bar" onsubmit="return false">
+      <div class="field">
+        <label for="filtro-tipo">Tipo de alimento</label>
+        <select id="filtro-tipo">
+          <option value="">Todos</option>
+          <option value="preparado">Preparado (RN-01 · 4h+2h)</option>
+          <option value="nao_perecivel">Não perecível</option>
+          <option value="frio">Frio (exige frio)</option>
+          <option value="congelado">Congelado (RN-08 · 48h)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filtro-frio">Cadeia de frio</label>
+        <select id="filtro-frio">
+          <option value="">Todos</option>
+          <option value="true">Exige frio</option>
+          <option value="false">Não exige frio</option>
+        </select>
+      </div>
+      <div class="filters-actions">
+        <button class="btn btn-ghost" id="limpar-filtros" type="button">
+          <span data-icon="filter" data-size="16"></span> Limpar filtros
+        </button>
+      </div>
+    </form>
+
+    <div id="feed-ofertas" class="feed-container" aria-live="polite"></div>
+  </main>
+
+  <script type="module">
+    import { logout } from '../pages-js/supabase.js';
+    document.getElementById('btn-sair')?.addEventListener('click', () => logout('../pages/login.html'));
+  </script>
+  <script type="module" src="../pages-js/icons.js"></script>
+  <script type="module" src="../pages-js/instituicao.js"></script>
+  <script>
+    const header = document.getElementById('header');
+    document.getElementById('burger')?.addEventListener('click', function () {
+      const open = header.classList.toggle('is-open');
+      this.setAttribute('aria-expanded', open);
+      this.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    });
+  </script>
+</body>
+</html>

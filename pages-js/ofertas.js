@@ -18,6 +18,9 @@ import { icone } from './icons.js';
 // Perfil logado (para saber quais ofertas são minhas)
 let perfilLogado = null;
 
+// Modo de exibição: doador | instituicao | voluntario
+let modoFeed = 'doador';
+
 // Estado dos filtros ativos
 let filtrosAtivos = {
   tipo: null,       // null = todos, ou 'frio', 'congelado', 'preparado', 'nao_perecivel'
@@ -105,7 +108,18 @@ async function buscarFeedOfertas() {
 /**
  * Renderiza a lista de ofertas no container do feed.
  */
-async function renderizarFeed() {
+export async function renderizarFeed(modo = 'doador') {
+  modoFeed = ['doador', 'instituicao', 'voluntario'].includes(modo) ? modo : 'doador';
+  // Nas áreas de instituição/voluntário não faz sentido publicar nem editar.
+  document.querySelectorAll('[data-so-doador]').forEach((el) => {
+    el.style.display = modoFeed === 'doador' ? '' : 'none';
+  });
+  // Lê os selects do DOM para funcionar também nas páginas de papel.
+  const tipoEl = document.getElementById('filtro-tipo');
+  const frioEl = document.getElementById('filtro-frio');
+  filtrosAtivos.tipo = tipoEl?.value || null;
+  filtrosAtivos.exigeFrio = frioEl?.value === 'true' ? true
+    : frioEl?.value === 'false' ? false : null;
   const container = document.getElementById('feed-ofertas') ||
     document.querySelector('.feed-container');
 
@@ -258,7 +272,7 @@ function criarCardOferta(o, indice = 0) {
   // Botão de edição: só o doador dono da oferta vê (admin: vínculo doador)
   const vincDoador = vinculoDe(perfilLogado, 'doador');
   const souDono = vincDoador?.id && o.doador_id === vincDoador.id;
-  const botaoEditar = souDono
+  const botaoEditar = modoFeed === 'doador' && souDono
     ? `<button class="btn btn-ghost" type="button" onclick="event.stopPropagation();abrirEdicao('${o.id}')">
          ${icone('pencil')} Editar
        </button>`
@@ -383,4 +397,4 @@ function formatarDataHora(iso) {
 }
 
 // Exporta para uso em outros módulos (ex.: refresh manual)
-export { buscarFeedOfertas, renderizarFeed };
+export { buscarFeedOfertas };
