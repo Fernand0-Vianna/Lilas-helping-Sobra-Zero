@@ -70,6 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Formata CNPJ para 14 dígitos (remove pontos, barras, traços)
       detalhe.cnpj = document.getElementById('i-cnpj').value.replace(/\D/g, '');
+      // RN-03: valida os dígitos verificadores aqui também, para dar retorno
+      // imediato no formulário. O banco aplica a mesma regra (cnpj_valido).
+      if (!cnpjValido(detalhe.cnpj)) {
+        mostrarPopup('warn', 'CNPJ inválido',
+          'Digite um CNPJ com 14 dígitos e verificadores válidos.');
+        document.getElementById('i-cnpj').focus();
+        return;
+      }
       const temRefri = document.getElementById('i-frio').value === 'sim';
       detalhe.tem_refrigeracao = temRefri;
       // A constraint do banco exige capacidade > 0 quando tem_refrigeracao = true.
@@ -169,6 +177,27 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'login.html?conta=criada';
   });
 });
+
+/**
+ * Valida os dois dígitos verificadores do CNPJ (algoritmo da Receita Federal).
+ * Espelha public.cnpj_valido() no banco.
+ */
+export function cnpjValido(cnpj) {
+  if (typeof cnpj !== 'string' || !/^\d{14}$/.test(cnpj)) return false;
+  if (/^(\d)\1{13}$/.test(cnpj)) return false;
+
+  const w1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const w2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const digito = (resto) => (resto < 2 ? 0 : 11 - resto);
+
+  let soma = 0;
+  for (let i = 0; i < 12; i++) soma += Number(cnpj[i]) * w1[i];
+  if (digito(soma % 11) !== Number(cnpj[12])) return false;
+
+  soma = 0;
+  for (let i = 0; i < 13; i++) soma += Number(cnpj[i]) * w2[i];
+  return digito(soma % 11) === Number(cnpj[13]);
+}
 
 /**
  * Mapeia o texto do select para o ENUM meio_transporte.

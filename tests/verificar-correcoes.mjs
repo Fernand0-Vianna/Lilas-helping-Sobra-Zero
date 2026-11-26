@@ -114,6 +114,25 @@ try {
   checar('SQL das correcoes legivel', false);
 }
 
+console.log('\n[10] CNPJ validado no backend e no front');
+const cnpjMigration = 'supabase/migrations/20260110000000_cnpj_backend.sql';
+try {
+  const sqlCnpj = ler(cnpjMigration);
+  checar('migration cnpj_backend existe', !!sqlCnpj);
+  checar('cnpj_valido com digitos verificadores',
+    /w1 int\[\]\s*:=\s*array\[5,4,3,2,9,8,7,6,5,4,3,2\]/.test(sqlCnpj) &&
+    /w2 int\[\]\s*:=\s*array\[6,5,4,3,2,9,8,7,6,5,4,3,2\]/.test(sqlCnpj));
+  checar('constraint NOT VALID (nao afeta linhas antigas)',
+    /check \(public\.cnpj_valido\(cnpj\)\) not valid/i.test(sqlCnpj));
+  checar('execute revogado de anon/public',
+    /revoke all on function public\.cnpj_valido[\s\S]{0,100}from public, anon/i.test(sqlCnpj));
+} catch {
+  checar('migration cnpj_backend legivel', false);
+}
+checar('cadastro.js: valida CNPJ antes do signUp',
+  /cnpjValido\(detalhe\.cnpj\)/.test(cadastro));
+checar('cadastro.js: funcao cnpjValido exportada', /export function cnpjValido/.test(cadastro));
+
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
   console.log(falhas.map((f) => ' - ' + f).join('\n'));
