@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Minhas entregas - acompanhe o transporte dos alimentos - Sobra Zero">
+  <title>Minhas entregas-Sobra Zero</title>
+  <link rel="stylesheet" href="../css/stily.css">
+</head>
+<body>
+  <header class="site-header" id="header">
+    <div class="container">
+      <a class="brand" href="../index.html">
+        <img src="../design/Logo/Logo.svg" alt="Logo Sobra Zero">
+        <span><strong>Sobra Zero</strong><small>Squad Lilás</small></span>
+      </a>
+      <nav class="nav" id="nav-principal">
+        <a href="ofertas.html"><span data-icon="package" data-size="15"></span> Ofertas</a>
+        <a href="voluntario.html" class="is-current" aria-current="page"><span data-icon="truck" data-size="15"></span> Voluntário</a>
+        <a href="entregas.html"><span data-icon="route" data-size="15"></span> Minhas entregas</a>
+        <a href="perfil.html">Perfil</a>
+      </nav>
+      <div class="header-actions">
+        <span id="usuario-nome"></span>
+        <button class="btn btn-ghost" id="btn-sair" type="button">Sair</button>
+      </div>
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-principal">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container page-shell">
+    <div class="page-head">
+      <span class="kicker">Área do voluntário · Acompanhe cada entrega até a confirmação (RN-07)</span>
+      <h1><span data-icon="truck" data-size="28"></span> Minhas entregas</h1>
+      <p class="sub">Acompanhe o caminho do alimento que você está transportando, da coleta à confirmação da instituição.</p>
+    </div>
+
+    <div id="lista-entregas" class="entregas-lista" aria-live="polite">
+      <div class="card"><p style="color:var(--muted); margin:0">Carregando suas entregas...</p></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { logout } from '../pages-js/supabase.js';
+    document.getElementById('btn-sair')?.addEventListener('click', () => logout('../pages/login.html'));
+  </script>
+  <script type="module" src="../pages-js/icons.js"></script>
+  <script type="module" src="../pages-js/entregas.js"></script>
+  <script>
+    const header = document.getElementById('header');
+    document.getElementById('burger')?.addEventListener('click', function () {
+      const open = header.classList.toggle('is-open');
+      this.setAttribute('aria-expanded', open);
+      this.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    });
+  </script>
+</body>
+</html>
