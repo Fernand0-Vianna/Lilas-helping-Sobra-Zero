@@ -20,7 +20,7 @@
         </span>
       </a>
 
-      <nav class="nav">
+      <nav class="nav" id="nav-principal" aria-label="Navegação principal">
         <a href="#ciclo">Como funciona</a>
         <a href="#para-quem">Para quem é</a>
         <a href="#telas">Telas</a>
@@ -33,7 +33,7 @@
         <a class="btn btn-primary" href="pages/cadastro.html">Criar conta</a>
       </div>
 
-      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false">
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-principal">
         <span></span>
       </button>
     </div>
@@ -66,12 +66,18 @@
         </div>
 
         <div class="hero-visual">
-          <div class="shot">
-            <img src="design/desktop/05-ofertas-disponiveis.png"
-                 alt="Tela Ofertas disponíveis do protótipo Sobra Zero" loading="lazy">
-          </div>
+          <figure class="hero-photo">
+            <img
+              src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80"
+              srcset="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=75 800w,
+                      https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80 1200w,
+                      https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=80 1600w"
+              sizes="(max-width: 860px) 92vw, 40vw"
+              width="1200" height="1500" fetchpriority="high"
+              alt="Refeição pronta em prato, ilustrando o alimento que pode ser resgatado pelo Sobra Zero">
+            <figcaption>Da sobra da cozinha à mesa de quem precisa.</figcaption>
+          </figure>
           <span class="badge">Protótipo navegável</span>
-          <span class="badge-2">141 kg resgatados</span>
         </div>
       </div>
     </div>
@@ -208,8 +214,9 @@
            (<code>design/</code>)-9 telas desktop e 7 mobile + menu lateral.</p>
       </div>
 
-      <div class="gallery-tabs" role="tablist">
-        <button class="gallery-tab is-active" data-panel="desk">Desktop</button>
+      <div class="gallery-tabs" role="tablist" aria-label="Breakpoints do protótipo">
+        <button class="gallery-tab is-active" data-panel="desk" role="tab" aria-selected="true">Desktop</button>
+        <button class="gallery-tab" data-panel="mob" role="tab" aria-selected="false">Mobile</button>
       </div>
 
       <div class="gallery-panel is-active" id="panel-desk">
@@ -237,6 +244,39 @@
           <figure class="shot-card reveal">
             <div class="frame"><img src="design/desktop/12-relatorio-doacoes.png" alt="Tela Relatório de doações" loading="lazy"></div>
             <figcaption><b>12 · Relatório</b><span>KPIs e equidade (RN-06)</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="gallery-panel" id="panel-mob" role="tabpanel">
+        <div class="mobile-row">
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/mobile/m1-publicar-oferta.png" alt="Mobile Publicar oferta" loading="lazy" width="390" height="844"></div>
+            <figcaption><b>M1 · Publicar</b><span>formulário + RN-05</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/mobile/m2-ofertas-disponiveis.png" alt="Mobile Ofertas disponíveis" loading="lazy" width="390" height="844"></div>
+            <figcaption><b>M2 · Ofertas</b><span>feed com equidade</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/mobile/m3-acompanhar-aceita.png" alt="Mobile Acompanhamento" loading="lazy" width="390" height="844"></div>
+            <figcaption><b>M3 · Aceita</b><span>ciclo em andamento</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/mobile/m4-cadastro-doador.png" alt="Mobile Cadastro doador" loading="lazy" width="390" height="844"></div>
+            <figcaption><b>M4 · Doador</b><span>cadastro sanitário</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/mobile/m5-cadastro-instituicao.png" alt="Mobile Cadastro instituição" loading="lazy" width="390" height="844"></div>
+            <figcaption><b>M5 · Instituição</b><span>CNPJ + refrigeração</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/mobile/m6-cadastro-voluntario.png" alt="Mobile Cadastro voluntário" loading="lazy" width="390" height="844"></div>
+            <figcaption><b>M6 · Voluntário</b><span>caixa térmica</span></figcaption>
+          </figure>
+          <figure class="shot-card reveal">
+            <div class="frame"><img src="design/mobile/m7-relatorio-doacoes.png" alt="Mobile Relatório" loading="lazy" width="390" height="844"></div>
+            <figcaption><b>M7 · Relatório</b><span>KPIs e equidade</span></figcaption>
           </figure>
         </div>
       </div>
@@ -268,9 +308,9 @@
   <!-- ================= CTA ================= -->
   <section class="section cta-band">
     <div class="container">
-      <h2>Chega de ver comida boa ir para o lixo.</h2>
-      <p>Crie sua conta como doador, instituição ou voluntário e publique a primeira
-         oferta em menos de dois minutos.</p>
+      <h2>Comece em dois minutos. O alimento espera ninguém.</h2>
+      <p>Escolha seu perfil, publique ou aceite a primeira oferta e acompanhe cada
+         etapa até a confirmação da instituição. cadastro simples, regras claras.</p>
       <div class="row">
         <a class="btn btn-light btn-lg" href="pages/cadastro.html">Criar conta</a>
         <a class="btn btn-ghost-light btn-lg" href="pages/login.html">Já tenho conta</a>
@@ -317,19 +357,51 @@
   </footer>
 
   <script>
-    // menu mobile
+    // menu mobile acessível
     const header = document.getElementById('header');
-    document.getElementById('burger').addEventListener('click', function () {
-      const open = header.classList.toggle('is-open');
-      this.setAttribute('aria-expanded', open);
+    const burger = document.getElementById('burger');
+    const nav = document.getElementById('nav-principal');
+    const links = Array.from(nav.querySelectorAll('a'));
+
+    function abrirMenu() {
+      header.classList.add('is-open');
+      burger.setAttribute('aria-expanded', 'true');
+      burger.setAttribute('aria-label', 'Fechar menu');
+      document.body.style.overflow = 'hidden';
+      links[0]?.focus();
+    }
+    function fecharMenu(devolverFoco = false) {
+      header.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Abrir menu');
+      document.body.style.overflow = '';
+      if (devolverFoco) burger.focus();
+    }
+    burger.addEventListener('click', function () {
+      if (header.classList.contains('is-open')) fecharMenu(true);
+      else abrirMenu();
+    });
+    links.forEach((link, i) => {
+      link.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown') { e.preventDefault(); links[(i + 1) % links.length].focus(); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); links[(i - 1 + links.length) % links.length].focus(); }
+      });
+      link.addEventListener('click', () => fecharMenu());
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && header.classList.contains('is-open')) fecharMenu(true);
     });
 
     // abas da galeria
     document.querySelectorAll('.gallery-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
-        document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('is-active'));
+        document.querySelectorAll('.gallery-tab').forEach(t => {
+          t.classList.remove('is-active');
+          t.setAttribute('aria-selected', 'false');
+        });
         document.querySelectorAll('.gallery-panel').forEach(p => p.classList.remove('is-active'));
         tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
         document.getElementById('panel-' + tab.dataset.panel).classList.add('is-active');
       });
     });

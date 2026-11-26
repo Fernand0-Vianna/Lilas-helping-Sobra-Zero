@@ -320,22 +320,49 @@ p { margin: 0 0 1em; }
   background: var(--purple);
 }
 
-/* mockup do protótipo no hero */
+/* foto real no hero */
 .hero-visual {
   position: relative;
   animation: floatIn .9s .15s cubic-bezier(.2, .7, .2, 1) both;
 }
-.hero-visual .shot {
+.hero-photo {
+  position: relative;
+  margin: 0;
   border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, .14);
-  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .8);
-  background: #fff;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .16);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .85);
+  aspect-ratio: 4 / 5;
+  background: var(--ink);
 }
-.hero-visual .shot img { width: 100%; }
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(30, 16, 65, .05) 0%, rgba(30, 16, 65, .78) 100%);
+  pointer-events: none;
+}
+.hero-photo figcaption {
+  position: absolute;
+  left: 1.5rem; right: 1.5rem; bottom: 1.5rem;
+  z-index: 1;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .5);
+}
 .hero-visual .badge {
   position: absolute;
   bottom: -18px; left: -18px;
+  z-index: 2;
   background: var(--purple);
   color: #fff;
   font-family: var(--mono);
@@ -345,17 +372,6 @@ p { margin: 0 0 1em; }
   padding: .65rem 1rem;
   border-radius: 999px;
   box-shadow: 0 16px 30px -14px rgba(124, 92, 224, .9);
-}
-.hero-visual .badge-2 {
-  position: absolute;
-  top: -14px; right: -10px;
-  background: #fff;
-  color: var(--ink);
-  font-weight: 700;
-  font-size: .78rem;
-  padding: .55rem .9rem;
-  border-radius: 999px;
-  box-shadow: var(--shadow);
 }
 
 /* ticker do ciclo */

@@ -194,6 +194,28 @@ checar('seed: nao insere exige_frio (coluna gerada)',
 checar('seed: nao cria auth.users', !/auth\.users/.test(seedSql.replace(/--[\s\S]*?(?=\n)/g, '')));
 checar('seed: protege titulos repetidos', /not exists/.test(seedSql));
 
+console.log('\n[15] Landing redesign');
+const landing = ler('index.html');
+checar('landing: foto real no hero via Unsplash',
+  /images\.unsplash\.com\/photo-/.test(landing));
+checar('landing: srcset no hero', /srcset=/.test(landing) && /\d+w,/.test(landing));
+checar('landing: width/height no img do hero',
+  /width="1200"\s+height="1500"/.test(landing));
+checar('landing: sem metrica 141 kg', !/141\s*kg/.test(landing));
+checar('landing: badge prototipo navegavel', /Prot[oó]tipo naveg[aá]vel/.test(landing));
+checar('landing: aba Mobile na galeria', /data-panel="mob"/.test(landing));
+checar('landing: 7 telas mobile', (landing.match(/design\/mobile\/m\d-.*\.png/g) || []).length === 7);
+checar('landing: nav com aria-controls',
+  /id="burger"[^>]*aria-controls="nav-principal"/.test(landing));
+checar('landing: drawer com ESC', /e\.key === 'Escape'/.test(landing));
+checar('landing: foco preso com setas',
+  /ArrowDown/.test(landing) && /ArrowUp/.test(landing));
+checar('landing: lock de scroll', /document\.body\.style\.overflow = 'hidden'/.test(landing));
+checar('landing: CTA com copy novo', /Comece em dois minutos/.test(landing));
+const cssLanding = ler('css/stily.css');
+checar('landing css: .hero-photo', /\.hero-photo\s*\{/.test(cssLanding));
+checar('landing css: overlay lilas', /linear-gradient\(180deg[\s\S]{0,120}?rgba\(30, 16, 65/.test(cssLanding));
+
 console.log(`\nResultado: ${falhas.length === 0 ? 'TUDO OK' : falhas.length + ' FALHA(S)'}`);
 if (falhas.length) {
   console.log(falhas.map((f) => ' - ' + f).join('\n'));
